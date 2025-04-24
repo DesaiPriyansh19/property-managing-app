@@ -1,25 +1,32 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropertyCard from "../components/PropertyCard.jsx";
-import companyLogo from "../../public/logo final PNG.png"; // Replace with your logo path
+import companyLogo from "../../public/logo final PNG.png";
 
 const Home = () => {
-  const [showLogo, setShowLogo] = useState(true);
+  const [showLogo, setShowLogo] = useState(false);
   const [startFadeOut, setStartFadeOut] = useState(false);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => {
-      setStartFadeOut(true); // Start fade out
-    }, 2000);
+    const hasSeenLogo = localStorage.getItem("hasSeenLogo");
 
-    const timer2 = setTimeout(() => {
-      setShowLogo(false); // Then hide
-    }, 2800);
+    if (!hasSeenLogo) {
+      setShowLogo(true);
+      localStorage.setItem("hasSeenLogo", "true");
 
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
+      const timer1 = setTimeout(() => {
+        setStartFadeOut(true); // Start fade-out effect after 2 seconds
+      }, 2000);
+
+      const timer2 = setTimeout(() => {
+        setShowLogo(false); // Hide logo after 3 seconds
+      }, 2800);
+
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
+    }
   }, []);
 
   const properties = [
@@ -41,8 +48,8 @@ const Home = () => {
     <>
       {showLogo ? (
         <div
-          className={`h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-black to-black ${
-            startFadeOut ? "fade-out" : ""
+          className={`h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-black to-black transition-opacity duration-1000 ${
+            startFadeOut ? "opacity-0" : "opacity-100"
           }`}
         >
           <img
