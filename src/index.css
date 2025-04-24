@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@keyframes fadeZoom {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeSlide {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .fade-zoom {
+    animation: fadeZoom 1s ease-out forwards;
+  }
+  
+  .fade-slide {
+    animation: fadeSlide 1s ease-out forwards;
+  }
+  .fade-out {
+    animation: fadeOutSmooth 1s ease-out forwards;
+  }  
