@@ -40,3 +40,25 @@
 .read-the-docs {
   color: #888;
 }
+/* Optional but recommended for smooth entrance/exit animation */
+.fade-zoom {
+  transition: all 1s ease;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.fade-zoom.fade-out {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+.fade-slide {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 1s ease;
+}
+
+.fade-slide.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+}

@@ -2,7 +2,7 @@
 import { useAuth } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import companyLogo from "../../public/logo final PNG.png";
+import companyLogo from "../../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -22,12 +22,13 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit} className="p-4 max-w-md mx-auto">
+     
         <div className="flex items-center gap-5 mb-6 lg:mb-0">
                   <div className="p-1.5 bg-gradient-to-br from-[#7B3F00] to-[#A0522D] rounded-2xl shadow-2xl animate-float">
                     <img 
                       src={companyLogo} 
                       alt="Logo" 
-                      className="w-16 h-16 rounded-xl border-4 border-white/20 bg-white/10 backdrop-blur-sm" 
+                      className="w-24 h-24 rounded-xl border-4 border-white/20 bg-white/10 backdrop-blur-sm" 
                     />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-900">

@@ -7,6 +7,8 @@ import AddProperty from "./pages/AddProperty";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute"; // Capitalize if it’s a component
 import "./App.css";
+import BrokerManagement from "./pages/BrokerManagement.jsx";
+import BuyerManagement from "./pages/BuyersManagment.jsx";
 
 const App = () => {
   return (
@@ -27,6 +29,16 @@ const App = () => {
           <Route path="/add-property" element={
             <ProtectedRoute>
               <AddProperty />
+            </ProtectedRoute>
+          } />
+             <Route path="/brokers" element={
+            <ProtectedRoute>
+              <BrokerManagement/>
+            </ProtectedRoute>
+          } />
+              <Route path="/buyers" element={
+            <ProtectedRoute>
+              <BuyerManagement/>
             </ProtectedRoute>
           } />
         </Routes>
