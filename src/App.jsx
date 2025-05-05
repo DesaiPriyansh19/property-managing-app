@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Capitalize if it’
 import "./App.css";
 import BrokerManagement from "./pages/BrokerManagement.jsx";
 import BuyerManagement from "./pages/BuyersManagment.jsx";
+import AllMaps from "./pages/AllMaps.jsx";
 
 const App = () => {
   return (
@@ -39,6 +40,11 @@ const App = () => {
               <Route path="/buyers" element={
             <ProtectedRoute>
               <BuyerManagement/>
+            </ProtectedRoute>
+          } />
+                   <Route path="/allmaps" element={
+            <ProtectedRoute>
+              <AllMaps/>
             </ProtectedRoute>
           } />
         </Routes>
