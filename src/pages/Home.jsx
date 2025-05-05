@@ -29,7 +29,7 @@ const Home = () => {
     { title: "Title Clear Lands", value: "1,234", width: "w-3/4" },
     { title: "Dispute Lands", value: "789", width: "w-2/3" },
     { title: "Govt.Dispute Lands", value: "530", width: "w-1/2" },
-    { title: "City FP NA", value: "98", width: "w-1/3" },
+    { title: " FP / NA", value: "98", width: "w-1/3" },
     { title: "Others", value: "98", width: "w-1/3" },
   ];
 
@@ -43,10 +43,10 @@ const Home = () => {
   if (showLogo) {
     return (
       <div
-        className={`h-screen w-full flex flex-col items-center justify-center bg-black transition-opacity duration-1000 ${startFadeOut ? "opacity-0" : "opacity-100"}`}
+        className={`h-screen w-full flex flex-col items-center justify-center bg-#CFA97E transition-opacity duration-1000 ${startFadeOut ? "opacity-0" : "opacity-100"}`}
       >
         <img src={companyLogo} alt="Company Logo" className="w-40 h-40" />
-        <h1 className="text-3xl font-bold mt-6 text-white">Welcome to Millenuime Properties</h1>
+        <h1 className="text-3xl font-bold mt-6 text-[#7B3F00]">Welcome to  RD Revenue Legal Consulting </h1>
       </div>
     );
   }
@@ -83,7 +83,7 @@ const Home = () => {
       RD Revenue
     </h1>
     <p className="text-lg sm:text-xl font-medium italic text-transparent bg-gradient-to-r from-[#7B3F00] to-[#A0522D] bg-clip-text">
-      Legal Consulting
+    Legal Consulting
     </p>
   </div>
 </div>
@@ -119,7 +119,7 @@ const Home = () => {
   
       {/* Total + Toggleable Cards */}
       <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
-        <div className="bg-white rounded-3xl shadow-md p-8 border border-[#E7D3C1]">
+        <div className=" rounded-3xl shadow-md p-8 border-2 border-[#E7D3C1]">
           <h3 className="text-2xl font-bold mb-4 text-center">All Properties</h3>
           <p className="text-5xl font-extrabold bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-transparent bg-clip-text mb-6 text-center">
             2,749
@@ -182,7 +182,7 @@ const Home = () => {
       </div>
   
       {/* Property Cards */}
-      <div className="max-w-4xl mx-auto grid gap-8">
+      <div className="max-w-4xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {properties.map((property) => (
           <Link
             key={property.id}
@@ -197,6 +197,11 @@ const Home = () => {
           </Link>
         ))}
       </div>
+      <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-4  border-[#E7D3C1]">
+     <a href="">  <button  className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">NE RO</button></a>  
+     <a href=""><button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
+     <a href="">  <button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a>  
+         </div>
     </div>
   </div>
   
