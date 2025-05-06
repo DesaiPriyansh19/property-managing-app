@@ -26,11 +26,12 @@ const Home = () => {
   const handleToggle = () => setShowDetails((prev) => !prev);
 
   const spotlightCards = [
-    { title: "Title Clear Lands", value: "1,234", width: "w-3/4" },
-    { title: "Dispute Lands", value: "789", width: "w-2/3" },
-    { title: "Govt.Dispute Lands", value: "530", width: "w-1/2" },
-    { title: " FP / NA", value: "98", width: "w-1/3" },
-    { title: "Others", value: "98", width: "w-1/3" },
+    { title: "Title Clear Lands", value: "0", width: "w-0" },
+    { title: "Dispute Lands", value: "0", width: "w-0" },
+    { title: "Govt.Dispute Lands", value: "0", width: "w-0" },
+    { title: " FP / NA", value: "0", width: "w-0" },
+    { title: "Others", value: "0", width: "w-0" },
+    { title: "All Maps", value: "0", width: "w-0" },
   ];
 
   const properties = [
@@ -108,12 +109,7 @@ const Home = () => {
           >
             Buyers
           </Link>
-          <Link
-            to="/allmaps"
-            className="relative overflow-hidden bg-white border border-[#D0B49F] rounded-2xl shadow-md px-6 py-3 font-semibold text-[#5C4033] hover:bg-[#f3e6dc] transition-all duration-300"
-          >
-          All Maps
-          </Link>
+        
         </div>
       </div>
   
@@ -122,7 +118,7 @@ const Home = () => {
         <div className=" rounded-3xl shadow-md p-8 border-2 border-[#E7D3C1]">
           <h3 className="text-2xl font-bold mb-4 text-center">All Properties</h3>
           <p className="text-5xl font-extrabold bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-transparent bg-clip-text mb-6 text-center">
-            2,749
+            00
           </p>
           <div className="flex justify-center mb-4">
             <button
@@ -198,8 +194,8 @@ const Home = () => {
         ))}
       </div>
       <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-4  border-[#E7D3C1]">
-     <a href="">  <button  className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">NE RO</button></a>  
-     <a href=""><button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
+     <a href="https://anyror.gujarat.gov.in/w">  <button  className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">NEROR</button></a>  
+     <a href="https://ircms.gujarat.gov.in/rcases/"><button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
      <a href="">  <button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a>  
          </div>
     </div>
