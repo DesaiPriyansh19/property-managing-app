@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import companyLogo from "../../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
-
+import { FaUserTie, FaHandshake } from "react-icons/fa"; // Import icons
 const Home = () => {
   const [showLogo, setShowLogo] = useState(false);
   const [startFadeOut, setStartFadeOut] = useState(false);
@@ -198,6 +198,17 @@ const Home = () => {
      <a href="https://ircms.gujarat.gov.in/rcases/"><button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
      <a href="">  <button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a>  
          </div>
+         <div className="flex items-center justify-center gap-6 mt-6">
+  <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+    <FaUserTie className="text-4xl text-gray-600" />
+    <h2 className="text-lg font-semibold text-gray-800">Buyers</h2>
+  </div>
+
+  <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+    <FaHandshake className="text-4xl text-gray-600" />
+    <h2 className="text-lg font-semibold text-gray-800">Brokers</h2>
+  </div>
+</div>
     </div>
   </div>
   
