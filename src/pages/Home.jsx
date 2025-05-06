@@ -106,9 +106,9 @@ const Home = () => {
      <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
      <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
       <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a> 
-      <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
+      <a href="https://services.ecourts.gov.in/ecourtindia_v6/"> 
       <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">HC  <span className="">CASE STATUS</span></button></a>  
-      <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
+      <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
       <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">T P MAP</button></a> 
          </div>
       {/* Total + Toggleable Cards */}
