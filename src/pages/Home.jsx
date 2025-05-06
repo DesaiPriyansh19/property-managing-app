@@ -81,11 +81,9 @@ const Home = () => {
   {/* Text */}
   <div className="text-center sm:text-left">
     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-wide  text-gray-600 ">
-      RD Revenue
+      RD  Legal Consulting
     </h1>
-    <p className="text-lg sm:text-xl font-medium italic text-transparent bg-gradient-to-r from-[#7B3F00] to-[#A0522D] bg-clip-text">
-    Legal Consulting
-    </p>
+    
   </div>
 </div>
 
@@ -97,22 +95,22 @@ const Home = () => {
           >
             + Add Property
           </Link>
-          <Link
-            to="/brokers"
-            className="relative overflow-hidden bg-white border border-[#D0B49F] rounded-2xl shadow-md px-6 py-3 font-semibold text-[#5C4033] hover:bg-[#f3e6dc] transition-all duration-300"
-          >
-            Brokers
-          </Link>
-          <Link
-            to="/buyers"
-            className="relative overflow-hidden bg-white border border-[#D0B49F] rounded-2xl shadow-md px-6 py-3 font-semibold text-[#5C4033] hover:bg-[#f3e6dc] transition-all duration-300"
-          >
-            Buyers
-          </Link>
+       
         
         </div>
       </div>
-  
+      <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-2  border-gray-400">
+     <a href="https://anyror.gujarat.gov.in/LandRecordRural.aspx">  
+     <button  className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">ANYROR</button></a>  
+     <a href="https://ircms.gujarat.gov.in/rcases/">
+     <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
+     <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
+      <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a> 
+      <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
+      <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">HC  <span className="">CASE STATUS</span></button></a>  
+      <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
+      <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">T P MAP</button></a> 
+         </div>
       {/* Total + Toggleable Cards */}
       <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
         <div className=" rounded-3xl shadow-md p-8 border-2 border-[#E7D3C1]">

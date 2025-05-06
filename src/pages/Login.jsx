@@ -30,13 +30,13 @@ const Login = () => {
             <img
               src={companyLogo}
               alt="Logo"
-              className="w-60 xl:w-[28rem] h-[28rem] xl:h-96 object-cover rounded-lg xl:rounded-[80px]"
+              className="w-60 xl:w-[28rem] h-60 xl:h-96 object-cover rounded-3xl xl:rounded-[80px]"
             />
           </div>
           <div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">RD Revenue</h1>
-            <p className="bg-clip-text text-[#7B3F00] bg-gradient-to-r from-white to-orange-200 font-semibold text-lg md:text-xl lg:text-2xl">
-              Legal Consulting
+            <h1 className="text-3xl text-gray-500 md:text-4xl lg:text-5xl font-bold leading-tight mb-2">Welcome To</h1>
+            <p className="bg-clip-text text-gray-600 bg-gradient-to-r from-white to-orange-200 font-semibold text-lg md:text-xl lg:text-2xl">
+            RD  Legal Consulting
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-white py-3 rounded-full w-full font-semibold hover:opacity-90 transition text-lg md:text-xl"
+            className="bg-gray-700 text-white py-3 rounded-full w-full font-semibold hover:opacity-90 transition text-lg md:text-xl"
           >
             Login
           </button>
