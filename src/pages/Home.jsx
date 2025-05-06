@@ -191,12 +191,12 @@ const Home = () => {
           </Link>
         ))}
       </div>
-      <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-4  border-[#E7D3C1]">
+      {/* <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-4  border-[#E7D3C1]">
      <a href="https://anyror.gujarat.gov.in/w">  <button  className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">ANYROR</button></a>  
      <a href="https://ircms.gujarat.gov.in/rcases/"><button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
      <a href="">  <button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a>  
-         </div>
-         <div className="flex items-center justify-center gap-6 mt-6">
+         </div> */}
+         <div className="flex items-center justify-center gap-6 mt-6 border-gray-400 border-t-2 pt-6">
   <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
     <FaUserTie className="text-4xl text-gray-600" />
     <h2 className="text-lg font-semibold text-gray-800">Buyers</h2>
