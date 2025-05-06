@@ -194,7 +194,7 @@ const Home = () => {
         ))}
       </div>
       <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-4  border-[#E7D3C1]">
-     <a href="https://anyror.gujarat.gov.in/w">  <button  className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">NEROR</button></a>  
+     <a href="https://anyror.gujarat.gov.in/w">  <button  className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">ANYROR</button></a>  
      <a href="https://ircms.gujarat.gov.in/rcases/"><button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
      <a href="">  <button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a>  
          </div>
