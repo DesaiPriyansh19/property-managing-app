@@ -53,7 +53,7 @@ const Home = () => {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#fffaf3] font-sans text-gray-900 p-8">
+    <div className="relative min-h-screen overflow-hidden bg-gray-300 font-sans text-gray-900 p-8">
  {/* ✨ Animated Background Blobs */}
 <div className="absolute top-[-80px] left-[-80px] w-72 h-72 bg-[#A0522D] rounded-full opacity-10 animate-blob2 z-0"></div>
 <div className="absolute bottom-[-100px] right-[-100px] w-96 h-96 bg-[#7B3F00] rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '2s' }}></div>
@@ -70,7 +70,7 @@ const Home = () => {
       <div className="flex flex-col lg:flex-row justify-between items-center mb-16">
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-10">
   {/* Logo */}
-  <div className="bg-gradient-to-br from-[#7B3F00] to-[#A0522D] p-1.5 rounded-2xl shadow-lg">
+  <div className=" rounded-2xl shadow-lg">
     <img
       src={companyLogo}
       alt="Company Logo"
@@ -123,7 +123,7 @@ const Home = () => {
           <div className="flex justify-center mb-4">
             <button
               onClick={handleToggle}
-              className="bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-white px-6 py-3 rounded-xl text-lg hover:opacity-90 transition"
+              className="bg-gray-500 text-white px-6 py-3 rounded-xl text-lg hover:opacity-90 transition"
             >
               {showDetails ? "Hide Details" : "View Details"}
             </button>

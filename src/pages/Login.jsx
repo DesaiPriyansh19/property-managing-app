@@ -21,9 +21,9 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row font-sans bg-gradient-to-r from-[#7B3F00] to-[#A0522D]">
+    <div className="min-h-screen flex flex-col md:flex-row font-sans bg-[#fffaf3]">
       {/* Left Panel */}
-      <div className="w-full md:w-1/2 bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-white p-6 flex flex-col justify-center relative overflow-hidden rounded-b-3xl md:rounded-r-[3rem] md:rounded-bl-none">
+      <div className="w-full md:w-1/2 bg-gray-300 text-[#7B3F00] p-6 flex flex-col justify-center relative overflow-hidden rounded-b-3xl md:rounded-r-[3rem] md:rounded-bl-none">
         {/* Logo */}
         <div className=" items-center mx-auto  mb-8 z-10">
           <div className="p-2  rounded-xl mx-auto animate-float">
@@ -35,17 +35,17 @@ const Login = () => {
           </div>
           <div>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">RD Revenue</h1>
-            <p className="bg-clip-text text-transparent bg-gradient-to-r from-white to-orange-200 font-semibold text-lg md:text-xl lg:text-2xl">
+            <p className="bg-clip-text text-[#7B3F00] bg-gradient-to-r from-white to-orange-200 font-semibold text-lg md:text-xl lg:text-2xl">
               Legal Consulting
             </p>
           </div>
         </div>
 
         {/* Animated Bubbles */}
-        <div className="absolute top-10 left-10 w-14 h-14 bg-white opacity-10 rounded-full animate-ping"></div>
-        <div className="absolute bottom-10 right-10 w-20 h-20 bg-white opacity-10 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/3 right-20 w-16 h-16 bg-white opacity-10 rounded-full animate-bounce blur-sm"></div>
-        <div className="absolute bottom-[20%] left-1/2 w-12 h-12 bg-white opacity-10 rounded-full animate-ping blur-sm"></div>
+        <div className="absolute top-10 left-10 w-14 h-14 bg-[#7B3F00] opacity-10 rounded-full animate-ping"></div>
+        <div className="absolute bottom-10 right-10 w-20 h-20 bg-[#7B3F00] opacity-10 rounded-full animate-pulse"></div>
+        <div className="absolute top-1/3 right-20 w-16 h-16 bg-[#7B3F00] opacity-10 rounded-full animate-bounce blur-sm"></div>
+        <div className="absolute bottom-[20%] left-1/2 w-12 h-12 bg-[#7B3F00] opacity-10 rounded-full animate-ping blur-sm"></div>
       </div>
 
       {/* Right Panel */}
