@@ -25,12 +25,12 @@ const Login = () => {
       {/* Left Panel */}
       <div className="w-full md:w-1/2 bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-white p-6 flex flex-col justify-center relative overflow-hidden rounded-b-3xl md:rounded-r-[3rem] md:rounded-bl-none">
         {/* Logo */}
-        <div className="flex items-center gap-4 mb-8 z-10">
-          <div className="p-2 bg-white/10 backdrop-blur-sm rounded-xl shadow-lg animate-float">
+        <div className=" items-center mx-auto  mb-8 z-10">
+          <div className="p-2  rounded-xl mx-auto animate-float">
             <img
               src={companyLogo}
               alt="Logo"
-              className="w-20 h-20 object-cover rounded-lg"
+              className="w-60 h-60 object-cover rounded-lg"
             />
           </div>
           <div>
