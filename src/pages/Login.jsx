@@ -30,7 +30,7 @@ const Login = () => {
             <img
               src={companyLogo}
               alt="Logo"
-              className="w-60 h-60 object-cover rounded-lg"
+              className="w-60 xl:w-[28rem] h-[28rem] xl:h-96 object-cover rounded-lg"
             />
           </div>
           <div>
