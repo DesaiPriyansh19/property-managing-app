@@ -43,7 +43,7 @@ const AddProperty = () => {
       <div className="flex items-center justify-center gap-2 w-full ">
         <div className="w-[50%] max-w-xs my-3">
   <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
-    Select Land Type
+    Select file Type
   </label>
   <select
     id="landType"
@@ -72,7 +72,23 @@ const AddProperty = () => {
     <option value="dispute">None Agriculture</option>
   
   </select>
-</div></div>
+</div>
+<div className="w-[50%] max-w-xs">
+  <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
+    Select Land Type
+  </label>
+  <select
+    id="landType"
+    name="landType"
+    className="block w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-700 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
+  >
+    <option value="">-- Select Tenure--</option>
+    <option value="title-clear">old Tenure</option>
+    <option value="dispute">New Tenure</option>
+    <option value="dispute">Premume</option>
+  </select>
+</div>
+</div>
       <form className="space-y-6">
         {/* 2-Column Grid Inputs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
