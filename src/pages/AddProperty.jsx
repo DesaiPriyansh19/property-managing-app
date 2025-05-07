@@ -52,7 +52,11 @@ const AddProperty = () => {
             "District",
             "SerNo (New)",
             "SerNo (Old)",
-            "Area",
+            "Fp.Number",
+            "T P",
+            "Zone",
+            "Sr.Area",
+            "FP.Area",
             "Rate (₹)",
           ].map((placeholder, i) => (
             <input
