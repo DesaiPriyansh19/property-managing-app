@@ -68,7 +68,7 @@ const Home = () => {
     <div className="relative z-10">
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-center mb-16">
-      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-10">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-10 xl:mb-0">
   {/* Logo */}
   <div className=" rounded-2xl shadow-lg">
     <img
