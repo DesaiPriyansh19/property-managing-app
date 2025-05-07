@@ -7,6 +7,7 @@ const BuyerManagement = () => {
     contact: "",
    group: "",
     notes: "",
+    workarea: "",
   });
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -69,7 +70,7 @@ const BuyerManagement = () => {
               name="name"
               value={newBroker.name}
               onChange={handleInputChange}
-              placeholder="Broker Name"
+              placeholder="Buyer Name"
               className="border border-[#7B3F00] p-2 rounded-lg"
             />
             <input
