@@ -48,10 +48,10 @@ const AddProperty = () => {
             "Person Who Shared",
             "Contact Number",
             "Village",
-            "District",
             "Taluko",
-            "SerNo (Old)",
+            "District",
             "SerNo (New)",
+            "SerNo (Old)",
             "Area",
             "Rate (₹)",
           ].map((placeholder, i) => (
