@@ -97,6 +97,14 @@ const BuyerManagement = () => {
               placeholder="Notes"
               className="border border-[#7B3F00] p-2 rounded-lg"
             />
+                <input
+              type="text"
+              name="notes"
+              value={newBroker.workarea}
+              onChange={handleInputChange}
+              placeholder="Work Area"
+              className="border border-[#7B3F00] p-2 rounded-lg"
+            />
           </div>
           <button
             onClick={handleAddBroker}
