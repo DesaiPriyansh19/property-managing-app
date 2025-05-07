@@ -42,15 +42,13 @@ const AddProperty = () => {
       <h2 className="text-3xl font-bold mb-6 text-gray-700">Upload Property Details</h2>
       <div className="flex items-center justify-center gap-2 w-full ">
         <div className="w-[50%] max-w-xs my-3">
-  <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
-    Select file Type
-  </label>
+
   <select
     id="landType"
     name="landType"
     className="block w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-700 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
   >
-    <option value="">-- Select --</option>
+    <option value="">--Select file Type --</option>
     <option value="title-clear">Title Clear Lands</option>
     <option value="dispute">Dispute Lands</option>
     <option value="govt-dispute">Govt. Dispute Lands</option>
@@ -59,24 +57,20 @@ const AddProperty = () => {
   </select>
 </div>
 <div className="w-[50%] max-w-xs">
-  <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
-    Select Land Type
-  </label>
+
   <select
     id="landType"
     name="landType"
     className="block w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-700 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
   >
-    <option value="">-- Select --</option>
+    <option value="">-- Select Land Type --</option>
     <option value="title-clear">Agriculutre</option>
     <option value="dispute">None Agriculture</option>
   
   </select>
 </div>
 <div className="w-[50%] max-w-xs">
-  <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
-    Select Land Type
-  </label>
+
   <select
     id="landType"
     name="landType"

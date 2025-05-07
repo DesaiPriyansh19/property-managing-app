@@ -5,7 +5,7 @@ const BuyerManagement = () => {
   const [newBroker, setNewBroker] = useState({
     name: "",
     contact: "",
-    address: "",
+   group: "",
     notes: "",
   });
   const [showForm, setShowForm] = useState(false);
