@@ -40,39 +40,8 @@ const AddProperty = () => {
   return (
     <div className="p-6 max-w-6xl mx-auto bg-gray-200 border  shadow-lg">
       <h2 className="text-3xl font-bold mb-6 text-gray-700">Upload Property Details</h2>
-
-      <form className="space-y-6">
-        {/* 2-Column Grid Inputs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            "Person Who Shared",
-            "Contact Number",
-            "Village",
-            "Taluko",
-            "District",
-            "SerNo (New)",
-            "SerNo (Old)",
-            "FP.NO",
-            "T P",
-            "Zone",
-            "Sr.Area",
-            "FP.Area",
-            "SR.Rate (₹)",
-            "FP.Rate (₹)",
-            "MTR.Road",
-            "NearBy(land mark)",
-          ].map((placeholder, i) => (
-            <input
-              key={i}
-              type="text"
-              placeholder={placeholder}
-              className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
-              aria-label={placeholder}
-            />
-          ))}
-        </div>
-        <div className="flex items-center justify-start gap-2 w-full ">
-        <div className="w-[50%] max-w-xs">
+      <div className="flex items-center justify-center gap-2 w-full ">
+        <div className="w-[50%] max-w-xs my-3">
   <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
     Select Land Type
   </label>
@@ -104,6 +73,37 @@ const AddProperty = () => {
   
   </select>
 </div></div>
+      <form className="space-y-6">
+        {/* 2-Column Grid Inputs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[
+            "Person Who Shared",
+            "Contact Number",
+            "Village",
+            "Taluko",
+            "District",
+            "SerNo (New)",
+            "SerNo (Old)",
+            "FP.NO",
+            "T P",
+            "Zone",
+            "Sr.Area",
+            "FP.Area",
+            "SR.Rate (₹)",
+            "FP.Rate (₹)",
+            "MTR.Road",
+            "NearBy(land mark)",
+          ].map((placeholder, i) => (
+            <input
+              key={i}
+              type="text"
+              placeholder={placeholder}
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
+              aria-label={placeholder}
+            />
+          ))}
+        </div>
+  
         {/* Notes and Map Link */}
         <textarea
           placeholder="Notes"
