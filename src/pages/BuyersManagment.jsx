@@ -6,8 +6,8 @@ const BuyerManagement = () => {
     name: "",
     contact: "",
    group: "",
-    notes: "",
     workarea: "",
+    notes: "",
   });
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -89,14 +89,7 @@ const BuyerManagement = () => {
               placeholder="Address"
               className="border border-[#7B3F00] p-2 rounded-lg"
             />
-            <input
-              type="text"
-              name="notes"
-              value={newBroker.notes}
-              onChange={handleInputChange}
-              placeholder="Notes"
-              className="border border-[#7B3F00] p-2 rounded-lg"
-            />
+        
                 <input
               type="text"
               name="notes"
@@ -105,7 +98,16 @@ const BuyerManagement = () => {
               placeholder="Work Area"
               className="border border-[#7B3F00] p-2 rounded-lg"
             />
+            
           </div>
+          <input
+              type="text"
+              name="notes"
+              value={newBroker.notes}
+              onChange={handleInputChange}
+              placeholder="Notes"
+              className="border border-[#7B3F00] p-2 rounded-lg w-full my-4"
+            />
           <button
             onClick={handleAddBroker}
             className="mt-4 bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"

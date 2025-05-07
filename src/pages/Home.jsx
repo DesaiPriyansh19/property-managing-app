@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import companyLogo from "../../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
-import { FaUserTie, FaHandshake } from "react-icons/fa"; // Import icons
+import { FaUserTie, FaHandshake ,} from "react-icons/fa"; // Import icons
+import { FaWallet } from "react-icons/fa";
+
 const Home = () => {
   const [showLogo, setShowLogo] = useState(false);
   const [startFadeOut, setStartFadeOut] = useState(false);
@@ -204,6 +206,11 @@ const Home = () => {
   <Link to={"/brokers"}><div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
     <FaHandshake className="text-4xl text-gray-600" />
     <h2 className="text-lg font-semibold text-gray-800">Brokers</h2>
+  </div></Link>
+  
+  <Link to={"/brokers"}><div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+  <FaWallet className="text-4xl text-gray-600" />
+    <h2 className="text-lg font-semibold text-gray-800">My Wallet`</h2>
   </div></Link>
 </div>
     </div>
