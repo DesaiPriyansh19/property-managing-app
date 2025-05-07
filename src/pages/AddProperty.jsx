@@ -71,8 +71,8 @@ const AddProperty = () => {
             />
           ))}
         </div>
-        <div className="flex items-center justify-center">
-        <div className="w-full max-w-xs">
+        <div className="flex items-center justify-start gap-2 w-full ">
+        <div className="w-[50%] max-w-xs">
   <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
     Select Land Type
   </label>
@@ -89,7 +89,7 @@ const AddProperty = () => {
     <option value="others">Others</option>
   </select>
 </div>
-<div className="w-full max-w-xs">
+<div className="w-[50%] max-w-xs">
   <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
     Select Land Type
   </label>
