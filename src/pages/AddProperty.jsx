@@ -38,8 +38,8 @@ const AddProperty = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto bg-[#f0e3d2] border rounded-2xl shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 text-[#7B3F00]">Upload Property Details</h2>
+    <div className="p-6 max-w-6xl mx-auto bg-gray-200 border  shadow-lg">
+      <h2 className="text-3xl font-bold mb-6 text-gray-700">Upload Property Details</h2>
 
       <form className="space-y-6">
         {/* 2-Column Grid Inputs */}
@@ -49,7 +49,7 @@ const AddProperty = () => {
             "Contact Number",
             "Village",
             "District",
-            "Tehsil",
+            "Taluko",
             "SerNo (Old)",
             "SerNo (New)",
             "Area",
@@ -59,7 +59,7 @@ const AddProperty = () => {
               key={i}
               type="text"
               placeholder={placeholder}
-              className="w-full px-4 py-2 border border-[#E7D3C1] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
               aria-label={placeholder}
             />
           ))}
@@ -69,25 +69,25 @@ const AddProperty = () => {
         <textarea
           placeholder="Notes"
           rows={3}
-          className="w-full px-4 py-2 border border-[#E7D3C1] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
+          className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
           aria-label="Notes"
         />
         <input
           type="text"
           placeholder="Google Map Embed Link"
-          className="w-full px-4 py-2 border border-[#E7D3C1] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
+          className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#7B3F00] bg-white tex-[#7b3f00]"
           aria-label="Google Map Embed Link"
         />
 
         {/* Image Upload */}
         <div>
-          <label className="font-medium block mb-2 text-[#7B3F00]">Upload Property Images</label>
+          <label className="font-medium block mb-2 text-gray-600">Upload Property Images</label>
           <input
             type="file"
             accept="image/*"
             multiple
             onChange={handleImageUpload}
-            className="w-full px-3 py-2 border border-[#E7D3C1] rounded-lg shadow-sm"
+            className="w-full px-3 py-2 border border-gray-500 rounded-lg shadow-sm"
             aria-label="Upload Property Images"
           />
           <div className="flex flex-wrap gap-4 mt-4">
@@ -116,13 +116,13 @@ const AddProperty = () => {
 
         {/* PDF Upload */}
         <div>
-          <label className="font-medium block mb-2 mt-4 text-[#7B3F00]">Upload PDFs</label>
+          <label className="font-medium block mb-2 mt-4 text-gray-600">Upload PDFs</label>
           <input
             type="file"
             accept=".pdf"
             multiple
             onChange={handlePdfUpload}
-            className="w-full px-3 py-2 border border-[#E7D3C1] rounded-lg shadow-sm"
+            className="w-full px-3 py-2 border border-gray-500 rounded-lg shadow-sm"
             aria-label="Upload PDFs"
           />
           <div className="flex flex-col gap-2 mt-4">
@@ -148,7 +148,7 @@ const AddProperty = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className=" border-2 border-[#E7D3C1] bg-[#7b3f00] text-white py-3 px-6 rounded-xl hover:bg-white hover:border-[#7B3F00] hover:text-[#7B3F00] transition-all mt-4"
+          className=" border-2 border-gray-600 bg-gray-600 text-white py-3 px-6 rounded-xl hover:bg-white hover:border-x-gray-600 hover:text-gray-600 transition-all mt-4"
         >
           Submit
         </button>
@@ -156,9 +156,9 @@ const AddProperty = () => {
 
       <button
         onClick={() => navigate("/home")}
-        className="mt-6 text-[#7B3F00] border-2 border-[#7B3F00] rounded-md px-4 py-2"
+        className="mt-6 text-gray-600 border-2 border-gray-600 rounded-md px-4 py-2"
       >
-        ← Back to Home
+        ← Back 
       </button>
     </div>
   );

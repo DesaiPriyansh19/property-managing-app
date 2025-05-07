@@ -68,48 +68,47 @@ const Home = () => {
     <div className="relative z-10">
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-center mb-16">
-      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-10 xl:mb-0">
-  {/* Logo */}
-  <div className=" rounded-2xl shadow-lg">
-    <img
-      src={companyLogo}
-      alt="Company Logo"
-      className="w-20 h-20 sm:w-24 xl:w-[12rem] sm:h-24 xl:h-[12rem] rounded-xl object-cover shadow-md bg-white"
-    />
+  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-10 xl:mb-0">
+    {/* Logo */}
+    <div className="rounded-2xl shadow-lg">
+      <img
+        src={companyLogo}
+        alt="Company Logo"
+        className="w-20 h-20 sm:w-24 xl:w-[12rem] sm:h-24 xl:h-[12rem] rounded-xl object-cover shadow-md bg-white"
+      />
+    </div>
+
+    {/* Heading centered without affecting image */}
+    <div className="flex-1 flex justify-center sm:justify-center">
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-wide text-gray-600 text-center lg:mt-7">
+        RD Legal Consulting
+      </h1>
+    </div>
   </div>
 
-  {/* Text */}
-  <div className="text-center sm:text-left">
-    <h1 className="text-3xl lg:mt-7 sm:text-4xl lg:text-5xl font-bold leading-tight tracking-wide  text-gray-600 ">
-      RD  Legal Consulting
-    </h1>
-    
+  <div className="flex flex-wrap gap-4 justify-center items-center mt-4">
+    <Link
+      to="/add-property"
+      className="relative overflow-hidden bg-white border border-gray-500 rounded-2xl shadow-md px-6 py-3 font-semibold text-gray-600 hover:bg-gray-200 transition-all duration-300"
+    >
+      + Add Property
+    </Link>
   </div>
 </div>
 
 
-        <div className="flex flex-wrap gap-4 justify-center items-center mt-4">
-          <Link
-            to="/add-property"
-            className="relative overflow-hidden bg-white border border-gray-500 rounded-2xl shadow-md px-6 py-3 font-semibold text-gray-600 hover:bg-gray-200 transition-all duration-300"
-          >
-            + Add Property
-          </Link>
-       
-        
-        </div>
-      </div>
+
       <div className=" w-full flex my-5 xl:my-2 mx-auto items-center justify-center gap-5 p-8 border-t-2  border-gray-400">
      <a href="https://anyror.gujarat.gov.in/LandRecordRural.aspx">  
-     <button  className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">ANYROR</button></a>  
+     <button  className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">ANYROR</button></a>  
      <a href="https://ircms.gujarat.gov.in/rcases/">
-     <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">IRCMS</button></a>  
+     <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">IRCMS</button></a>  
      <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
-      <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">JANTRI</button></a> 
+      <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">JANTRI</button></a> 
       <a href="https://services.ecourts.gov.in/ecourtindia_v6/"> 
-      <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">HC  <span className="">CASE STATUS</span></button></a>  
+      <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">HC  <span className="">CASE STATUS</span></button></a>  
       <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
-      <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">T P MAP</button></a> 
+      <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">T P MAP</button></a> 
          </div>
       {/* Total + Toggleable Cards */}
       <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
@@ -157,10 +156,10 @@ const Home = () => {
           <input
             type="text"
             placeholder="Search property records..."
-            className="w-full pl-16 pr-6 py-5 bg-white border border-[#d7c0aa] rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c69c6d] placeholder-gray-400 text-gray-800 text-lg font-medium"
+            className="w-full pl-16 pr-6 py-5 bg-white border border-gray-600 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c69c6d] placeholder-gray-400 text-gray-800 text-lg font-medium"
           />
           <svg
-            className="w-7 h-7 absolute left-6 top-5 text-[#7B3F00]"
+            className="w-7 h-7 absolute left-6 top-5 text-gray-700"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -183,7 +182,7 @@ const Home = () => {
             to={`/property/${property.id}`}
             className="group relative transform hover:-translate-y-2 transition-all duration-300"
           >
-            <div className="relative bg-white rounded-3xl shadow-md overflow-hidden border border-[#e7d3c1] p-6">
+            <div className="relative bg-white rounded-3xl shadow-md overflow-hidden border border-gray-600 p-6">
               <h2 className="text-xl font-bold mb-2">{property.title}</h2>
               <p className="text-gray-600 mb-1">{property.location}</p>
               <p className="text-gray-700 font-semibold">{property.price}</p>
