@@ -99,7 +99,7 @@ const Home = () => {
         
         </div>
       </div>
-      <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-2  border-gray-400">
+      <div className=" w-full flex my-5 xl:my-2 mx-auto items-center justify-center gap-5 p-8 border-t-2  border-gray-400">
      <a href="https://anyror.gujarat.gov.in/LandRecordRural.aspx">  
      <button  className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">ANYROR</button></a>  
      <a href="https://ircms.gujarat.gov.in/rcases/">
