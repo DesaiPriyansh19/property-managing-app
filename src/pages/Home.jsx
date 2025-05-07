@@ -55,13 +55,13 @@ const Home = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gray-300 font-sans text-gray-900 p-8">
  {/* ✨ Animated Background Blobs */}
-<div className="absolute top-[-80px] left-[-80px] w-72 h-72 bg-[#A0522D] rounded-full opacity-10 animate-blob2 z-0"></div>
-<div className="absolute bottom-[-100px] right-[-100px] w-96 h-96 bg-[#7B3F00] rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '2s' }}></div>
-<div className="absolute top-[30%] left-[60%] w-64 h-64 bg-[#CFA97E] rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '4s' }}></div>
-<div className="absolute top-[10%] right-[10%] w-52 h-52 bg-[#5C4033] rounded-full opacity-20 animate-blob2 z-0" style={{ animationDelay: '1.5s' }}></div>
-<div className="absolute bottom-[20%] left-[15%] w-40 h-40 bg-[#8B5E3C] rounded-full opacity-15 animate-blob2 z-0" style={{ animationDelay: '3s' }}></div>
-<div className="absolute top-[70%] right-[25%] w-60 h-60 bg-[#D2B48C] rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '5s' }}></div>
-<div className="absolute top-[45%] left-[5%] w-56 h-56 bg-[#EEE5DE] rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '6s' }}></div>
+<div className="absolute top-[-80px] left-[-80px] w-72 h-72 bg-gray-700 rounded-full opacity-10 animate-blob2 z-0"></div>
+<div className="absolute bottom-[-100px] right-[-100px] w-96 h-96 bg-gray-700 rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '2s' }}></div>
+<div className="absolute top-[30%] left-[60%] w-64 h-64 bg-gray-700 rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '4s' }}></div>
+<div className="absolute top-[10%] right-[10%] w-52 h-52 bg-gray-700 rounded-full opacity-20 animate-blob2 z-0" style={{ animationDelay: '1.5s' }}></div>
+<div className="absolute bottom-[20%] left-[15%] w-40 h-40 bg-gray-700 rounded-full opacity-15 animate-blob2 z-0" style={{ animationDelay: '3s' }}></div>
+<div className="absolute top-[70%] right-[25%] w-60 h-60 bg-gray-700 rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '5s' }}></div>
+<div className="absolute top-[45%] left-[5%] w-56 h-56 bg-gray-700 rounded-full opacity-10 animate-blob2 z-0" style={{ animationDelay: '6s' }}></div>
 
   
     {/* ✅ Your UI wrapped inside z-10 */}
@@ -74,13 +74,13 @@ const Home = () => {
     <img
       src={companyLogo}
       alt="Company Logo"
-      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover shadow-md bg-white"
+      className="w-20 h-20 sm:w-24 xl:w-[12rem] sm:h-24 xl:h-[12rem] rounded-xl object-cover shadow-md bg-white"
     />
   </div>
 
   {/* Text */}
   <div className="text-center sm:text-left">
-    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-wide  text-gray-600 ">
+    <h1 className="text-3xl lg:mt-7 sm:text-4xl lg:text-5xl font-bold leading-tight tracking-wide  text-gray-600 ">
       RD  Legal Consulting
     </h1>
     
@@ -91,7 +91,7 @@ const Home = () => {
         <div className="flex flex-wrap gap-4 justify-center items-center mt-4">
           <Link
             to="/add-property"
-            className="relative overflow-hidden bg-white border border-[#D0B49F] rounded-2xl shadow-md px-6 py-3 font-semibold text-[#5C4033] hover:bg-[#f3e6dc] transition-all duration-300"
+            className="relative overflow-hidden bg-white border border-gray-500 rounded-2xl shadow-md px-6 py-3 font-semibold text-gray-600 hover:bg-gray-200 transition-all duration-300"
           >
             + Add Property
           </Link>
@@ -101,21 +101,21 @@ const Home = () => {
       </div>
       <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-2  border-gray-400">
      <a href="https://anyror.gujarat.gov.in/LandRecordRural.aspx">  
-     <button  className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">ANYROR</button></a>  
+     <button  className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">ANYROR</button></a>  
      <a href="https://ircms.gujarat.gov.in/rcases/">
-     <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
+     <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">IRCMS</button></a>  
      <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
-      <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a> 
+      <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">JANTRI</button></a> 
       <a href="https://services.ecourts.gov.in/ecourtindia_v6/"> 
-      <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">HC  <span className="">CASE STATUS</span></button></a>  
+      <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">HC  <span className="">CASE STATUS</span></button></a>  
       <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
-      <button className="bg-gray-600 rounded-lg text-white px-4 py-2 shadow-xl">T P MAP</button></a> 
+      <button className="border border-gray-500 text-gray-800 hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">T P MAP</button></a> 
          </div>
       {/* Total + Toggleable Cards */}
       <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
-        <div className=" rounded-3xl shadow-md p-8 border-2 border-[#E7D3C1]">
+        <div className=" rounded-3xl shadow-md p-8 border-2 border-gray-400">
           <h3 className="text-2xl font-bold mb-4 text-center">All Properties</h3>
-          <p className="text-5xl font-extrabold bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-transparent bg-clip-text mb-6 text-center">
+          <p className="text-5xl font-extrabold bg-gray-700 text-transparent bg-clip-text mb-6 text-center">
             00
           </p>
           <div className="flex justify-center mb-4">
@@ -136,14 +136,14 @@ const Home = () => {
             {spotlightCards.map((item, index) => (
               <div
                 key={index}
-                className="bg-[#fdf8f2] rounded-2xl border border-[#E7D3C1] shadow p-6 transition hover:shadow-lg"
+                className="bg-gray-100 rounded-2xl border border-gray-400 shadow p-6 transition hover:shadow-lg"
               >
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-3xl font-bold bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-transparent bg-clip-text mb-4">
+                <p className="text-3xl font-bold bg-gray-500 text-transparent bg-clip-text mb-4">
                   {item.value}
                 </p>
-                <div className="w-full bg-[#f0e3d2] h-2 rounded-full overflow-hidden">
-                  <div className={`${item.width} h-full bg-gradient-to-r from-[#7B3F00] to-[#A0522D] rounded-full`} />
+                <div className="w-full bg-gray-400 h-2 rounded-full overflow-hidden">
+                  <div className={`${item.width} h-full bg-gray-500 rounded-full`} />
                 </div>
               </div>
             ))}
@@ -186,7 +186,7 @@ const Home = () => {
             <div className="relative bg-white rounded-3xl shadow-md overflow-hidden border border-[#e7d3c1] p-6">
               <h2 className="text-xl font-bold mb-2">{property.title}</h2>
               <p className="text-gray-600 mb-1">{property.location}</p>
-              <p className="text-[#7B3F00] font-semibold">{property.price}</p>
+              <p className="text-gray-700 font-semibold">{property.price}</p>
             </div>
           </Link>
         ))}
@@ -197,15 +197,15 @@ const Home = () => {
      <a href="">  <button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a>  
          </div> */}
          <div className="flex items-center justify-center gap-6 mt-6 border-gray-400 border-t-2 pt-6">
-  <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+ <Link to={"/buyers"}> <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
     <FaUserTie className="text-4xl text-gray-600" />
     <h2 className="text-lg font-semibold text-gray-800">Buyers</h2>
-  </div>
+  </div></Link>
 
-  <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+  <Link to={"/brokers"}><div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
     <FaHandshake className="text-4xl text-gray-600" />
     <h2 className="text-lg font-semibold text-gray-800">Brokers</h2>
-  </div>
+  </div></Link>
 </div>
     </div>
   </div>

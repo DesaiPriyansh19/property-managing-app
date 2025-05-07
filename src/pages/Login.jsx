@@ -42,10 +42,10 @@ const Login = () => {
         </div>
 
         {/* Animated Bubbles */}
-        <div className="absolute top-10 left-10 w-14 h-14 bg-[#7B3F00] opacity-10 rounded-full animate-ping"></div>
-        <div className="absolute bottom-10 right-10 w-20 h-20 bg-[#7B3F00] opacity-10 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/3 right-20 w-16 h-16 bg-[#7B3F00] opacity-10 rounded-full animate-bounce blur-sm"></div>
-        <div className="absolute bottom-[20%] left-1/2 w-12 h-12 bg-[#7B3F00] opacity-10 rounded-full animate-ping blur-sm"></div>
+        <div className="absolute top-10 left-10 w-14 h-14 bg-gray-600 opacity-10 rounded-full animate-ping"></div>
+        <div className="absolute bottom-10 right-10 w-20 h-20 bg-gray-600 opacity-10 rounded-full animate-pulse"></div>
+        <div className="absolute top-1/3 right-20 w-16 h-16 bg-gray-600 opacity-10 rounded-full animate-bounce blur-sm"></div>
+        <div className="absolute bottom-[20%] left-1/2 w-12 h-12 bg-gray-600 opacity-10 rounded-full animate-ping blur-sm"></div>
       </div>
 
       {/* Right Panel */}
@@ -60,7 +60,7 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Admin Name"
-            className="border border-gray-300 rounded-full px-5 py-3 w-full focus:outline-none focus:ring-2 focus:ring-[#A0522D] text-lg md:text-xl"
+            className="border border-gray-300 rounded-full px-5 py-3 w-full focus:outline-none focus:ring-2 focus:ring-gray-600 text-lg md:text-xl"
           />
 
           <div className="relative mb-4">
@@ -69,12 +69,12 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="border border-gray-300 rounded-full px-5 py-3 w-full pr-16 focus:outline-none focus:ring-2 focus:ring-[#A0522D] text-lg md:text-xl"
+              className="border border-gray-300 rounded-full px-5 py-3 w-full pr-16 focus:outline-none focus:ring-2 focus:ring-gray-600 text-lg md:text-xl"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-5 top-1/2 transform -translate-y-1/2 text-sm text-[#A0522D] focus:outline-none"
+              className="absolute right-5 top-1/2 transform -translate-y-1/2 text-sm text-gray-700 focus:outline-none"
             >
               {showPassword ? "Hide" : "Show"}
             </button>
