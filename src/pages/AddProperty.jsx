@@ -71,6 +71,7 @@ const AddProperty = () => {
             />
           ))}
         </div>
+        <div className="flex items-center justify-center">
         <div className="w-full max-w-xs">
   <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
     Select Land Type
@@ -88,7 +89,21 @@ const AddProperty = () => {
     <option value="others">Others</option>
   </select>
 </div>
-
+<div className="w-full max-w-xs">
+  <label htmlFor="landType" className="block mb-2 text-sm font-medium text-gray-700">
+    Select Land Type
+  </label>
+  <select
+    id="landType"
+    name="landType"
+    className="block w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-700 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
+  >
+    <option value="">-- Select --</option>
+    <option value="title-clear">Agriculutre</option>
+    <option value="dispute">None Agriculture</option>
+  
+  </select>
+</div></div>
         {/* Notes and Map Link */}
         <textarea
           placeholder="Notes"
