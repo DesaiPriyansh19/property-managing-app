@@ -74,7 +74,7 @@ const Home = () => {
 <div className={`fixed top-0 left-0 h-full w-64 xl:w-72 bg-gray-700 shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
   <div className="p-6">
  <div className="flex justify-start items-end gap-3 mt-10 mb-5">   {/* Logo */}
-    <div className="rounded-2xl shadow-lg ">
+    <div className="rounded-2xl shadow-lg border-2 border-gray-100 ">
       <img
         src={companyLogo}
         alt="Company Logo"
