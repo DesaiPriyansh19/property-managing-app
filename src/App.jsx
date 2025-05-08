@@ -10,6 +10,7 @@ import "./App.css";
 import BrokerManagement from "./pages/BrokerManagement.jsx";
 import BuyerManagement from "./pages/BuyersManagment.jsx";
 import AllMaps from "./pages/AllMaps.jsx";
+import NotesPage from "./pages/NotesPage.jsx";
 
 const App = () => {
   return (
@@ -40,6 +41,11 @@ const App = () => {
               <Route path="/buyers" element={
             <ProtectedRoute>
               <BuyerManagement/>
+            </ProtectedRoute>
+          } />
+                 <Route path="/mywallet" element={
+            <ProtectedRoute>
+              <NotesPage/>
             </ProtectedRoute>
           } />
                    <Route path="/allmaps" element={
