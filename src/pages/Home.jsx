@@ -8,6 +8,7 @@ const Home = () => {
   const [showLogo, setShowLogo] = useState(false);
   const [startFadeOut, setStartFadeOut] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const hasSeenLogo = localStorage.getItem("hasSeenLogo");
@@ -68,9 +69,48 @@ const Home = () => {
   
     {/* ✅ Your UI wrapped inside z-10 */}
     <div className="relative z-10">
+  
+{/* Sidebar */}
+<div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
+  <div className="p-6">
+    <h2 className="text-2xl font-bold mb-4">Menu</h2>
+    <ul className="space-y-4">
+      <li>
+        <Link to="/" className="text-gray-700 hover:text-[#03B58B] font-semibold">
+          Home
+        </Link>
+      </li>
+      <li>
+        <Link to="/add-property" className="text-gray-700 hover:text-[#03B58B] font-semibold">
+          Add Property
+        </Link>
+      </li>
+      <li>
+        <Link to="/contact" className="text-gray-700 hover:text-[#03B58B] font-semibold">
+          Contact Us
+        </Link>
+      </li>
+    </ul>
+  </div>
+</div>
+
+{/* Optional overlay */}
+{isSidebarOpen && (
+  <div
+    className="fixed inset-0 bg-black opacity-30 z-30"
+    onClick={() => setIsSidebarOpen(false)}
+  />
+)}
+
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-center mb-16">
   <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-10 xl:mb-0">
+  <button
+  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+  className="text-gray-700 text-3xl focus:outline-none z-30"
+>
+  ☰
+</button>
     {/* Logo */}
     <div className="rounded-2xl shadow-lg">
       <img
@@ -192,12 +232,9 @@ const Home = () => {
           </Link>
         ))}
       </div>
-      {/* <div className=" w-full flex my-5 mx-auto items-center justify-center gap-5 p-8 border-t-4  border-[#E7D3C1]">
-     <a href="https://anyror.gujarat.gov.in/w">  <button  className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">ANYROR</button></a>  
-     <a href="https://ircms.gujarat.gov.in/rcases/"><button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">IRCMS</button></a>  
-     <a href="">  <button className="bg-[#7B3F00] rounded-lg text-white px-4 py-2 shadow-xl">JANTRI</button></a>  
-         </div> */}
+   
          <div className="flex items-center justify-center gap-6 mt-6 border-gray-400 border-t-2 pt-6">
+          
  <Link to={"/buyers"}> <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
     <FaUserTie className="text-4xl text-gray-600" />
     <h2 className="text-lg font-semibold text-gray-800">Buyers</h2>
