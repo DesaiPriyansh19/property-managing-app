@@ -108,7 +108,7 @@ const Home = () => {
         </Link>
       </li>
       <li>
-        <Link to="/logout" className="flex items-center gap-3 text-red-700 hover:text-red-400 font-semibold">
+        <Link to="/logout" className="flex items-center gap-3 text-red-500 hover:text-red-400 font-semibold">
           <FaSignOutAlt /> Logout
         </Link>
       </li>
@@ -178,7 +178,7 @@ const Home = () => {
 
       {/* Total + Toggleable Cards */}
       <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
-        <div className=" rounded-3xl shadow-md p-8 border-2 border-gray-400">
+        <div className=" rounded-3xl shadow-md p-8 border-2 bg-gray-200 border-gray-400">
           <h3 className="text-2xl font-bold mb-4 text-center">All Properties</h3>
           <p className="text-5xl font-extrabold bg-gray-700 text-transparent bg-clip-text mb-6 text-center">
             00
