@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import companyLogo from "../../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
 import { FaUserTie, FaHandshake ,} from "react-icons/fa"; // Import icons
 import { FaWallet } from "react-icons/fa";
-
+import { FaHome, FaPlusSquare, FaBuilding, FaLock, FaSignOutAlt } from "react-icons/fa";
 const Home = () => {
   const [showLogo, setShowLogo] = useState(false);
   const [startFadeOut, setStartFadeOut] = useState(false);
@@ -74,25 +74,36 @@ const Home = () => {
 <div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
   <div className="p-6">
     <h2 className="text-2xl font-bold mb-4">Menu</h2>
-    <ul className="space-y-4">
+    <ul className="space-y-4 text-start text-gray-900">
       <li>
-        <Link to="/" className="text-gray-700 hover:text-[#03B58B] font-semibold">
-          Home
+        <Link to="/" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
+          <FaHome /> Home
         </Link>
       </li>
       <li>
-        <Link to="/add-property" className="text-gray-700 hover:text-[#03B58B] font-semibold">
-          Add Property
+        <Link to="/add-property" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
+          <FaPlusSquare /> Add Property
         </Link>
       </li>
       <li>
-        <Link to="/contact" className="text-gray-700 hover:text-[#03B58B] font-semibold">
-          Contact Us
+        <Link to="/onboard-properties" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
+          <FaBuilding /> On Board Properties
+        </Link>
+      </li>
+      <li>
+        <Link to="/change-password" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
+          <FaLock /> Change Password
+        </Link>
+      </li>
+      <li>
+        <Link to="/logout" className="flex items-center gap-3 text-red-700 hover:text-red-400 font-semibold">
+          <FaSignOutAlt /> Logout
         </Link>
       </li>
     </ul>
   </div>
 </div>
+
 
 {/* Optional overlay */}
 {isSidebarOpen && (
@@ -152,6 +163,7 @@ const Home = () => {
       <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
       <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">T P MAP</button></a> 
          </div>
+
       {/* Total + Toggleable Cards */}
       <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
         <div className=" rounded-3xl shadow-md p-8 border-2 border-gray-400">
