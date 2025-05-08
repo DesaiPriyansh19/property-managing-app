@@ -71,9 +71,16 @@ const Home = () => {
     <div className="relative z-10">
   
 {/* Sidebar */}
-<div className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
+<div className={`fixed top-0 left-0 h-full w-64 xl:w-72 bg-white shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
   <div className="p-6">
-    <h2 className="text-2xl font-bold mb-4">Menu</h2>
+ <div className="flex justify-start items-end gap-3 mt-10 mb-5">   {/* Logo */}
+    <div className="rounded-2xl shadow-lg ">
+      <img
+        src={companyLogo}
+        alt="Company Logo"
+        className="w-20 h-20 sm:w-16 sm:h-16  rounded-xl object-cover shadow-md bg-white"
+      />
+    </div><h2 className="text-xl xl:2xl text-gray-700 font-bold mb-4">Menu</h2></div>  
     <ul className="space-y-4 text-start text-gray-900">
       <li>
         <Link to="/" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
@@ -88,6 +95,11 @@ const Home = () => {
       <li>
         <Link to="/onboard-properties" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
           <FaBuilding /> On Board Properties
+        </Link>
+      </li>
+      <li>
+        <Link to="/logout" className="flex items-center gap-3  hover:text-gray-500 font-semibold">
+        <FaWallet />My  Wallet
         </Link>
       </li>
       <li>
