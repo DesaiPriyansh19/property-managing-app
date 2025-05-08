@@ -84,7 +84,7 @@ const BrokerManagement = () => {
   });
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 bg-gray-300">
       <Link to={"/"}>
         <button className="absolute top-3 left-5 text-gray-500 border-2 px-2 rounded-md">
           Back
@@ -102,7 +102,7 @@ const BrokerManagement = () => {
       </button>
 
       {showForm && (
-        <div className="bg-white p-6 rounded-xl shadow-xl mb-6 animate-fadeIn border border-gray-700/30">
+        <div className="bg-gray-200 p-6 rounded-xl shadow-xl mb-6 animate-fadeIn border border-gray-700/30">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
@@ -165,31 +165,36 @@ const BrokerManagement = () => {
         </div>
       )}
 
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search brokers..."
-        className="w-full mb-4 p-2 border border-gray-700 rounded-lg"
-      />
+<div className="flex flex-col gap-6 p-6 bg-gray-200 rounded-lg shadow-lg">
+  {/* Search Bar */}
+  <input
+    type="text"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    placeholder="Search brokers..."
+    className="w-full p-4 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
 
-      <div className="mb-6">
-        <p className="font-medium mb-2 text-gray-500">Filter by Land Type:</p>
-        <div className="flex flex-wrap gap-4">
-          {landTypeOptions.map((type) => (
-            <label key={type} className="flex items-center gap-2 text-sm text-gray-700">
-              <input
-                type="checkbox"
-                value={type}
-                checked={selectedLandTypes.includes(type)}
-                onChange={handleFilterCheckbox}
-                className="accent-gray-600"
-              />
-              {type}
-            </label>
-          ))}
-        </div>
-      </div>
+  {/* Filter by Land Type */}
+  <div className="mb-6">
+    <p className="font-medium mb-2 text-gray-600 text-lg">Filter by Land Type:</p>
+    <div className="flex flex-wrap gap-6">
+      {landTypeOptions.map((type) => (
+        <label key={type} className="flex items-center gap-2 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            value={type}
+            checked={selectedLandTypes.includes(type)}
+            onChange={handleFilterCheckbox}
+            className="accent-gray-600 h-5 w-5"
+          />
+          {type}
+        </label>
+      ))}
+    </div>
+  </div>
+</div>
+
 
       <div className="space-y-4">
         {filteredBrokers.length === 0 ? (
@@ -198,7 +203,7 @@ const BrokerManagement = () => {
           filteredBrokers.map((broker) => (
             <div
               key={broker.id}
-              className="bg-white border border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
+              className="bg-gray-200 border border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
             >
               <div>
                 <h2 className="text-xl font-semibold text-gray-500">

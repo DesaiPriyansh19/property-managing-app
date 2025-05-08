@@ -98,7 +98,7 @@ const BuyerManagement = () => {
   });
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 bg-slate-300">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">
         Buyers Data
       </h1>
@@ -112,7 +112,7 @@ const BuyerManagement = () => {
 
       {/* Form to add a new broker */}
       {showForm && (
-        <div className="bg-white p-6 rounded-xl shadow-xl mb-6 border border-gray-700/30">
+        <div className="bg-gray-200 p-6 rounded-xl shadow-xl mb-6 border border-gray-700/30">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
@@ -135,7 +135,7 @@ const BuyerManagement = () => {
               name="address"
               value={newBroker.address}
               onChange={handleInputChange}
-              placeholder="Address"
+              placeholder="Group Name"
               className="border border-gray-700 p-2 rounded-lg"
             />
             <input
@@ -180,29 +180,32 @@ const BuyerManagement = () => {
         </div>
       )}
 
-      {/* Search Bar */}
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search buyer..."
-        className="w-full mb-4 p-2 border border-gray-700 rounded-lg"
-      />
+<div className="flex flex-col gap-6 p-6 bg-gray-200 rounded-lg shadow-lg my-3">
+  {/* Search Bar */}
+  <input
+    type="text"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    placeholder="Search buyer..."
+    className="w-full p-4 border border-gray-300 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-gray-700"
+  />
 
-      {/* Group Filters (Checkboxes for Search Filtering) */}
-      <div className="flex flex-wrap gap-4 mb-6">
-        <p className="text-gray-700 font-semibold">filter:</p>
-        {groupOptions.map((option) => (
-          <label key={option} className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={groupFilter.includes(option)}
-              onChange={() => handleGroupFilterChange(option)}
-            />
-            <span>{option}</span>
-          </label>
-        ))}
-      </div>
+  {/* Group Filters (Checkboxes for Search Filtering) */}
+  <div className="flex flex-wrap gap-6">
+    <p className="text-gray-700 font-semibold text-lg">Filter:</p>
+    {groupOptions.map((option) => (
+      <label key={option} className="flex items-center gap-2 text-gray-600">
+        <input
+          type="checkbox"
+          checked={groupFilter.includes(option)}
+          onChange={() => handleGroupFilterChange(option)}
+          className="h-5 w-5 border-gray-400 rounded-lg"
+        />
+        <span className="text-sm">{option}</span>
+      </label>
+    ))}
+  </div>
+</div>
 
       {/* Display the filtered brokers */}
       <div className="space-y-4">
@@ -212,7 +215,7 @@ const BuyerManagement = () => {
           filteredBrokers.map((broker) => (
             <div
               key={broker.id}
-              className="bg-white border border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
+              className="bg-gray-200 border border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
             >
               <div>
                 <h2 className="text-xl font-semibold text-[#7B3F00]">
