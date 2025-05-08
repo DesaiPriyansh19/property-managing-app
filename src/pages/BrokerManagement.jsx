@@ -8,14 +8,40 @@ const BrokerManagement = () => {
     contact: "",
     address: "",
     notes: "",
-    
+    landType: [],
   });
   const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedLandTypes, setSelectedLandTypes] = useState([]);
+
+  const landTypeOptions = [
+    "Title Clear Lands",
+    "Dispute Lands",
+    "Govt.Dispute Lands",
+    "FP / NA",
+    "Others",
+  ];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewBroker({ ...newBroker, [name]: value });
+  };
+
+  const handleLandTypeChange = (e) => {
+    const { value, checked } = e.target;
+    setNewBroker((prev) => ({
+      ...prev,
+      landType: checked
+        ? [...prev.landType, value]
+        : prev.landType.filter((type) => type !== value),
+    }));
+  };
+
+  const handleFilterCheckbox = (e) => {
+    const { value, checked } = e.target;
+    setSelectedLandTypes((prev) =>
+      checked ? [...prev, value] : prev.filter((type) => type !== value)
+    );
   };
 
   const handleAddBroker = () => {
@@ -29,7 +55,7 @@ const BrokerManagement = () => {
       { id: Date.now(), ...newBroker }
     ]);
 
-    setNewBroker({ name: "", contact: "", address: "", notes: "" });
+    setNewBroker({ name: "", contact: "", address: "", notes: "", landType: [] });
     setShowForm(false);
   };
 
@@ -44,30 +70,39 @@ const BrokerManagement = () => {
     setShowForm(true);
   };
 
-  const filteredBrokers = brokers.filter((broker) =>
-    Object.values(broker).some((val) =>
-      String(val).toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  );
+  const filteredBrokers = brokers.filter((broker) => {
+    const matchesSearch = Object.values(broker).some((val) =>
+      typeof val === "string"
+        ? val.toLowerCase().includes(searchQuery.toLowerCase())
+        : false
+    );
+    const matchesLandType =
+      selectedLandTypes.length === 0 ||
+      broker.landType.some((type) => selectedLandTypes.includes(type));
+
+    return matchesSearch && matchesLandType;
+  });
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <Link to={"/"}>
-      <button className="absolute top-3 left-5 text-[#7B3F00] 
-      border-2 px-2 rounded-md"> Back</button></Link> 
+        <button className="absolute top-3 left-5 text-gray-500 border-2 px-2 rounded-md">
+          Back
+        </button>
+      </Link>
       <h1 className="text-3xl font-bold mb-6 text-gray-800">
-        Brokes Data
+        Brokers Data
       </h1>
 
       <button
         onClick={() => setShowForm(!showForm)}
-        className="mb-4 bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-white px-6 py-2 rounded-xl shadow hover:scale-105 transition-transform"
+        className="mb-4 bg-gray-700 text-white px-6 py-2 rounded-xl shadow hover:scale-105 transition-transform"
       >
         {showForm ? "Cancel" : "+ Add New Broker"}
       </button>
 
       {showForm && (
-        <div className="bg-white p-6 rounded-xl shadow-xl mb-6 animate-fadeIn border border-[#7B3F00]/30">
+        <div className="bg-white p-6 rounded-xl shadow-xl mb-6 animate-fadeIn border border-gray-700/30">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
@@ -75,7 +110,7 @@ const BrokerManagement = () => {
               value={newBroker.name}
               onChange={handleInputChange}
               placeholder="Broker Name"
-              className="border border-[#7B3F00] p-2 rounded-lg"
+              className="border border-gray-700 p-2 rounded-lg"
             />
             <input
               type="text"
@@ -83,15 +118,15 @@ const BrokerManagement = () => {
               value={newBroker.contact}
               onChange={handleInputChange}
               placeholder="Contact Number"
-              className="border border-[#7B3F00] p-2 rounded-lg"
+              className="border border-gray-700 p-2 rounded-lg"
             />
             <input
               type="text"
               name="address"
               value={newBroker.address}
               onChange={handleInputChange}
-              placeholder="Address"
-              className="border border-[#7B3F00] p-2 rounded-lg"
+              placeholder="Work Area"
+              className="border border-gray-700 p-2 rounded-lg"
             />
             <input
               type="text"
@@ -99,12 +134,31 @@ const BrokerManagement = () => {
               value={newBroker.notes}
               onChange={handleInputChange}
               placeholder="Notes"
-              className="border border-[#7B3F00] p-2 rounded-lg"
+              className="border border-gray-700 p-2 rounded-lg"
             />
           </div>
+
+          <div className="mt-4">
+            <p className="font-medium mb-2 text-gray-500">Land Type(s):</p>
+            <div className="flex flex-wrap gap-4">
+              {landTypeOptions.map((type) => (
+                <label key={type} className="flex items-center gap-2 text-sm text-gray-700">
+                  <input
+                    type="checkbox"
+                    value={type}
+                    checked={newBroker.landType.includes(type)}
+                    onChange={handleLandTypeChange}
+                    className="accent-gray-600"
+                  />
+                  {type}
+                </label>
+              ))}
+            </div>
+          </div>
+
           <button
             onClick={handleAddBroker}
-            className="mt-4 bg-gradient-to-r from-[#7B3F00] to-[#A0522D] text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
+            className="mt-6 bg-gray-700 text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
           >
             Save Broker
           </button>
@@ -116,8 +170,26 @@ const BrokerManagement = () => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search brokers..."
-        className="w-full mb-6 p-2 border border-[#7B3F00] rounded-lg"
+        className="w-full mb-4 p-2 border border-gray-700 rounded-lg"
       />
+
+      <div className="mb-6">
+        <p className="font-medium mb-2 text-gray-500">Filter by Land Type:</p>
+        <div className="flex flex-wrap gap-4">
+          {landTypeOptions.map((type) => (
+            <label key={type} className="flex items-center gap-2 text-sm text-gray-700">
+              <input
+                type="checkbox"
+                value={type}
+                checked={selectedLandTypes.includes(type)}
+                onChange={handleFilterCheckbox}
+                className="accent-gray-600"
+              />
+              {type}
+            </label>
+          ))}
+        </div>
+      </div>
 
       <div className="space-y-4">
         {filteredBrokers.length === 0 ? (
@@ -126,15 +198,18 @@ const BrokerManagement = () => {
           filteredBrokers.map((broker) => (
             <div
               key={broker.id}
-              className="bg-white border border-[#7B3F00]/30 rounded-lg shadow-md p-4 flex justify-between items-start"
+              className="bg-white border border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
             >
               <div>
-                <h2 className="text-xl font-semibold text-[#7B3F00]">
+                <h2 className="text-xl font-semibold text-gray-500">
                   {broker.name}
                 </h2>
                 <p>📞 {broker.contact}</p>
                 <p>📍 {broker.address}</p>
                 <p>📝 {broker.notes}</p>
+                <p className="text-sm text-gray-600 mt-2">
+                  🏷 Land Type(s): {broker.landType.join(", ")}
+                </p>
               </div>
               <div className="space-x-2">
                 <button
