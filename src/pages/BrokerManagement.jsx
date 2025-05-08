@@ -196,44 +196,43 @@ const BrokerManagement = () => {
 </div>
 
 
-      <div className="space-y-4 grid lg:grid-cols-2 gap-2 mt-5">
-        {filteredBrokers.length === 0 ? (
-          <p className="text-gray-600">No brokers found.</p>
-        ) : (
-          filteredBrokers.map((broker) => (
-           <div
-              key={broker.id}
-              className="bg-gray-200 border text-start border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
-            >
-              <div>
-                <h2 className="text-xl font-semibold text-gray-500">
-                  {broker.name}
-                </h2>
-                <p>📞 {broker.contact}</p>
-                <p>📍 {broker.address}</p>
-                <p>📝 {broker.notes}</p>
-                <p className="text-sm text-gray-600 mt-2">
-                  🏷 Land Type(s): {broker.landType.join(", ")}
-                </p>
-              </div>
-              <div className="space-x-2">
-                <button
-                  onClick={() => handleEdit(broker.id)}
-                  className="text-blue-600 hover:underline"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(broker.id)}
-                  className="text-red-600 hover:underline"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))
-        )}
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-5">
+  {filteredBrokers.length === 0 ? (
+    <p className="text-gray-600 col-span-full">No brokers found.</p>
+  ) : (
+    filteredBrokers.map((broker) => (
+      <div
+        key={broker.id}
+        className="bg-white min-h-[180px] border border-gray-200 rounded-xl shadow-sm p-5 flex justify-between items-start hover:shadow-md transition-shadow duration-300"
+      >
+        <div className="space-y-1 text-start">
+          <h2 className="text-lg font-semibold text-[#555]">{broker.name}</h2>
+          <p className="text-sm text-gray-700">📞 {broker.contact}</p>
+          <p className="text-sm text-gray-700">📍 {broker.address}</p>
+          <p className="text-sm text-gray-700">📝 {broker.notes}</p>
+          <p className="text-sm text-gray-600 mt-2">
+            🏷 <span className="font-medium">Land Type(s):</span> {broker.landType.join(", ")}
+          </p>
+        </div>
+        <div className="flex flex-col items-end gap-2">
+          <button
+            onClick={() => handleEdit(broker.id)}
+            className="text-blue-600 hover:underline text-sm"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(broker.id)}
+            className="text-red-600 hover:underline text-sm"
+          >
+            Delete
+          </button>
+        </div>
       </div>
+    ))
+  )}
+</div>
+
     </div>
   );
 };
