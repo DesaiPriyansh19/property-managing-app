@@ -208,7 +208,7 @@ const BuyerManagement = () => {
 </div>
 
       {/* Display the filtered brokers */}
-      <div className="space-y-4">
+      <div className="space-y-4 grid grid-cols-1 lg:grid-cols-2">
         {filteredBrokers.length === 0 ? (
           <p className="text-gray-600">No buyer found.</p>
         ) : (

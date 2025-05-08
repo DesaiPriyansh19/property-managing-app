@@ -196,14 +196,14 @@ const BrokerManagement = () => {
 </div>
 
 
-      <div className="space-y-4">
+      <div className="space-y-4 grid lg:grid-cols-2 gap-2 mt-5">
         {filteredBrokers.length === 0 ? (
           <p className="text-gray-600">No brokers found.</p>
         ) : (
           filteredBrokers.map((broker) => (
-            <div
+           <div
               key={broker.id}
-              className="bg-gray-200 border border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
+              className="bg-gray-200 border text-start border-gray-700/30 rounded-lg shadow-md p-4 flex justify-between items-start"
             >
               <div>
                 <h2 className="text-xl font-semibold text-gray-500">
