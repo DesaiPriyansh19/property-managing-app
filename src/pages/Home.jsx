@@ -71,17 +71,17 @@ const Home = () => {
     <div className="relative z-10">
   
 {/* Sidebar */}
-<div className={`fixed top-0 left-0 h-full w-64 xl:w-72 bg-white shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
+<div className={`fixed top-0 left-0 h-full w-64 xl:w-72 bg-gray-700 shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
   <div className="p-6">
  <div className="flex justify-start items-end gap-3 mt-10 mb-5">   {/* Logo */}
     <div className="rounded-2xl shadow-lg ">
       <img
         src={companyLogo}
         alt="Company Logo"
-        className="w-20 h-20 sm:w-16 sm:h-16  rounded-xl object-cover shadow-md bg-white"
+        className="w-20 h-20 sm:w-16 sm:h-16  rounded-xl object-cover shadow-md "
       />
-    </div><h2 className="text-xl xl:2xl text-gray-700 font-bold mb-4">Menu</h2></div>  
-    <ul className="space-y-4 text-start text-gray-900">
+    </div><h2 className="text-xl xl:2xl text-white font-bold mb-4">Menu</h2></div>  
+    <ul className="space-y-4 text-start text-white">
       <li>
         <Link to="/" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
           <FaHome /> Home
@@ -130,7 +130,7 @@ const Home = () => {
   <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-10 xl:mb-0">
   <button
   onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-  className="text-gray-700 text-3xl focus:outline-none z-30"
+  className="text-gray-600 text-3xl focus:outline-none z-30"
 >
   ☰
 </button>
@@ -225,7 +225,7 @@ const Home = () => {
             className="w-full pl-16 pr-6 py-5 bg-white border border-gray-600 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c69c6d] placeholder-gray-400 text-gray-800 text-lg font-medium"
           />
           <svg
-            className="w-7 h-7 absolute left-6 top-5 text-gray-700"
+            className="w-7 h-7 absolute left-6 top-5 text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -251,7 +251,7 @@ const Home = () => {
             <div className="relative bg-white rounded-3xl shadow-md overflow-hidden border border-gray-600 p-6">
               <h2 className="text-xl font-bold mb-2">{property.title}</h2>
               <p className="text-gray-600 mb-1">{property.location}</p>
-              <p className="text-gray-700 font-semibold">{property.price}</p>
+              <p className="text-white font-semibold">{property.price}</p>
             </div>
           </Link>
         ))}
