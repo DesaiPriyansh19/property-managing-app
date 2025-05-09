@@ -103,7 +103,7 @@ const NotesApp = () => {
           type="date"
           value={searchDate}
           onChange={(e) => setSearchDate(e.target.value)}
-          className="px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gray-700 w-full sm:w-auto"
+          className="px-4 py-2 rounded-xl border bg-gray-100 border-gray-300 focus:ring-2 focus:ring-gray-700 w-full sm:w-auto"
         />
       </div>
 
