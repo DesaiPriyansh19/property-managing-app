@@ -127,7 +127,7 @@ const Home = () => {
 
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-center mb-16">
-  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-10 xl:mb-0">
+  <div className="flex flex-row items-center gap-4 sm:gap-6 mb-10 xl:mb-0">
   <button
   onClick={() => setIsSidebarOpen(!isSidebarOpen)}
   className="text-gray-600 text-3xl focus:outline-none z-30"
@@ -163,18 +163,24 @@ const Home = () => {
 
 
 
-      <div className=" w-full flex my-5 xl:my-2 mx-auto items-center justify-center gap-5 p-8 border-t-2  border-gray-400">
-     <a href="https://anyror.gujarat.gov.in/LandRecordRural.aspx">  
-     <button  className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">ANYROR</button></a>  
-     <a href="https://ircms.gujarat.gov.in/rcases/">
-     <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">IRCMS</button></a>  
-     <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
-      <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">JANTRI</button></a> 
-      <a href="https://services.ecourts.gov.in/ecourtindia_v6/"> 
-      <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">HC  <span className="">CASE STATUS</span></button></a>  
-      <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
-      <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg  px-4 py-2 shadow-xl">T P MAP</button></a> 
-         </div>
+<div className="w-full flex my-5 xl:my-2 mx-auto items-center justify-start gap-5 p-8 border-t-2 border-gray-400 overflow-x-auto">
+  <a href="https://anyror.gujarat.gov.in/LandRecordRural.aspx">  
+    <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">ANYROR</button>
+  </a>  
+  <a href="https://ircms.gujarat.gov.in/rcases/">
+    <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">IRCMS</button>
+  </a>  
+  <a href="https://jantri.gujarat.gov.in/Reports/ViewRuralAnnualStatementExternal"> 
+    <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">JANTRI</button>
+  </a> 
+  <a href="https://services.ecourts.gov.in/ecourtindia_v6/"> 
+    <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">HC <span>CASE STATUS</span></button>
+  </a>  
+  <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
+    <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">T P MAP</button>
+  </a> 
+</div>
+
 
       {/* Total + Toggleable Cards */}
       <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
@@ -257,23 +263,31 @@ const Home = () => {
         ))}
       </div>
    
-         <div className="flex items-center justify-center gap-6 mt-6 border-gray-400 border-t-2 pt-6">
-          
- <Link to={"/buyers"}> <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
-    <FaUserTie className="text-4xl text-gray-600" />
-    <h2 className="text-lg font-semibold text-gray-800">Buyers</h2>
-  </div></Link>
-
-  <Link to={"/brokers"}><div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
-    <FaHandshake className="text-4xl text-gray-600" />
-    <h2 className="text-lg font-semibold text-gray-800">Brokers</h2>
-  </div></Link>
+      <div className="w-full flex items-center justify-start gap-6 mt-6 border-gray-400 border-t-2 pt-6 overflow-x-auto">
   
-  <Link to={"/brokers"}><div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
-  <FaWallet className="text-4xl text-gray-600" />
-    <h2 className="text-lg font-semibold text-gray-800">My Wallet`</h2>
-  </div></Link>
+  <Link to={"/buyers"}>
+    <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+      <FaUserTie className="text-4xl text-gray-600" />
+      <h2 className="text-lg font-semibold text-gray-800">Buyers</h2>
+    </div>
+  </Link>
+
+  <Link to={"/brokers"}>
+    <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+      <FaHandshake className="text-4xl text-gray-600" />
+      <h2 className="text-lg font-semibold text-gray-800">Brokers</h2>
+    </div>
+  </Link>
+  
+  <Link to={"/brokers"}>
+    <div className="w-56 h-32 bg-white border border-gray-300 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer flex flex-col items-center justify-center gap-2">
+      <FaWallet className="text-4xl text-gray-600" />
+      <h2 className="text-lg font-semibold text-gray-800">My Wallet</h2>
+    </div>
+  </Link>
+
 </div>
+
     </div>
   </div>
   
