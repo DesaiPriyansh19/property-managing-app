@@ -23,17 +23,37 @@ const NotesPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-100">
-      <div className="flex justify-center gap-4 p-4 bg-white shadow">
-        <button className="btn" onClick={() => setActiveTab('notes')}>Notes</button>
-        <button className="btn" onClick={() => setActiveTab('second')}>Second</button>
-        <button className="btn" onClick={() => setActiveTab('third')}>Third</button>
-        <button className="btn" onClick={() => setActiveTab('fourth')}>Fourth</button>
-      </div>
-      <div className="p-4">
-        {renderComponent()}
-      </div>
+    <div className="w-full min-h-screen bg-gray-300">
+    <div className="flex justify-center gap-4 p-4 bg-gray-300">
+      <button
+        className={`px-4 py-2 rounded-lg ${activeTab === 'notes' ? 'bg-gray-400 border-2  border-gray-700' : 'bg-gray-700'} text-white hover:bg-gray-800`}
+        onClick={() => setActiveTab('notes')}
+      >
+        Notes
+      </button>
+      <button
+        className={`px-4 py-2 rounded-lg ${activeTab === 'second' ? 'bg-gray-400 border-gray-700' : 'bg-gray-700'} text-white hover:bg-gray-800`}
+        onClick={() => setActiveTab('second')}
+      >
+        Second
+      </button>
+      <button
+        className={`px-4 py-2 rounded-lg ${activeTab === 'third' ? 'bg-gray-400 border-gray-700' : 'bg-gray-700'} text-white hover:bg-gray-800`}
+        onClick={() => setActiveTab('third')}
+      >
+        Third
+      </button>
+      <button
+        className={`px-4 py-2 rounded-lg ${activeTab === 'fourth' ? 'bg-gray-400 border-gray-700' : 'bg-gray-700'} text-white hover:bg-gray-800`}
+        onClick={() => setActiveTab('fourth')}
+      >
+        Fourth
+      </button>
     </div>
+    <div className="p-4">
+      {renderComponent()}
+    </div>
+  </div>
   );
 };
 

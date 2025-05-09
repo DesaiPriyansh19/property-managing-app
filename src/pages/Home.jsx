@@ -98,7 +98,7 @@ const Home = () => {
         </Link>
       </li>
       <li>
-        <Link to="/logout" className="flex items-center gap-3  hover:text-gray-500 font-semibold">
+        <Link to="/mywallet" className="flex items-center gap-3  hover:text-gray-500 font-semibold">
         <FaWallet />My  Wallet
         </Link>
       </li>
