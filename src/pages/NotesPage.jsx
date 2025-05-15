@@ -50,25 +50,25 @@ const NotesPage = () => {
       <div className='h-[1.5px] w-full bg-gray-500'></div>
     <div className="flex justify-center gap-4 p-4 bg-gray-300">
       <button
-        className={`px-4 py-2 rounded-lg ${activeTab === 'notes' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
+        className={`px-4 py-2 rounded-lg ${activeTab === 'rd' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
         onClick={() => setActiveTab('rd')}
       >
         RD Legal Properties
       </button>
       <button
-        className={`px-4 py-2 rounded-lg ${activeTab === 'second' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
+        className={`px-4 py-2 rounded-lg ${activeTab === 'temple' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
         onClick={() => setActiveTab('temple')}
       >
        Temple Properties
       </button>
       <button
-        className={`px-4 py-2 rounded-lg ${activeTab === 'third' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
+        className={`px-4 py-2 rounded-lg ${activeTab === 'myproperies' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
         onClick={() => setActiveTab('myproperies')}
       >
        My properties
       </button>
       <button
-        className={`px-4 py-2 rounded-lg ${activeTab === 'fourth' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
+        className={`px-4 py-2 rounded-lg ${activeTab === 'notes' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
         onClick={() => setActiveTab('notes')}
       >
       My Notes
