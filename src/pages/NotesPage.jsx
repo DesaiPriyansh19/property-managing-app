@@ -11,9 +11,9 @@ const NotesPage = () => {
     switch (activeTab) {
       case 'rd':
         return <SubComponent4 /> ;
-      case 'second':
+      case 'temple':
         return <SubComponent2 />;
-      case 'third':
+      case 'myproperies':
         return <SubComponent3 />;
       case 'notes':
         return  <NotesApp />;
