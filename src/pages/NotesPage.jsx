@@ -25,7 +25,7 @@ const NotesPage = () => {
   return (
     <div className="w-full min-h-screen bg-gray-300">
             {/* Header */}
-            <div className="flex flex-col lg:flex-row justify-between items-center mb-6 ml-3 pt-5">
+            <div className="flex flex-col lg:flex-row justify-between items-center mb-10 ml-3 pt-5">
         <div className="flex flex-row items-center gap-4 sm:gap-6 mb-10 xl:mb-0">
      
           {/* Logo */}
@@ -47,6 +47,7 @@ const NotesPage = () => {
       
         
       </div>
+      <div className='h-[1.5px] w-full bg-gray-500'></div>
     <div className="flex justify-center gap-4 p-4 bg-gray-300">
       <button
         className={`px-4 py-2 rounded-lg ${activeTab === 'notes' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
