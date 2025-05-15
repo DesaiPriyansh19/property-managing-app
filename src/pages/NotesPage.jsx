@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import NotesApp from '../components/NotesApp';
-import SubComponent2 from '../components/SubComponent2';
+import SubComponent2 from '../components/PropertyManager';
 import SubComponent3 from '../components/SubComponent3';
 import SubComponent4 from '../components/SubComponent4';
 import companyLogo from "../../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
+import PropertyManager from '../components/PropertyManager';
 const NotesPage = () => {
   const [activeTab, setActiveTab] = useState('notes');
 
@@ -12,7 +13,7 @@ const NotesPage = () => {
       case 'rd':
         return <SubComponent4 /> ;
       case 'temple':
-        return <SubComponent2 />;
+        return <PropertyManager/>;
       case 'myproperies':
         return <SubComponent3 />;
       case 'notes':
@@ -47,8 +48,8 @@ const NotesPage = () => {
       
         
       </div>
-      <div className='h-[1.5px] w-full bg-gray-500'></div>
-    <div className="flex justify-center gap-4 p-4 bg-gray-300">
+      <div className='h-[1.5px] w-[96%] mx-auto bg-gray-500'></div>
+    <div className="flex justify-center gap-4 p-4 overflow-x-hidden  bg-gray-300">
       <button
         className={`px-4 py-2 rounded-lg ${activeTab === 'rd' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
         onClick={() => setActiveTab('rd')}
