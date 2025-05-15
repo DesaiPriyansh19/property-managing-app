@@ -9,14 +9,14 @@ const NotesPage = () => {
 
   const renderComponent = () => {
     switch (activeTab) {
-      case 'notes':
-        return <NotesApp />;
+      case 'rd':
+        return <SubComponent4 /> ;
       case 'second':
         return <SubComponent2 />;
       case 'third':
         return <SubComponent3 />;
-      case 'fourth':
-        return <SubComponent4 />;
+      case 'notes':
+        return  <NotesApp />;
       default:
         return null;
     }
@@ -51,27 +51,27 @@ const NotesPage = () => {
     <div className="flex justify-center gap-4 p-4 bg-gray-300">
       <button
         className={`px-4 py-2 rounded-lg ${activeTab === 'notes' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
-        onClick={() => setActiveTab('notes')}
+        onClick={() => setActiveTab('rd')}
       >
-       My Notes
+        RD Legal Properties
       </button>
       <button
         className={`px-4 py-2 rounded-lg ${activeTab === 'second' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
-        onClick={() => setActiveTab('second')}
+        onClick={() => setActiveTab('temple')}
       >
-       My Properties
+       Temple Properties
       </button>
       <button
         className={`px-4 py-2 rounded-lg ${activeTab === 'third' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
-        onClick={() => setActiveTab('third')}
+        onClick={() => setActiveTab('myproperies')}
       >
-       RD Legal Properties
+       My properties
       </button>
       <button
         className={`px-4 py-2 rounded-lg ${activeTab === 'fourth' ? 'bg-gray-400 border-[3px] text-black  border-black' : 'bg-gray-700'} text-white `}
-        onClick={() => setActiveTab('fourth')}
+        onClick={() => setActiveTab('notes')}
       >
-        Fourth
+      My Notes
       </button>
     </div>
     <div className="p-4">
