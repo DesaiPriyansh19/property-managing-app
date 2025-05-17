@@ -12,7 +12,7 @@ const initialFormState = {
   pdfs: [],
 };
 
-const PropertyManager = () => {
+const RdLeagl = () => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(initialFormState);
   const [properties, setProperties] = useState([]);
@@ -89,9 +89,11 @@ const PropertyManager = () => {
   const filteredProperties = properties.filter((prop) =>
     prop.fields[0]?.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  return (
-    <div className="p-6 max-w-6xl mx-auto bg-gray-100 min-h-screen">
+ return (<>
+   
+    <div className="p-6 max-w-6xl mx-auto bg-gray-200 min-h-screen rounded-md">
+     <h1 className="text-lg text-gray-700 font-bold mb-1">R.D. Leagal Properties</h1>
+     <div className="h-[1px] w-[30%] md:w-[20%] bg-gray-600 mb-5 mx-auto"></div>
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
@@ -282,8 +284,8 @@ const PropertyManager = () => {
           )}
         </div>
       ))}
-    </div>
+    </div></>
   );
 };
 
-export default PropertyManager;
+export default RdLeagl;

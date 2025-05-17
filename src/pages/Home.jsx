@@ -70,72 +70,14 @@ const Home = () => {
     {/* ✅ Your UI wrapped inside z-10 */}
     <div className="relative z-10">
   
-{/* Sidebar */}
-<div className={`fixed top-0 left-0 h-full w-64 xl:w-72 bg-gray-700 shadow-xl transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
-  <div className="p-6">
- <div className="flex justify-start items-end gap-3 mt-10 mb-5">   {/* Logo */}
-    <div className="rounded-2xl shadow-lg border-2 border-gray-200 ">
-      <img
-        src={companyLogo}
-        alt="Company Logo"
-        className="w-20 h-20 sm:w-16 sm:h-16  rounded-xl object-cover shadow-md "
-      />
-    </div><h2 className="text-xl xl:2xl text-white font-bold mb-4">Menu</h2></div>  
-    <ul className="space-y-4 text-start text-white">
-      <li>
-        <Link to="/" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
-          <FaHome /> Home
-        </Link>
-      </li>
-      <li>
-        <Link to="/add-property" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
-          <FaPlusSquare /> Add Property
-        </Link>
-      </li>
-      <li>
-        <Link to="/onboard-properties" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
-          <FaBuilding /> On Board Properties
-        </Link>
-      </li>
-      <li>
-        <Link to="/mywallet" className="flex items-center gap-3  hover:text-gray-500 font-semibold">
-        <FaWallet />My  Wallet
-        </Link>
-      </li>
-      <li>
-        <Link to="/change-password" className="flex items-center gap-3 hover:text-gray-500 font-semibold">
-          <FaLock /> Change Password
-        </Link>
-      </li>
-      <li>
-        <Link to="/logout" className="flex items-center gap-3 text-red-500 hover:text-red-400 font-semibold">
-          <FaSignOutAlt /> Logout
-        </Link>
-      </li>
-    </ul>
-  </div>
-</div>
 
-
-{/* Optional overlay */}
-{isSidebarOpen && (
-  <div
-    className="fixed inset-0 bg-black opacity-30 z-30"
-    onClick={() => setIsSidebarOpen(false)}
-  />
-)}
 
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between items-center mb-16">
   <div className="flex flex-row items-center gap-4 sm:gap-6 mb-10 xl:mb-0">
-  <button
-  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-  className="text-gray-600 text-3xl focus:outline-none z-30"
->
-  ☰
-</button>
+
     {/* Logo */}
-    <div className="rounded-2xl shadow-lg">
+    <div className="rounded-2xl shadow-lg ml-5">
       <img
         src={companyLogo}
         alt="Company Logo"
@@ -205,7 +147,10 @@ const Home = () => {
             }`}
           >
             {spotlightCards.map((item, index) => (
-              <div
+            
+             
+               <Link   key={index} to={'/allproperties'}>
+                 <div
                 key={index}
                 className="bg-gray-100 rounded-2xl border border-gray-400 shadow p-6 transition hover:shadow-lg"
               >
@@ -216,9 +161,10 @@ const Home = () => {
                 <div className="w-full bg-gray-400 h-2 rounded-full overflow-hidden">
                   <div className={`${item.width} h-full bg-gray-500 rounded-full`} />
                 </div>
-              </div>
+              </div></Link>  
             ))}
           </div>
+         
         </div>
       </div>
   
@@ -247,21 +193,27 @@ const Home = () => {
       </div>
   
       {/* Property Cards */}
-      <div className="max-w-4xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {properties.map((property) => (
-          <Link
-            key={property.id}
-            to={`/property/${property.id}`}
-            className="group relative transform hover:-translate-y-2 transition-all duration-300"
-          >
-            <div className="relative bg-white rounded-3xl shadow-md overflow-hidden border border-gray-600 p-6">
-              <h2 className="text-xl font-bold mb-2">{property.title}</h2>
-              <p className="text-gray-600 mb-1">{property.location}</p>
-              <p className="text-white font-semibold">{property.price}</p>
-            </div>
-          </Link>
-        ))}
+     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+  {properties.map((property) => (
+    <Link
+      key={property.id}
+      to={`/property/${property.id}`}
+      className="group block bg-white rounded-2xl shadow-md overflow-hidden border border-gray-400 transform hover:-translate-y-2 transition-all duration-300"
+    >
+      <img
+        src={property.image}
+        alt={property.title}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">{property.title}</h2>
+        <p className="text-gray-600 mb-1">{property.location}</p>
+        <p className="text-black font-semibold">{property.price}</p>
       </div>
+    </Link>
+  ))}
+</div>
+
    
       <div className="w-full flex items-center justify-start lg:justify-center gap-6 mt-6 border-gray-400 border-t-2 pt-6 overflow-x-auto">
   
@@ -289,6 +241,7 @@ const Home = () => {
 </div>
 
     </div>
+    
   </div>
   
   );
