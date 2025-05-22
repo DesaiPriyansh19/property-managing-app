@@ -18,6 +18,7 @@ import {
   FaWallet,
   FaLock,
   FaSignOutAlt,
+  FaWhatsapp ,
 } from "react-icons/fa";
 import companyLogo from "../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
 import "./App.css";
@@ -78,6 +79,17 @@ const AppWrapper = () => {
           <FaLock /> Change Password
         </Link>
       </li>
+      <li className="text-white">
+  <a
+    href="https://web.whatsapp.com/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center gap-3 font-semibold"
+  >
+    <FaWhatsapp /> WhatsApp
+  </a>
+</li>
+
       <li onClick={() => setIsSidebarOpen(false)} className="hover:pl-2 hover:scale-105 text-red-500 hover:text-red-400 transition-all">
         <Link to="/logout" className="flex items-center gap-3 font-semibold">
           <FaSignOutAlt /> Logout
