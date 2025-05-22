@@ -94,7 +94,7 @@ const RdLeagl = () => {
     <div className="p-6 max-w-6xl mx-auto bg-gray-200 min-h-screen rounded-md">
    <h1 className="text-lg text-gray-700 font-bold mb-1">R.D. Leagal Properties</h1>
      <div className="h-[1px] w-[30%] md:w-[20%] bg-gray-600 mb-5 mx-auto"></div>
-    <div className="flex justify-center items-center gap-5 pb-6 ">
+    <div className="flex flex-col justify-end items-end gap-5 pb-6 ">
 <button
   onClick={() => window.location.href = 'https://drive.google.com/drive/home'}
   className="px-4 py-2 border-2 border-gray-800 rounded-md text-gray-800 hover:shadow-2xl hover:bg-gray-800 hover:text-white"
