@@ -50,7 +50,7 @@ const MyWallet = () => {
 
       </div>
 
-                 <h3 className='flex justify-start items-center gap-4 ml-[4%] mb-[4%] text-3xl font-bold text-gray-700'>My Wallet<FaWallet/> </h3>
+                 <h3 className='flex justify-center items-center gap-4 ml-[4%] mb-[4%] text-3xl font-bold text-gray-700'>My Wallet<FaWallet/> </h3>
 
 
       <div className='h-[1.5px] w-[96%] mx-auto bg-gray-500'></div>

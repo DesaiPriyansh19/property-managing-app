@@ -97,16 +97,16 @@ const RdLeagl = () => {
     <div className="flex flex-col justify-end items-end gap-5 pb-6 ">
 <button
   onClick={() => window.location.href = 'https://drive.google.com/drive/home'}
-  className="px-4 py-2 border-2 border-gray-800 rounded-md text-gray-800 hover:shadow-2xl hover:bg-gray-800 hover:text-white"
+  className="px-4 py-2 text-sm border-2 border-gray-800 rounded-md hover:text-gray-800 shadow-2xl bg-gray-800 hover:bg-transparent text-white"
 >
-  Google Drive
+ R.D Google Drive
 </button>
 
 <button
   onClick={() => window.location.href = 'https://docs.google.com/spreadsheets/u/0/'}
-  className="px-4 py-2 border-2 border-gray-800 rounded-md text-gray-800 hover:shadow-2xl hover:bg-gray-800 hover:text-white"
+  className="px-5 text-sm py-2 border-2 border-gray-800 rounded-md hover:text-gray-800 hover:shadow-2xl bg-gray-800 hover:bg-transparent text-white"
 >
-  Excel Sheet
+  R.D Excel Sheet
 </button>
  </div>
    
