@@ -100,14 +100,14 @@ const MyProperty = () => {
   onClick={() => window.location.href = 'https://drive.google.com/drive/home'}
   className="px-4 py-2 text-sm border-2 border-gray-800 rounded-md hover:text-gray-800 shadow-2xl bg-gray-800 hover:bg-transparent text-white"
 >
- M.D Google Drive
+ M.D. Google Drive
 </button>
 
 <button
   onClick={() => window.location.href = 'https://docs.google.com/spreadsheets/u/0/'}
   className="px-5 text-sm py-2 border-2 border-gray-800 rounded-md hover:text-gray-800 hover:shadow-2xl bg-gray-800 hover:bg-transparent text-white"
 >
-  M.D Excel Sheet
+  M.D. Excel Sheet   
 </button>
  </div>
  
