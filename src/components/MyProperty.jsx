@@ -94,7 +94,23 @@ const MyProperty = () => {
    
     <div className="p-6 max-w-6xl mx-auto bg-gray-200 min-h-screen rounded-md">
      <h1 className="text-lg text-gray-700 font-bold mb-1">My Properties</h1>
-     <div className="h-[1px] w-[30%] md:w-[20%] bg-gray-600 mb-5 mx-auto"></div>
+         <div className="h-[1px] w-[30%] md:w-[20%] bg-gray-600 mb-5 mx-auto"></div>
+         <div className="flex flex-col justify-end items-end gap-5 pb-6 ">
+<button
+  onClick={() => window.location.href = 'https://drive.google.com/drive/home'}
+  className="px-4 py-2 text-sm border-2 border-gray-800 rounded-md hover:text-gray-800 shadow-2xl bg-gray-800 hover:bg-transparent text-white"
+>
+ M.D Google Drive
+</button>
+
+<button
+  onClick={() => window.location.href = 'https://docs.google.com/spreadsheets/u/0/'}
+  className="px-5 text-sm py-2 border-2 border-gray-800 rounded-md hover:text-gray-800 hover:shadow-2xl bg-gray-800 hover:bg-transparent text-white"
+>
+  M.D Excel Sheet
+</button>
+ </div>
+ 
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
