@@ -121,7 +121,7 @@ const Home = () => {
   <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
     <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">T P MAP</button>
   </a> 
-   <a href="https://townplanmap.com/?lat=23.01458174091309&lng=72.41773087658258"> 
+   <a href="https://tinyurl.com/MEPAN21"> 
     <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">My State point</button>
   </a> 
 </div>
