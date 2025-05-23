@@ -206,7 +206,7 @@ const Home = () => {
       <img
         src={property.image}
         alt={property.title}
-        className="w-full h-48 object-cover"
+        className="w-full h-10 object-cover"
       />
       <div className="p-4">
         <h2 className="text-xl font-semibold text-gray-800 mb-2">{property.title}</h2>
