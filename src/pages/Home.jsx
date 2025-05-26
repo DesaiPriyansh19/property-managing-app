@@ -152,35 +152,40 @@ const Home = () => {
     if (percentage <= 90) return "w-[90%]";
     return "w-full";
   };
-
   const spotlightCards = [
     {
       title: "Title Clear Lands",
+      slug: "title-clear-lands",
       value: loading ? "..." : counts["Title Clear Lands"].toString(),
       width: getProgressWidth(counts["Title Clear Lands"]),
     },
     {
       title: "Dispute Lands",
+      slug: "dispute-lands",
       value: loading ? "..." : counts["Dispute Lands"].toString(),
       width: getProgressWidth(counts["Dispute Lands"]),
     },
     {
       title: "Govt.Dispute Lands",
+      slug: "govt-dispute-lands",
       value: loading ? "..." : counts["Govt. Dispute Lands"].toString(),
       width: getProgressWidth(counts["Govt. Dispute Lands"]),
     },
     {
       title: " FP / NA",
+      slug: "fp-na",
       value: loading ? "..." : counts["FP / NA"].toString(),
       width: getProgressWidth(counts["FP / NA"]),
     },
     {
       title: "Others",
+      slug: "others",
       value: loading ? "..." : counts["Others"].toString(),
       width: getProgressWidth(counts["Others"]),
     },
     {
       title: "All Maps",
+      slug: "all-maps",
       value: loading ? "..." : counts["All Maps"].toString(),
       width: getProgressWidth(counts["All Maps"]),
     },
@@ -362,7 +367,7 @@ const Home = () => {
               }`}
             >
               {spotlightCards.map((item, index) => (
-                <Link key={index} to={"/allproperties"}>
+                <Link key={index} to={`/allproperties/${item.slug}`}>
                   <div
                     key={index}
                     className="bg-gray-100 rounded-2xl border border-gray-400 shadow p-6 transition hover:shadow-lg"
@@ -496,7 +501,7 @@ const Home = () => {
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
           {propertiesLoading ? (
             // Loading skeleton for property cards
-            Array.from({ length: 4 }).map((_, index) => (
+            Array.from({ length: 3 }).map((_, index) => (
               <div
                 key={index}
                 className="group block bg-white rounded-2xl shadow-md overflow-hidden border border-gray-400 animate-pulse"

@@ -230,7 +230,7 @@ const AppWrapper = () => {
             }
           />
           <Route
-            path="/allproperties"
+            path="/allproperties/:slug"
             element={
               <ProtectedRoute>
                 <PropertyPage />

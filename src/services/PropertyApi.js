@@ -7,8 +7,6 @@ const api = axios.create({
   timeout: 30000, // 30 seconds timeout for file uploads
 });
 
-console.log(base)
-
 // Request interceptor for adding auth tokens if needed
 api.interceptors.request.use(
   (config) => {

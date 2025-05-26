@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
 import {
   FaMapMarkerAlt,
   FaFilePdf,
@@ -16,179 +16,192 @@ import {
   FaTrash,
   FaPlus,
   FaSpinner,
-} from "react-icons/fa";
-import PropertyAPI from "../services/PropertyApi";
+} from "react-icons/fa"
+import PropertyAPI from "../services/PropertyApi"
 
 const InfoCard = ({ title, children, isEditing = false }) => (
   <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
     <h4 className="text-lg font-semibold mb-3 text-gray-700 border-b border-gray-300 pb-1 flex items-center justify-between">
       {title}
-      {isEditing && (
-        <span className="text-sm text-blue-600 font-normal">Editing Mode</span>
-      )}
+      {isEditing && <span className="text-sm text-blue-600 font-normal">Editing Mode</span>}
     </h4>
     <div className="text-gray-700 space-y-2">{children}</div>
   </div>
-);
+)
 
 const PropertyDetails = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [property, setProperty] = useState(null);
-  const [currentImgIdx, setCurrentImgIdx] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState({});
-  const [saving, setSaving] = useState(false);
-  const [newImages, setNewImages] = useState([]);
-  const [newPdfs, setNewPdfs] = useState([]);
-  const [deletingFiles, setDeletingFiles] = useState(new Set());
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [property, setProperty] = useState(null)
+  const [currentImgIdx, setCurrentImgIdx] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [isEditing, setIsEditing] = useState(false)
+  const [editData, setEditData] = useState({})
+  const [saving, setSaving] = useState(false)
+  const [newImages, setNewImages] = useState([])
+  const [newPdfs, setNewPdfs] = useState([])
+  const [deletingFiles, setDeletingFiles] = useState(new Set())
 
   useEffect(() => {
-    fetchProperty();
-  }, [id]);
+    fetchProperty()
+  }, [id])
 
   const fetchProperty = async () => {
     try {
-      setLoading(true);
-      setError("");
-      const response = await PropertyAPI.getPropertyById(id);
-      setProperty(response.data);
-      setEditData(response.data);
+      setLoading(true)
+      setError("")
+      const response = await PropertyAPI.getPropertyById(id)
+      setProperty(response.data)
+      setEditData(response.data)
     } catch (err) {
-      setError(err.message);
-      console.error("Error fetching property:", err);
+      setError(err.message)
+      console.error("Error fetching property:", err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleEditToggle = () => {
     if (isEditing) {
       // Cancel editing - reset edit data
-      setEditData(property);
-      setNewImages([]);
-      setNewPdfs([]);
+      setEditData(property)
+      setNewImages([])
+      setNewPdfs([])
     }
-    setIsEditing(!isEditing);
-  };
+    setIsEditing(!isEditing)
+  }
 
   const handleInputChange = (field, value) => {
-    setEditData((prev) => ({ ...prev, [field]: value }));
-  };
+    setEditData((prev) => ({ ...prev, [field]: value }))
+  }
 
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files)
     const imageFiles = files.map((file) => ({
       file,
       url: URL.createObjectURL(file),
       name: file.name,
       isNew: true,
-    }));
-    setNewImages((prev) => [...prev, ...imageFiles]);
-  };
+    }))
+    setNewImages((prev) => [...prev, ...imageFiles])
+  }
 
   const handlePdfUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files)
     const pdfFiles = files.map((file) => ({
       file,
       name: file.name,
       url: URL.createObjectURL(file),
       isNew: true,
-    }));
-    setNewPdfs((prev) => [...prev, ...pdfFiles]);
-  };
+    }))
+    setNewPdfs((prev) => [...prev, ...pdfFiles])
+  }
 
   const removeNewImage = (index) => {
-    const updated = [...newImages];
+    const updated = [...newImages]
     if (updated[index].url.startsWith("blob:")) {
-      URL.revokeObjectURL(updated[index].url);
+      URL.revokeObjectURL(updated[index].url)
     }
-    updated.splice(index, 1);
-    setNewImages(updated);
-  };
+    updated.splice(index, 1)
+    setNewImages(updated)
+  }
 
   const removeNewPdf = (index) => {
-    const updated = [...newPdfs];
+    const updated = [...newPdfs]
     if (updated[index].url.startsWith("blob:")) {
-      URL.revokeObjectURL(updated[index].url);
+      URL.revokeObjectURL(updated[index].url)
     }
-    updated.splice(index, 1);
-    setNewPdfs(updated);
-  };
+    updated.splice(index, 1)
+    setNewPdfs(updated)
+  }
 
   const removeExistingFile = async (fileType, publicId, index) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete this ${fileType}? This action cannot be undone.`
-      )
-    ) {
+    if (window.confirm(`Are you sure you want to delete this ${fileType}? This action cannot be undone.`)) {
       try {
-        setDeletingFiles((prev) => new Set([...prev, `${fileType}-${index}`]));
+        setDeletingFiles((prev) => new Set([...prev, `${fileType}-${index}`]))
 
         // Call API to delete file from Cloudinary and database
-        await PropertyAPI.deletePropertyFile(property._id, fileType, publicId);
+        await PropertyAPI.deletePropertyFile(property._id, fileType, publicId)
 
         // Update local state
-        const updatedProperty = { ...property };
+        const updatedProperty = { ...property }
         if (fileType === "image") {
-          updatedProperty.images.splice(index, 1);
+          updatedProperty.images.splice(index, 1)
           // Adjust current image index if necessary
-          if (
-            currentImgIdx >= updatedProperty.images.length &&
-            updatedProperty.images.length > 0
-          ) {
-            setCurrentImgIdx(updatedProperty.images.length - 1);
+          if (currentImgIdx >= updatedProperty.images.length && updatedProperty.images.length > 0) {
+            setCurrentImgIdx(updatedProperty.images.length - 1)
           } else if (updatedProperty.images.length === 0) {
-            setCurrentImgIdx(0);
+            setCurrentImgIdx(0)
           }
         } else {
-          updatedProperty.pdfs.splice(index, 1);
+          updatedProperty.pdfs.splice(index, 1)
         }
 
-        setProperty(updatedProperty);
-        setEditData(updatedProperty);
+        setProperty(updatedProperty)
+        setEditData(updatedProperty)
       } catch (err) {
-        setError(`Failed to delete ${fileType}: ${err.message}`);
+        setError(`Failed to delete ${fileType}: ${err.message}`)
       } finally {
         setDeletingFiles((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(`${fileType}-${index}`);
-          return newSet;
-        });
+          const newSet = new Set(prev)
+          newSet.delete(`${fileType}-${index}`)
+          return newSet
+        })
       }
     }
-  };
+  }
 
   const handleSave = async () => {
     try {
-      setSaving(true);
-      setError("");
+      setSaving(true)
+      setError("")
 
       // Prepare update data
       const updateData = {
         ...editData,
         images: newImages,
         pdfs: newPdfs,
-      };
+      }
 
-      const response = await PropertyAPI.updateProperty(
-        property._id,
-        updateData
-      );
-      setProperty(response.data);
-      setEditData(response.data);
-      setNewImages([]);
-      setNewPdfs([]);
-      setIsEditing(false);
+      const response = await PropertyAPI.updateProperty(property._id, updateData)
+      setProperty(response.data)
+      setEditData(response.data)
+      setNewImages([])
+      setNewPdfs([])
+      setIsEditing(false)
     } catch (err) {
-      setError(err.message);
-      console.error("Error updating property:", err);
+      setError(err.message)
+      console.error("Error updating property:", err)
     } finally {
-      setSaving(false);
+      setSaving(false)
     }
-  };
+  }
+
+  const handleDeleteProperty = async () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this entire property? This action cannot be undone and will remove all associated files.",
+      )
+    ) {
+      try {
+        setSaving(true)
+        setError("")
+
+        await PropertyAPI.deleteProperty(property._id)
+
+        // Navigate back to properties list after successful deletion
+        navigate("/allproperties/all-properties", {
+          state: { message: "Property deleted successfully!" },
+        })
+      } catch (err) {
+        setError(err.message)
+        console.error("Error deleting property:", err)
+      } finally {
+        setSaving(false)
+      }
+    }
+  }
 
   if (loading) {
     return (
@@ -198,7 +211,7 @@ const PropertyDetails = () => {
           <p className="text-gray-600">Loading property details...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (error && !property) {
@@ -214,7 +227,7 @@ const PropertyDetails = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   if (!property) {
@@ -222,7 +235,7 @@ const PropertyDetails = () => {
       <div className="bg-gray-100 min-h-screen py-12 px-4 flex items-center justify-center">
         <p className="text-gray-600">Property not found</p>
       </div>
-    );
+    )
   }
 
   const shareMessage = `
@@ -244,26 +257,26 @@ const PropertyDetails = () => {
 🛣️ MTR Road: ${property.mtrRoad || "N/A"}
 📌 Nearby: ${property.nearByLandmark || "N/A"}
 📝 Notes: ${property.notes || "N/A"}
-  `;
-  const shareLink = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
+  `
+  const shareLink = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`
 
   const prevImage = () => {
-    const totalImages = (property.images?.length || 0) + newImages.length;
-    setCurrentImgIdx((idx) => (idx === 0 ? totalImages - 1 : idx - 1));
-  };
+    const totalImages = (property.images?.length || 0) + newImages.length
+    setCurrentImgIdx((idx) => (idx === 0 ? totalImages - 1 : idx - 1))
+  }
 
   const nextImage = () => {
-    const totalImages = (property.images?.length || 0) + newImages.length;
-    setCurrentImgIdx((idx) => (idx === totalImages - 1 ? 0 : idx + 1));
-  };
+    const totalImages = (property.images?.length || 0) + newImages.length
+    setCurrentImgIdx((idx) => (idx === totalImages - 1 ? 0 : idx + 1))
+  }
 
-  const allImages = [...(property.images || []), ...newImages];
-  const allPdfs = [...(property.pdfs || []), ...newPdfs];
+  const allImages = [...(property.images || []), ...newImages]
+  const allPdfs = [...(property.pdfs || []), ...newPdfs]
 
   return (
     <div className="bg-gray-100 min-h-screen py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl p-8">
-        {/* Header with Edit Button */}
+        {/* Header with Edit and Delete Buttons */}
         <div className="flex justify-between items-start mb-8">
           <h1 className="text-4xl font-extrabold text-gray-700 border-b border-gray-300 pb-4 flex-1">
             {property.personWhoShared || "Property Details"}
@@ -288,23 +301,29 @@ const PropertyDetails = () => {
                 </button>
               </>
             ) : (
-              <button
-                onClick={handleEditToggle}
-                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                <FaEdit />
-                Edit
-              </button>
+              <>
+                <button
+                  onClick={handleEditToggle}
+                  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                >
+                  <FaEdit />
+                  Edit
+                </button>
+                <button
+                  onClick={handleDeleteProperty}
+                  disabled={saving}
+                  className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
+                >
+                  {saving ? <FaSpinner className="animate-spin" /> : <FaTrash />}
+                  {saving ? "Deleting..." : "Delete Property"}
+                </button>
+              </>
             )}
           </div>
         </div>
 
         {/* Error Message */}
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            {error}
-          </div>
-        )}
+        {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
         {/* Info Grid */}
         <div className="grid grid-cols-1 gap-6 mb-8 text-start">
@@ -317,9 +336,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.village || ""}
-                    onChange={(e) =>
-                      handleInputChange("village", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("village", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -332,9 +349,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.taluko || ""}
-                    onChange={(e) =>
-                      handleInputChange("taluko", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("taluko", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -347,9 +362,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.district || ""}
-                    onChange={(e) =>
-                      handleInputChange("district", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("district", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -362,9 +375,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.nearByLandmark || ""}
-                    onChange={(e) =>
-                      handleInputChange("nearByLandmark", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("nearByLandmark", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -381,17 +392,13 @@ const PropertyDetails = () => {
                 {isEditing ? (
                   <select
                     value={editData.fileType || ""}
-                    onChange={(e) =>
-                      handleInputChange("fileType", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("fileType", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   >
                     <option value="">Select</option>
                     <option value="Title Clear Lands">Title Clear Lands</option>
                     <option value="Dispute Lands">Dispute Lands</option>
-                    <option value="Govt. Dispute Lands">
-                      Govt. Dispute Lands
-                    </option>
+                    <option value="Govt. Dispute Lands">Govt. Dispute Lands</option>
                     <option value="FP / NA">FP / NA</option>
                     <option value="Others">Others</option>
                   </select>
@@ -404,9 +411,7 @@ const PropertyDetails = () => {
                 {isEditing ? (
                   <select
                     value={editData.landType || ""}
-                    onChange={(e) =>
-                      handleInputChange("landType", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("landType", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   >
                     <option value="">Select</option>
@@ -422,9 +427,7 @@ const PropertyDetails = () => {
                 {isEditing ? (
                   <select
                     value={editData.tenure || ""}
-                    onChange={(e) =>
-                      handleInputChange("tenure", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("tenure", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   >
                     <option value="">Select</option>
@@ -442,9 +445,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.mtrRoad || ""}
-                    onChange={(e) =>
-                      handleInputChange("mtrRoad", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("mtrRoad", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -462,9 +463,7 @@ const PropertyDetails = () => {
                 <input
                   type="text"
                   value={editData.contactNumber || ""}
-                  onChange={(e) =>
-                    handleInputChange("contactNumber", e.target.value)
-                  }
+                  onChange={(e) => handleInputChange("contactNumber", e.target.value)}
                   className="border rounded px-2 py-1 ml-2 w-full mt-1"
                 />
               ) : (
@@ -477,9 +476,7 @@ const PropertyDetails = () => {
                 <input
                   type="text"
                   value={editData.personWhoShared || ""}
-                  onChange={(e) =>
-                    handleInputChange("personWhoShared", e.target.value)
-                  }
+                  onChange={(e) => handleInputChange("personWhoShared", e.target.value)}
                   className="border rounded px-2 py-1 ml-2 w-full mt-1"
                 />
               ) : (
@@ -496,9 +493,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.serNoNew || ""}
-                    onChange={(e) =>
-                      handleInputChange("serNoNew", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("serNoNew", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -511,9 +506,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.serNoOld || ""}
-                    onChange={(e) =>
-                      handleInputChange("serNoOld", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("serNoOld", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -573,9 +566,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.srArea || ""}
-                    onChange={(e) =>
-                      handleInputChange("srArea", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("srArea", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -588,9 +579,7 @@ const PropertyDetails = () => {
                   <input
                     type="text"
                     value={editData.fpArea || ""}
-                    onChange={(e) =>
-                      handleInputChange("fpArea", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("fpArea", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : (
@@ -603,9 +592,7 @@ const PropertyDetails = () => {
                   <input
                     type="number"
                     value={editData.srRate || ""}
-                    onChange={(e) =>
-                      handleInputChange("srRate", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("srRate", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : property.srRate ? (
@@ -620,9 +607,7 @@ const PropertyDetails = () => {
                   <input
                     type="number"
                     value={editData.fpRate || ""}
-                    onChange={(e) =>
-                      handleInputChange("fpRate", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("fpRate", e.target.value)}
                     className="border rounded px-2 py-1 ml-2 w-full mt-1"
                   />
                 ) : property.fpRate ? (
@@ -647,9 +632,7 @@ const PropertyDetails = () => {
                 placeholder="Enter notes..."
               />
             ) : (
-              <p className="whitespace-pre-line">
-                {property.notes || "No notes available"}
-              </p>
+              <p className="whitespace-pre-line">{property.notes || "No notes available"}</p>
             )}
           </InfoCard>
         </div>
@@ -693,13 +676,7 @@ const PropertyDetails = () => {
                 <label className="ml-auto cursor-pointer bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
                   <FaPlus className="inline mr-1" />
                   Add Images
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
+                  <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" />
                 </label>
               )}
             </h2>
@@ -734,29 +711,19 @@ const PropertyDetails = () => {
                     onClick={() => {
                       if (currentImgIdx < (property.images?.length || 0)) {
                         // Existing image
-                        const image = property.images[currentImgIdx];
-                        removeExistingFile(
-                          "image",
-                          image.publicId,
-                          currentImgIdx
-                        );
+                        const image = property.images[currentImgIdx]
+                        removeExistingFile("image", image.publicId, currentImgIdx)
                       } else {
                         // New image
-                        const newIndex =
-                          currentImgIdx - (property.images?.length || 0);
-                        removeNewImage(newIndex);
-                        if (currentImgIdx > 0)
-                          setCurrentImgIdx(currentImgIdx - 1);
+                        const newIndex = currentImgIdx - (property.images?.length || 0)
+                        removeNewImage(newIndex)
+                        if (currentImgIdx > 0) setCurrentImgIdx(currentImgIdx - 1)
                       }
                     }}
                     disabled={deletingFiles.has(`image-${currentImgIdx}`)}
                     className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full shadow hover:bg-red-700 disabled:opacity-50"
                   >
-                    {deletingFiles.has(`image-${currentImgIdx}`) ? (
-                      <FaSpinner className="animate-spin" />
-                    ) : (
-                      <FaTrash />
-                    )}
+                    {deletingFiles.has(`image-${currentImgIdx}`) ? <FaSpinner className="animate-spin" /> : <FaTrash />}
                   </button>
                 )}
 
@@ -777,9 +744,7 @@ const PropertyDetails = () => {
             {/* New Images Preview */}
             {isEditing && newImages.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-lg font-medium mb-2">
-                  New Images to be Added:
-                </h4>
+                <h4 className="text-lg font-medium mb-2">New Images to be Added:</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {newImages.map((img, idx) => (
                     <div key={idx} className="relative">
@@ -811,13 +776,7 @@ const PropertyDetails = () => {
                 <label className="ml-auto cursor-pointer bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
                   <FaPlus className="inline mr-1" />
                   Add PDFs
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    multiple
-                    onChange={handlePdfUpload}
-                    className="hidden"
-                  />
+                  <input type="file" accept=".pdf" multiple onChange={handlePdfUpload} className="hidden" />
                 </label>
               )}
             </h2>
@@ -826,10 +785,7 @@ const PropertyDetails = () => {
               <div className="space-y-2">
                 {/* Existing PDFs */}
                 {property.pdfs?.map((pdf, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between bg-gray-50 p-3 rounded border"
-                  >
+                  <div key={i} className="flex items-center justify-between bg-gray-50 p-3 rounded border">
                     <a
                       href={pdf.url}
                       target="_blank"
@@ -840,17 +796,11 @@ const PropertyDetails = () => {
                     </a>
                     {isEditing && (
                       <button
-                        onClick={() =>
-                          removeExistingFile("pdf", pdf.publicId, i)
-                        }
+                        onClick={() => removeExistingFile("pdf", pdf.publicId, i)}
                         disabled={deletingFiles.has(`pdf-${i}`)}
                         className="ml-2 text-red-600 hover:text-red-800 disabled:opacity-50"
                       >
-                        {deletingFiles.has(`pdf-${i}`) ? (
-                          <FaSpinner className="animate-spin" />
-                        ) : (
-                          <FaTrash />
-                        )}
+                        {deletingFiles.has(`pdf-${i}`) ? <FaSpinner className="animate-spin" /> : <FaTrash />}
                       </button>
                     )}
                   </div>
@@ -862,14 +812,9 @@ const PropertyDetails = () => {
                     key={i}
                     className="flex items-center justify-between bg-blue-50 p-3 rounded border border-blue-200"
                   >
-                    <span className="text-blue-800 flex-1">
-                      {pdf.name} (New)
-                    </span>
+                    <span className="text-blue-800 flex-1">{pdf.name} (New)</span>
                     {isEditing && (
-                      <button
-                        onClick={() => removeNewPdf(i)}
-                        className="ml-2 text-red-600 hover:text-red-800"
-                      >
+                      <button onClick={() => removeNewPdf(i)} className="ml-2 text-red-600 hover:text-red-800">
                         <FaTimes />
                       </button>
                     )}
@@ -882,9 +827,17 @@ const PropertyDetails = () => {
           </div>
         )}
 
-        {/* Share Button */}
+        {/* Navigation and Actions */}
         {!isEditing && (
-          <div className="mt-10">
+          <div className="mt-10 flex justify-between items-center">
+            <button
+              onClick={() => navigate("/allproperties")}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition shadow-md"
+            >
+              <FaChevronLeft />
+              Back to Properties
+            </button>
+
             <a
               href={shareLink}
               target="_blank"
@@ -898,7 +851,7 @@ const PropertyDetails = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PropertyDetails;
+export default PropertyDetails
