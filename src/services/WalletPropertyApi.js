@@ -1,39 +1,38 @@
 import axios from "axios"
 
 // Create axios instance with base configuration
-const base = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const base =  "http://localhost:4000"
 const api = axios.create({
   baseURL: `${base}/api`,
   timeout: 30000, // 30 seconds timeout for file uploads
-});
-
+})
 
 // Request interceptor for adding auth tokens if needed
 api.interceptors.request.use(
   (config) => {
     // Add auth token if available
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("authToken")
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`
     }
-    return config;
+    return config
   },
   (error) => {
-    return Promise.reject(error);
-  }
-);
+    return Promise.reject(error)
+  },
+)
 
 // Response interceptor for handling errors
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error("API Error:", error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
+    console.error("API Error:", error.response?.data || error.message)
+    return Promise.reject(error)
+  },
+)
 
 class WalletPropertyAPI {
-  // Create a new wallet property
+  // Create a new wallet property with async file processing
   static async createWalletProperty(propertyData) {
     try {
       const formData = new FormData()
@@ -114,7 +113,7 @@ class WalletPropertyAPI {
     }
   }
 
-  // Update wallet property
+  // Update wallet property with async file processing
   static async updateWalletProperty(id, propertyData) {
     try {
       const formData = new FormData()
@@ -176,6 +175,16 @@ class WalletPropertyAPI {
       return response.data
     } catch (error) {
       throw new Error(error.response?.data?.message || "Failed to delete file")
+    }
+  }
+
+  // NEW: Get upload status for wallet property
+  static async getUploadStatus(id) {
+    try {
+      const response = await api.get(`/wallet-properties/${id}/upload-status`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || "Failed to fetch upload status")
     }
   }
 }

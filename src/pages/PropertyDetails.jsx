@@ -220,7 +220,7 @@ const PropertyDetails = () => {
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
           <button
-            onClick={() => navigate("/allproperties")}
+            onClick={() => navigate("/allproperties/all-properties")}
             className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
           >
             Back to Properties
@@ -831,7 +831,7 @@ const PropertyDetails = () => {
         {!isEditing && (
           <div className="mt-10 flex justify-between items-center">
             <button
-              onClick={() => navigate("/allproperties")}
+              onClick={() => navigate("/allproperties/all-properties")}
               className="inline-flex items-center gap-2 px-6 py-3 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition shadow-md"
             >
               <FaChevronLeft />

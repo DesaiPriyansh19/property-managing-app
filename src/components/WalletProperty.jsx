@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { X, Loader2, Trash2, Edit, AlertCircle } from "lucide-react";
-import WalletPropertyAPI from "../services/WalletPropertyApi";
+import { useState, useEffect } from "react"
+import { X, Loader2, Trash2, Edit, AlertCircle, Upload, CheckCircle } from "lucide-react"
+import WalletPropertyAPI from "../services/WalletPropertyApi"
 
 const initialFormState = {
   fileType: "",
@@ -13,25 +13,29 @@ const initialFormState = {
   mapLink: "",
   images: [],
   pdfs: [],
-};
+}
 
 const WalletProperty = ({ propertyCategory }) => {
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState(initialFormState);
-  const [properties, setProperties] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [expandedIndex, setExpandedIndex] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [editingProperty, setEditingProperty] = useState(null);
+  const [showForm, setShowForm] = useState(false)
+  const [form, setForm] = useState(initialFormState)
+  const [properties, setProperties] = useState([])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [expandedIndex, setExpandedIndex] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [submitLoading, setSubmitLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [editingProperty, setEditingProperty] = useState(null)
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
     totalProperties: 0,
-  });
-  const [deletingFiles, setDeletingFiles] = useState(new Set());
+  })
+  const [deletingFiles, setDeletingFiles] = useState(new Set())
+
+  // Upload status tracking states
+  const [uploadStatus, setUploadStatus] = useState(null)
+  const [createdPropertyId, setCreatedPropertyId] = useState(null)
 
   // Field labels mapping for better display
   const fieldLabels = [
@@ -51,7 +55,7 @@ const WalletProperty = ({ propertyCategory }) => {
     "FP.Rate (₹)",
     "MTR.Road",
     "NearBy(land mark)",
-  ];
+  ]
 
   // Category-specific configurations
   const categoryConfig = {
@@ -70,43 +74,87 @@ const WalletProperty = ({ propertyCategory }) => {
       driveLabel: "M.D. Google Drive",
       sheetLabel: "M.D. Excel Sheet",
     },
-  };
+  }
 
-  const config = categoryConfig[propertyCategory] || categoryConfig.myproperies;
+  const config = categoryConfig[propertyCategory] || categoryConfig.myproperies
 
   // Load properties on component mount and when category changes
   useEffect(() => {
-    fetchProperties();
-  }, [propertyCategory]);
+    console.log(`🔄 Component mounted/category changed: ${propertyCategory}`)
+    fetchProperties()
+  }, [propertyCategory])
 
   // Handle search with debouncing
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (searchTerm !== "") {
-        fetchProperties(1, searchTerm);
+        fetchProperties(1, searchTerm)
       } else {
-        fetchProperties();
+        fetchProperties()
       }
-    }, 500);
+    }, 500)
 
-    return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
+    return () => clearTimeout(timeoutId)
+  }, [searchTerm])
 
   // Clear messages after 5 seconds
   useEffect(() => {
     if (error || success) {
       const timer = setTimeout(() => {
-        setError("");
-        setSuccess("");
-      }, 5000);
-      return () => clearTimeout(timer);
+        setError("")
+        setSuccess("")
+      }, 5000)
+      return () => clearTimeout(timer)
     }
-  }, [error, success]);
+  }, [error, success])
 
-  // Fetch properties from API
-  const fetchProperties = async (page = 1, search = "") => {
-    setLoading(true);
-    setError("");
+  // Upload status polling effect
+  useEffect(() => {
+    if (createdPropertyId && uploadStatus?.uploadStatus === "uploading") {
+      const interval = setInterval(async () => {
+        try {
+          const status = await WalletPropertyAPI.getUploadStatus(createdPropertyId)
+          setUploadStatus(status)
+
+          if (status.uploadStatus === "completed" || status.uploadStatus === "failed") {
+            clearInterval(interval)
+
+            // Force fresh data fetch after upload completes
+            await fetchProperties(pagination.currentPage, "", true) // true = bypass cache
+
+            if (status.uploadStatus === "completed") {
+              setSuccess("Property created successfully! All files have been uploaded.")
+
+              // Update the specific property in real-time
+              try {
+                const updatedProperty = await WalletPropertyAPI.getWalletPropertyById(createdPropertyId)
+                console.log(`🔄 Updated property data:`, updatedProperty.data)
+                setProperties((prev) =>
+                  prev.map((item) => (item._id === createdPropertyId ? updatedProperty.data : item)),
+                )
+              } catch (err) {
+                console.error("Error fetching updated property:", err)
+              }
+            } else {
+              setError("Property created but some files failed to upload.")
+            }
+            setCreatedPropertyId(null)
+          }
+        } catch (err) {
+          console.error("Error fetching upload status:", err)
+          clearInterval(interval)
+        }
+      }, 2000)
+
+      return () => clearInterval(interval)
+    }
+  }, [createdPropertyId, uploadStatus, pagination.currentPage])
+
+  // ENHANCED: Fetch properties with better debugging
+  const fetchProperties = async (page = 1, search = "", bypassCache = false) => {
+    console.log(`🔍 Fetching properties - Page: ${page}, Search: "${search}", Bypass: ${bypassCache}`)
+    setLoading(true)
+    setError("")
 
     try {
       const params = {
@@ -114,131 +162,163 @@ const WalletProperty = ({ propertyCategory }) => {
         limit: 10,
         propertyCategory,
         ...(search && { search }),
-      };
+        ...(bypassCache && { bypassCache: "true" }),
+      }
 
-      const response = await WalletPropertyAPI.getAllWalletProperties(params);
-      setProperties(response.data || []);
+      console.log(`📊 API params:`, params)
+
+      const response = await WalletPropertyAPI.getAllWalletProperties(params)
+
+      console.log(`📋 Received response:`, {
+        dataLength: response.data?.length || 0,
+        pagination: response.pagination,
+      })
+
+      // CRITICAL: Debug each property's file data
+      if (response.data && response.data.length > 0) {
+        response.data.forEach((property, index) => {
+          console.log(`🔍 Property ${index + 1} (${property._id}):`, {
+            personWhoShared: property.personWhoShared,
+            images: property.images?.length || 0,
+            pdfs: property.pdfs?.length || 0,
+            uploadStatus: property.uploadStatus,
+            imageUrls: property.images?.map((img) => img.url) || [],
+            pdfUrls: property.pdfs?.map((pdf) => pdf.url) || [],
+          })
+        })
+      }
+
+      setProperties(response.data || [])
       setPagination(
         response.pagination || {
           currentPage: 1,
           totalPages: 1,
           totalProperties: 0,
-        }
-      );
+        },
+      )
     } catch (err) {
-      setError(err.message);
-      console.error("Error fetching wallet properties:", err);
+      console.error("❌ Error fetching wallet properties:", err)
+      setError(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleInputChange = (index, value) => {
-    const updatedFields = [...form.fields];
-    updatedFields[index] = value;
-    setForm((prev) => ({ ...prev, fields: updatedFields }));
-  };
+    const updatedFields = [...form.fields]
+    updatedFields[index] = value
+    setForm((prev) => ({ ...prev, fields: updatedFields }))
+  }
 
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files)
     const newImages = files.map((file) => ({
+      id: Date.now() + Math.random(),
       file,
       url: URL.createObjectURL(file),
       name: file.name,
-    }));
-    setForm((prev) => ({ ...prev, images: [...prev.images, ...newImages] }));
-  };
+      isNew: true,
+    }))
+    console.log(`📸 Added ${newImages.length} new images to form`)
+    setForm((prev) => ({ ...prev, images: [...prev.images, ...newImages] }))
+  }
 
   const handlePdfUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files)
     const newPdfs = files.map((file) => ({
+      id: Date.now() + Math.random(),
       file,
       name: file.name,
       url: URL.createObjectURL(file),
-    }));
-    setForm((prev) => ({ ...prev, pdfs: [...prev.pdfs, ...newPdfs] }));
-  };
+      isNew: true,
+    }))
+    console.log(`📄 Added ${newPdfs.length} new PDFs to form`)
+    setForm((prev) => ({ ...prev, pdfs: [...prev.pdfs, ...newPdfs] }))
+  }
 
   const removeImage = async (index) => {
-    // Check if this is an existing image (has publicId) or a new one
-    const image = form.images[index];
+    const image = form.images[index]
 
     if (image.isExisting && image.publicId && editingProperty) {
-      // This is an existing image, delete from Cloudinary
-      await removeExistingFile("image", image.publicId, index);
+      await removeExistingFile("image", image.publicId, index)
     } else {
-      // This is a new image, just remove from local state
-      const updated = [...form.images];
+      const updated = [...form.images]
       if (updated[index].url && updated[index].url.startsWith("blob:")) {
-        URL.revokeObjectURL(updated[index].url);
+        URL.revokeObjectURL(updated[index].url)
       }
-      updated.splice(index, 1);
-      setForm((prev) => ({ ...prev, images: updated }));
+      updated.splice(index, 1)
+      setForm((prev) => ({ ...prev, images: updated }))
     }
-  };
+  }
 
   const removePdf = async (index) => {
-    // Check if this is an existing PDF (has publicId) or a new one
-    const pdf = form.pdfs[index];
+    const pdf = form.pdfs[index]
 
     if (pdf.isExisting && pdf.publicId && editingProperty) {
-      // This is an existing PDF, delete from Cloudinary
-      await removeExistingFile("pdf", pdf.publicId, index);
+      await removeExistingFile("pdf", pdf.publicId, index)
     } else {
-      // This is a new PDF, just remove from local state
-      const updated = [...form.pdfs];
+      const updated = [...form.pdfs]
       if (updated[index].url && updated[index].url.startsWith("blob:")) {
-        URL.revokeObjectURL(updated[index].url);
+        URL.revokeObjectURL(updated[index].url)
       }
-      updated.splice(index, 1);
-      setForm((prev) => ({ ...prev, pdfs: updated }));
+      updated.splice(index, 1)
+      setForm((prev) => ({ ...prev, pdfs: updated }))
     }
-  };
+  }
 
+  // Enhanced existing file removal with real-time updates
   const removeExistingFile = async (fileType, publicId, index) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete this ${fileType}? This action cannot be undone.`
-      )
-    ) {
+    if (window.confirm(`Are you sure you want to delete this ${fileType}? This action cannot be undone.`)) {
       try {
-        setDeletingFiles((prev) => new Set([...prev, `${fileType}-${index}`]));
+        setDeletingFiles((prev) => new Set([...prev, `${fileType}-${index}`]))
 
-        // Call API to delete file from Cloudinary and database
-        await WalletPropertyAPI.deleteWalletPropertyFile(
-          editingProperty._id,
-          fileType,
-          publicId
-        );
+        await WalletPropertyAPI.deleteWalletPropertyFile(editingProperty._id, fileType, publicId)
 
-        // Update local state
+        // Update local state immediately
         if (fileType === "image") {
-          const updatedImages = [...form.images];
-          updatedImages.splice(index, 1);
-          setForm((prev) => ({ ...prev, images: updatedImages }));
+          const updatedImages = [...form.images]
+          updatedImages.splice(index, 1)
+          setForm((prev) => ({ ...prev, images: updatedImages }))
         } else {
-          const updatedPdfs = [...form.pdfs];
-          updatedPdfs.splice(index, 1);
-          setForm((prev) => ({ ...prev, pdfs: updatedPdfs }));
+          const updatedPdfs = [...form.pdfs]
+          updatedPdfs.splice(index, 1)
+          setForm((prev) => ({ ...prev, pdfs: updatedPdfs }))
         }
 
-        setSuccess(`${fileType} deleted successfully!`);
+        // Update properties list in real-time
+        setProperties((prev) =>
+          prev.map((item) => {
+            if (item._id === editingProperty._id) {
+              const updatedItem = { ...item }
+              if (fileType === "image") {
+                updatedItem.images = updatedItem.images.filter((_, i) => i !== index)
+              } else {
+                updatedItem.pdfs = updatedItem.pdfs.filter((_, i) => i !== index)
+              }
+              return updatedItem
+            }
+            return item
+          }),
+        )
+
+        setSuccess(`${fileType} deleted successfully!`)
       } catch (err) {
-        setError(`Failed to delete ${fileType}: ${err.message}`);
+        setError(`Failed to delete ${fileType}: ${err.message}`)
       } finally {
         setDeletingFiles((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(`${fileType}-${index}`);
-          return newSet;
-        });
+          const newSet = new Set(prev)
+          newSet.delete(`${fileType}-${index}`)
+          return newSet
+        })
       }
     }
-  };
+  }
 
+  // Enhanced submit handler with async upload support
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
+    e.preventDefault()
+    setError("")
+    setSuccess("")
 
     // Validation
     const isEmpty =
@@ -249,28 +329,21 @@ const WalletProperty = ({ propertyCategory }) => {
       !form.notes &&
       !form.mapLink &&
       form.images.length === 0 &&
-      form.pdfs.length === 0;
+      form.pdfs.length === 0
 
     if (isEmpty) {
-      setError("Form cannot be submitted empty.");
-      return;
+      setError("Form cannot be submitted empty.")
+      return
     }
 
-    const requiredFilled =
-      form.fileType &&
-      form.landType &&
-      form.tenure &&
-      form.fields[0] &&
-      form.fields[1];
+    const requiredFilled = form.fileType && form.landType && form.tenure && form.fields[0] && form.fields[1]
 
     if (!requiredFilled) {
-      setError(
-        "Please fill all required fields: File Type, Land Type, Tenure, Person Who Shared, and Contact Number."
-      );
-      return;
+      setError("Please fill all required fields: File Type, Land Type, Tenure, Person Who Shared, and Contact Number.")
+      return
     }
 
-    setSubmitLoading(true);
+    setSubmitLoading(true)
 
     try {
       // Prepare data for API
@@ -297,36 +370,82 @@ const WalletProperty = ({ propertyCategory }) => {
         nearByLandmark: form.fields[15],
         notes: form.notes,
         mapLink: form.mapLink,
-        images: form.images,
-        pdfs: form.pdfs,
-      };
-
-      if (editingProperty) {
-        await WalletPropertyAPI.updateWalletProperty(
-          editingProperty._id,
-          propertyData
-        );
-        setSuccess("Property updated successfully!");
-        setEditingProperty(null);
-      } else {
-        await WalletPropertyAPI.createWalletProperty(propertyData);
-        setSuccess("Property created successfully!");
+        images: form.images.filter((img) => img.isNew || img.file), // Only new images
+        pdfs: form.pdfs.filter((pdf) => pdf.isNew || pdf.file), // Only new PDFs
       }
 
-      // Reset form and refresh properties
-      setForm(initialFormState);
-      setShowForm(false);
-      await fetchProperties();
-    } catch (err) {
-      setError(err.message);
-      console.error("Error submitting wallet property:", err);
-    } finally {
-      setSubmitLoading(false);
-    }
-  };
+      console.log(`🚀 Submitting property data:`, {
+        ...propertyData,
+        images: propertyData.images.length,
+        pdfs: propertyData.pdfs.length,
+      })
 
+      if (editingProperty) {
+        const response = await WalletPropertyAPI.updateWalletProperty(editingProperty._id, propertyData)
+        const hasFiles = propertyData.images.length > 0 || propertyData.pdfs.length > 0
+
+        // Update the specific item in properties list immediately
+        setProperties((prev) =>
+          prev.map((item) =>
+            item._id === editingProperty._id
+              ? { ...item, ...response.data, personWhoShared: form.fields[0], contactNumber: form.fields[1] }
+              : item,
+          ),
+        )
+
+        setSuccess(
+          hasFiles
+            ? "Property updated successfully! Files are being uploaded in the background."
+            : "Property updated successfully!",
+        )
+        setEditingProperty(null)
+      } else {
+        const response = await WalletPropertyAPI.createWalletProperty(propertyData)
+        const hasFiles = propertyData.images.length > 0 || propertyData.pdfs.length > 0
+
+        if (hasFiles) {
+          // Set up upload tracking
+          setCreatedPropertyId(response.walletProperty._id)
+          setUploadStatus({
+            uploadStatus: "uploading",
+            totalFiles: propertyData.images.length + propertyData.pdfs.length,
+            uploadedFiles: 0,
+            progress: 0,
+          })
+          setSuccess("Property created successfully! Files are being uploaded in the background...")
+        } else {
+          setSuccess("Property created successfully!")
+          await fetchProperties(pagination.currentPage, searchTerm, true) // Bypass cache
+        }
+      }
+
+      // Reset form
+      setForm(initialFormState)
+      setShowForm(false)
+
+      if (!createdPropertyId && !editingProperty) {
+        await fetchProperties(pagination.currentPage, searchTerm, true) // Bypass cache
+      }
+    } catch (err) {
+      setError(err.message)
+      console.error("Error submitting wallet property:", err)
+    } finally {
+      setSubmitLoading(false)
+    }
+  }
+
+  // ENHANCED: Handle edit with better debugging
   const handleEdit = (property) => {
-    setEditingProperty(property);
+    console.log(`✏️ Editing property:`, {
+      id: property._id,
+      personWhoShared: property.personWhoShared,
+      images: property.images?.length || 0,
+      pdfs: property.pdfs?.length || 0,
+      imageData: property.images || [],
+      pdfData: property.pdfs || [],
+    })
+
+    setEditingProperty(property)
     setForm({
       fileType: property.fileType || "",
       landType: property.landType || "",
@@ -351,52 +470,69 @@ const WalletProperty = ({ propertyCategory }) => {
       ],
       notes: property.notes || "",
       mapLink: property.mapLink || "",
+      // CRITICAL FIX: Properly map existing files
       images:
-        property.images?.map((img) => ({
-          url: img.url,
-          name: img.originalName,
-          publicId: img.publicId, // Add publicId for deletion
-          isExisting: true,
-        })) || [],
+        property.images?.map((img, index) => {
+          console.log(`📸 Mapping existing image ${index + 1}:`, img)
+          return {
+            id: `existing-img-${index}`,
+            url: img.url,
+            name: img.originalName || img.name || `Image ${index + 1}`,
+            publicId: img.publicId,
+            isExisting: true,
+          }
+        }) || [],
       pdfs:
-        property.pdfs?.map((pdf) => ({
-          url: pdf.url,
-          name: pdf.originalName,
-          publicId: pdf.publicId, // Add publicId for deletion
-          isExisting: true,
-        })) || [],
-    });
-    setShowForm(true);
-  };
+        property.pdfs?.map((pdf, index) => {
+          console.log(`📄 Mapping existing PDF ${index + 1}:`, pdf)
+          return {
+            id: `existing-pdf-${index}`,
+            url: pdf.url,
+            name: pdf.originalName || pdf.name || `PDF ${index + 1}`,
+            publicId: pdf.publicId,
+            isExisting: true,
+          }
+        }) || [],
+    })
+
+    console.log(`📋 Form populated with:`, {
+      images: property.images?.length || 0,
+      pdfs: property.pdfs?.length || 0,
+    })
+
+    setShowForm(true)
+  }
 
   const handleDelete = async (propertyId) => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete this property? This action cannot be undone."
-      )
-    ) {
+    if (window.confirm("Are you sure you want to delete this property? This action cannot be undone.")) {
       try {
-        await WalletPropertyAPI.deleteWalletProperty(propertyId);
-        setSuccess("Property deleted successfully!");
-        await fetchProperties();
+        await WalletPropertyAPI.deleteWalletProperty(propertyId)
+
+        // Remove from local state immediately
+        setProperties((prev) => prev.filter((item) => item._id !== propertyId))
+
+        setSuccess("Property deleted successfully!")
+        await fetchProperties(pagination.currentPage, searchTerm, true) // Bypass cache
       } catch (err) {
-        setError(err.message);
-        console.error("Error deleting wallet property:", err);
+        setError(err.message)
+        console.error("Error deleting wallet property:", err)
       }
     }
-  };
+  }
 
   const handlePageChange = (newPage) => {
-    fetchProperties(newPage, searchTerm);
-  };
+    fetchProperties(newPage, searchTerm, true) // Bypass cache for fresh data
+  }
 
   const resetForm = () => {
-    setForm(initialFormState);
-    setEditingProperty(null);
-    setShowForm(false);
-    setError("");
-    setSuccess("");
-  };
+    setForm(initialFormState)
+    setEditingProperty(null)
+    setShowForm(false)
+    setError("")
+    setSuccess("")
+    setUploadStatus(null)
+    setCreatedPropertyId(null)
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto bg-gray-200 min-h-screen rounded-md">
@@ -405,18 +541,14 @@ const WalletProperty = ({ propertyCategory }) => {
 
       <div className="flex flex-col justify-end items-end gap-5 pb-6">
         <button
-          onClick={() =>
-            (window.location.href = "https://drive.google.com/drive/home")
-          }
+          onClick={() => (window.location.href = "https://drive.google.com/drive/home")}
           className="px-4 py-2 text-sm border-2 border-gray-800 rounded-md hover:text-gray-800 shadow-2xl bg-gray-800 hover:bg-transparent text-white transition-all"
         >
           {config.driveLabel}
         </button>
 
         <button
-          onClick={() =>
-            (window.location.href = "https://docs.google.com/spreadsheets/u/0/")
-          }
+          onClick={() => (window.location.href = "https://docs.google.com/spreadsheets/u/0/")}
           className="px-5 text-sm py-2 border-2 border-gray-800 rounded-md hover:text-gray-800 hover:shadow-2xl bg-gray-800 hover:bg-transparent text-white transition-all"
         >
           {config.sheetLabel}
@@ -433,10 +565,28 @@ const WalletProperty = ({ propertyCategory }) => {
 
       {success && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 flex items-center gap-2">
-          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-            <div className="w-2 h-2 bg-white rounded-full"></div>
-          </div>
+          <CheckCircle size={20} />
           {success}
+        </div>
+      )}
+
+      {/* Upload Progress Indicator */}
+      {uploadStatus && uploadStatus.uploadStatus === "uploading" && (
+        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Upload className="animate-pulse" size={20} />
+            <span className="font-medium">Uploading files...</span>
+          </div>
+          <div className="w-full bg-blue-200 rounded-full h-2">
+            <div
+              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${uploadStatus.progress || 0}%` }}
+            ></div>
+          </div>
+          <p className="text-sm mt-1">
+            {uploadStatus.uploadedFiles || 0} of {uploadStatus.totalFiles || 0} files uploaded (
+            {uploadStatus.progress || 0}%)
+          </p>
         </div>
       )}
 
@@ -449,14 +599,15 @@ const WalletProperty = ({ propertyCategory }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button
-          className="bg-gray-700 text-white px-4 py-2 rounded-xl hover:bg-gray-600 flex items-center gap-2 transition-all"
+          className="bg-gray-700 text-white px-4 py-2 rounded-xl hover:bg-gray-600 flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => {
             if (showForm) {
-              resetForm();
+              resetForm()
             } else {
-              setShowForm(true);
+              setShowForm(true)
             }
           }}
+          disabled={uploadStatus && uploadStatus.uploadStatus === "uploading"}
         >
           {showForm ? "Close Form" : "Add Property"}
         </button>
@@ -465,22 +616,14 @@ const WalletProperty = ({ propertyCategory }) => {
       {showForm && (
         <div className="p-6 bg-white border shadow-lg mb-10 rounded-xl">
           <h2 className="text-3xl font-bold mb-6 text-gray-700">
-            {editingProperty
-              ? "Edit Property Details"
-              : "Upload Property Details"}
+            {editingProperty ? "Edit Property Details" : "Upload Property Details"}
           </h2>
 
           <div className="flex items-center justify-center gap-2 flex-wrap">
             {[
               {
                 label: "--Select file Type --",
-                options: [
-                  "Title Clear Lands",
-                  "Dispute Lands",
-                  "Govt. Dispute Lands",
-                  "FP / NA",
-                  "Others",
-                ],
+                options: ["Title Clear Lands", "Dispute Lands", "Govt. Dispute Lands", "FP / NA", "Others"],
                 key: "fileType",
               },
               {
@@ -497,10 +640,9 @@ const WalletProperty = ({ propertyCategory }) => {
               <select
                 key={key}
                 value={form[key]}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, [key]: e.target.value }))
-                }
+                onChange={(e) => setForm((prev) => ({ ...prev, [key]: e.target.value }))}
                 className="block w-[250px] rounded-xl border border-gray-300 bg-white p-3 text-gray-700 shadow-sm focus:border-gray-500 focus:outline-none"
+                disabled={submitLoading || (uploadStatus && uploadStatus.uploadStatus === "uploading")}
               >
                 <option value="">{label}</option>
                 {options.map((o) => (
@@ -522,6 +664,7 @@ const WalletProperty = ({ propertyCategory }) => {
                   className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:border-gray-700 focus:outline-none"
                   value={form.fields[i]}
                   onChange={(e) => handleInputChange(i, e.target.value)}
+                  disabled={submitLoading || (uploadStatus && uploadStatus.uploadStatus === "uploading")}
                 />
               ))}
             </div>
@@ -531,9 +674,8 @@ const WalletProperty = ({ propertyCategory }) => {
               rows={3}
               className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:border-gray-700 focus:outline-none"
               value={form.notes}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, notes: e.target.value }))
-              }
+              onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
+              disabled={submitLoading || (uploadStatus && uploadStatus.uploadStatus === "uploading")}
             />
 
             <input
@@ -541,37 +683,32 @@ const WalletProperty = ({ propertyCategory }) => {
               placeholder="Google Map Embed Link"
               className="w-full px-4 py-2 border border-gray-500 rounded-lg shadow-sm focus:border-gray-700 focus:outline-none"
               value={form.mapLink}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, mapLink: e.target.value }))
-              }
+              onChange={(e) => setForm((prev) => ({ ...prev, mapLink: e.target.value }))}
+              disabled={submitLoading || (uploadStatus && uploadStatus.uploadStatus === "uploading")}
             />
 
             <div>
-              <label className="block font-medium mb-2 text-gray-600">
-                Upload Property Images
-              </label>
+              <label className="block font-medium mb-2 text-gray-600">Upload Property Images</label>
               <input
                 type="file"
                 accept="image/*"
                 multiple
                 onChange={handleImageUpload}
                 className="w-full px-3 py-2 border border-gray-500 rounded-lg shadow-sm focus:border-gray-700 focus:outline-none"
+                disabled={submitLoading || (uploadStatus && uploadStatus.uploadStatus === "uploading")}
               />
               <div className="flex flex-wrap gap-4 mt-4">
                 {form.images.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="relative w-32 h-32 rounded-xl overflow-hidden border shadow"
-                  >
-                    <img
-                      src={img.url || "/placeholder.svg"}
-                      alt=""
-                      className="w-full h-full object-cover"
-                    />
+                  <div key={img.id || idx} className="relative w-32 h-32 rounded-xl overflow-hidden border shadow">
+                    <img src={img.url || "/placeholder.svg"} alt="" className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => removeImage(idx)}
-                      disabled={deletingFiles.has(`image-${idx}`)}
+                      disabled={
+                        deletingFiles.has(`image-${idx}`) ||
+                        submitLoading ||
+                        (uploadStatus && uploadStatus.uploadStatus === "uploading")
+                      }
                       className="absolute top-1 right-1 bg-white rounded-full p-1 shadow hover:bg-red-50 disabled:opacity-50"
                     >
                       {deletingFiles.has(`image-${idx}`) ? (
@@ -581,9 +718,10 @@ const WalletProperty = ({ propertyCategory }) => {
                       )}
                     </button>
                     {img.isExisting && (
-                      <div className="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-1 rounded">
-                        Saved
-                      </div>
+                      <div className="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-1 rounded">Saved</div>
+                    )}
+                    {img.isNew && (
+                      <div className="absolute bottom-1 left-1 bg-green-500 text-white text-xs px-1 rounded">New</div>
                     )}
                   </div>
                 ))}
@@ -591,34 +729,36 @@ const WalletProperty = ({ propertyCategory }) => {
             </div>
 
             <div>
-              <label className="block font-medium mb-2 mt-4 text-gray-600">
-                Upload PDFs
-              </label>
+              <label className="block font-medium mb-2 mt-4 text-gray-600">Upload PDFs</label>
               <input
                 type="file"
                 accept=".pdf"
                 multiple
                 onChange={handlePdfUpload}
                 className="w-full px-3 py-2 border border-gray-500 rounded-lg shadow-sm focus:border-gray-700 focus:outline-none"
+                disabled={submitLoading || (uploadStatus && uploadStatus.uploadStatus === "uploading")}
               />
               <div className="flex flex-col gap-2 mt-4">
                 {form.pdfs.map((pdf, idx) => (
                   <div
-                    key={idx}
+                    key={pdf.id || idx}
                     className="flex justify-between items-center px-3 py-2 border rounded-xl bg-gray-100"
                   >
                     <span className="truncate flex items-center gap-2">
                       {pdf.name}
                       {pdf.isExisting && (
-                        <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded">
-                          Saved
-                        </span>
+                        <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded">Saved</span>
                       )}
+                      {pdf.isNew && <span className="bg-green-500 text-white text-xs px-2 py-1 rounded">New</span>}
                     </span>
                     <button
                       type="button"
                       onClick={() => removePdf(idx)}
-                      disabled={deletingFiles.has(`pdf-${idx}`)}
+                      disabled={
+                        deletingFiles.has(`pdf-${idx}`) ||
+                        submitLoading ||
+                        (uploadStatus && uploadStatus.uploadStatus === "uploading")
+                      }
                       className="text-red-500 hover:text-red-700 ml-2 disabled:opacity-50"
                     >
                       {deletingFiles.has(`pdf-${idx}`) ? (
@@ -635,19 +775,18 @@ const WalletProperty = ({ propertyCategory }) => {
             <div className="flex gap-4">
               <button
                 type="submit"
-                disabled={submitLoading}
+                disabled={submitLoading || (uploadStatus && uploadStatus.uploadStatus === "uploading")}
                 className="bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {submitLoading && (
-                  <Loader2 className="animate-spin" size={16} />
-                )}
+                {submitLoading && <Loader2 className="animate-spin" size={16} />}
                 {editingProperty ? "Update Property" : "Submit Property"}
               </button>
 
               <button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-400 transition-all"
+                disabled={uploadStatus && uploadStatus.uploadStatus === "uploading"}
+                className="bg-gray-300 text-gray-700 px-6 py-3 rounded-xl hover:bg-gray-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
@@ -670,27 +809,42 @@ const WalletProperty = ({ propertyCategory }) => {
             >
               <div
                 className="cursor-pointer flex justify-between items-center"
-                onClick={() =>
-                  setExpandedIndex(expandedIndex === idx ? null : idx)
-                }
+                onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
               >
                 <div>
-                  <h3 className="font-bold text-lg text-gray-800">
-                    {property.personWhoShared}
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    {property.contactNumber}
-                  </p>
+                  <h3 className="font-bold text-lg text-gray-800">{property.personWhoShared}</h3>
+                  <p className="text-sm text-gray-600">{property.contactNumber}</p>
                   <p className="text-xs text-gray-500">
-                    {property.fileType} • {property.landType} •{" "}
-                    {property.tenure}
+                    {property.fileType} • {property.landType} • {property.tenure}
                   </p>
+                  {/* Show upload status for properties */}
+                  {property.uploadStatus === "uploading" && (
+                    <p className="text-xs text-blue-600 flex items-center gap-1">
+                      <Upload size={12} className="animate-pulse" />
+                      Files uploading...
+                    </p>
+                  )}
+                  {/* ENHANCED: Show file counts */}
+                  {(property.images?.length > 0 || property.pdfs?.length > 0) && (
+                    <p className="text-xs text-green-600 flex items-center gap-2 mt-1">
+                      {property.images?.length > 0 && (
+                        <span className="flex items-center gap-1">
+                          📸 {property.images.length} image{property.images.length !== 1 ? "s" : ""}
+                        </span>
+                      )}
+                      {property.pdfs?.length > 0 && (
+                        <span className="flex items-center gap-1">
+                          📄 {property.pdfs.length} PDF{property.pdfs.length !== 1 ? "s" : ""}
+                        </span>
+                      )}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit(property);
+                      e.stopPropagation()
+                      handleEdit(property)
                     }}
                     className="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 transition-all"
                     title="Edit Property"
@@ -699,8 +853,8 @@ const WalletProperty = ({ propertyCategory }) => {
                   </button>
                   <button
                     onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(property._id);
+                      e.stopPropagation()
+                      handleDelete(property._id)
                     }}
                     className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-all"
                     title="Delete Property"
@@ -735,39 +889,57 @@ const WalletProperty = ({ propertyCategory }) => {
                     </p>
                   )}
 
+                  {/* ENHANCED: Better image display with debugging */}
                   {property.images && property.images.length > 0 && (
                     <div className="mb-4">
-                      <strong className="text-sm">Images:</strong>
+                      <strong className="text-sm">Images ({property.images.length}):</strong>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-                        {property.images.map((img, i) => (
-                          <img
-                            key={i}
-                            src={img.url || "/placeholder.svg"}
-                            alt="Property"
-                            className="w-full h-32 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
-                            onClick={() => window.open(img.url, "_blank")}
-                          />
-                        ))}
+                        {property.images.map((img, i) => {
+                          console.log(`🖼️ Rendering image ${i + 1}:`, img)
+                          return (
+                            <div key={i} className="relative group">
+                              <img
+                                src={img.url || "/placeholder.svg"}
+                                alt={`Property Image ${i + 1}`}
+                                className="w-full h-32 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                                onClick={() => window.open(img.url, "_blank")}
+                                onError={(e) => {
+                                  console.error(`❌ Failed to load image ${i + 1}:`, img.url)
+                                  e.target.src = "/placeholder.svg"
+                                }}
+                              />
+                              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all rounded flex items-center justify-center">
+                                <span className="text-white opacity-0 group-hover:opacity-100 text-sm font-medium">
+                                  Click to view
+                                </span>
+                              </div>
+                            </div>
+                          )
+                        })}
                       </div>
                     </div>
                   )}
 
+                  {/* ENHANCED: Better PDF display with debugging */}
                   {property.pdfs && property.pdfs.length > 0 && (
                     <div className="mt-2 text-sm text-gray-800">
-                      <strong>PDFs:</strong>
-                      <ul className="list-disc list-inside mt-1">
-                        {property.pdfs.map((pdf, i) => (
-                          <li key={i}>
-                            <a
-                              href={pdf.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-600 underline hover:text-blue-800"
-                            >
-                              {pdf.originalName}
-                            </a>
-                          </li>
-                        ))}
+                      <strong>PDFs ({property.pdfs.length}):</strong>
+                      <ul className="list-disc list-inside mt-1 space-y-1">
+                        {property.pdfs.map((pdf, i) => {
+                          console.log(`📄 Rendering PDF ${i + 1}:`, pdf)
+                          return (
+                            <li key={i} className="flex items-center gap-2">
+                              <a
+                                href={pdf.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 underline hover:text-blue-800 flex items-center gap-1"
+                              >
+                                📄 {pdf.originalName || pdf.name || `PDF ${i + 1}`}
+                              </a>
+                            </li>
+                          )
+                        })}
                       </ul>
                     </div>
                   )}
@@ -817,8 +989,7 @@ const WalletProperty = ({ propertyCategory }) => {
                       )}
                       {property.nearByLandmark && (
                         <p>
-                          <strong>Nearby Landmark:</strong>{" "}
-                          {property.nearByLandmark}
+                          <strong>Nearby Landmark:</strong> {property.nearByLandmark}
                         </p>
                       )}
                     </div>
@@ -858,16 +1029,14 @@ const WalletProperty = ({ propertyCategory }) => {
               <div className="text-6xl mb-4">📋</div>
               <h3 className="text-lg font-medium mb-2">No properties found</h3>
               <p className="text-sm">
-                {searchTerm
-                  ? "Try adjusting your search terms."
-                  : "Start by adding your first property."}
+                {searchTerm ? "Try adjusting your search terms." : "Start by adding your first property."}
               </p>
             </div>
           )}
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default WalletProperty;
+export default WalletProperty

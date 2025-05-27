@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Create axios instance with base configuration
-const base = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const base =  "http://localhost:4000";
 const api = axios.create({
   baseURL: `${base}/api`,
   timeout: 30000, // 30 seconds timeout for file uploads
@@ -200,6 +200,15 @@ class PropertyAPI {
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || "Failed to delete file");
+    }
+  }
+    // Get upload status for a property
+  static async getUploadStatus(id) {
+    try {
+      const response = await api.get(`/properties/${id}/upload-status`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || "Failed to fetch upload status")
     }
   }
 }

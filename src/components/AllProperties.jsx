@@ -63,11 +63,11 @@ export default function AllProperties() {
       slug: "others",
       color: "bg-purple-500",
     },
-    {
-      title: "All Maps",
-      slug: "all-maps",
-      color: "bg-gray-500",
-    },
+    // {
+    //   title: "All Maps",
+    //   slug: "all-maps",
+    //   color: "bg-gray-500",
+    // },
   ];
 
   // Get current filter info
