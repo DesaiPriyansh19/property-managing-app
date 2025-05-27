@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Create axios instance with base configuration
-const base =  "http://localhost:4000";
+const base = import.meta.env.VITE_API_URL || "http://localhost:4000";
 const api = axios.create({
   baseURL: `${base}/api`,
   timeout: 30000, // 30 seconds timeout for file uploads
