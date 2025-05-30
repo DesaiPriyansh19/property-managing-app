@@ -332,6 +332,11 @@ const Home = () => {
               My State point
             </button>
           </a>
+              <a href="https://tpvd.openprp.in/pro/main/modules/role_public/map/index.php">
+            <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">
+            Town Planning
+            </button>
+          </a>
         </div>
 
         {/* Total + Toggleable Cards */}

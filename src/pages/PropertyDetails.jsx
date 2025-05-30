@@ -16,6 +16,8 @@ import {
   FaTrash,
   FaPlus,
   FaSpinner,
+   FaChevronDown, 
+   FaChevronUp,
 } from "react-icons/fa"
 import PropertyAPI from "../services/PropertyApi"
 
@@ -42,7 +44,7 @@ const PropertyDetails = () => {
   const [newImages, setNewImages] = useState([])
   const [newPdfs, setNewPdfs] = useState([])
   const [deletingFiles, setDeletingFiles] = useState(new Set())
-
+const [showDetails, setShowDetails] = useState(false);
   useEffect(() => {
     fetchProperty()
   }, [id])
@@ -273,6 +275,10 @@ const PropertyDetails = () => {
   const allImages = [...(property.images || []), ...newImages]
   const allPdfs = [...(property.pdfs || []), ...newPdfs]
 
+
+const handleToggleDetails = () => {
+  setShowDetails(!showDetails);
+};
   return (
     <div className="bg-gray-100 min-h-screen py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl p-8">
@@ -369,19 +375,7 @@ const PropertyDetails = () => {
                   property.district || "N/A"
                 )}
               </p>
-              <p>
-                <strong>Nearby:</strong>{" "}
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={editData.nearByLandmark || ""}
-                    onChange={(e) => handleInputChange("nearByLandmark", e.target.value)}
-                    className="border rounded px-2 py-1 ml-2 w-full mt-1"
-                  />
-                ) : (
-                  property.nearByLandmark || "N/A"
-                )}
-              </p>
+         
             </div>
           </InfoCard>
 
@@ -454,36 +448,52 @@ const PropertyDetails = () => {
               </p>
             </div>
           </InfoCard>
+          
+{/* Person Contact Details  */}
+<InfoCard title="Person Contact Details" isEditing={isEditing}>
+  {/* Toggle Button */}
+  <div className="flex justify-start mb-2">
+    <button
+      onClick={() => setShowDetails((prev) => !prev)}
+      className="text-gray-600 hover:text-black transition duration-200"
+    >
+      {showDetails ? <FaChevronUp /> : <FaChevronDown />}
+    </button>
+  </div>
 
-          <InfoCard title="Person Contact" isEditing={isEditing}>
-            <p>
-              <FaPhone className="inline mr-2" />
-              <strong>Contact:</strong>{" "}
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editData.contactNumber || ""}
-                  onChange={(e) => handleInputChange("contactNumber", e.target.value)}
-                  className="border rounded px-2 py-1 ml-2 w-full mt-1"
-                />
-              ) : (
-                property.contactNumber
-              )}
-            </p>
-            <p>
-              <strong>Person Who Shared:</strong>{" "}
-              {isEditing ? (
-                <input
-                  type="text"
-                  value={editData.personWhoShared || ""}
-                  onChange={(e) => handleInputChange("personWhoShared", e.target.value)}
-                  className="border rounded px-2 py-1 ml-2 w-full mt-1"
-                />
-              ) : (
-                property.personWhoShared
-              )}
-            </p>
-          </InfoCard>
+  {/* Contact Info - Only show if toggled */}
+  {showDetails && (
+    <>
+      <p>
+        <strong>Name:</strong>{" "}
+        {isEditing ? (
+          <input
+            type="text"
+            value={editData.personWhoShared || ""}
+            onChange={(e) => handleInputChange("personWhoShared", e.target.value)}
+            className="border rounded px-2 py-1 ml-2 w-full mt-1"
+          />
+        ) : (
+          property.personWhoShared
+        )}
+      </p>
+      <p>
+        <strong>Contact:</strong>{" "}
+        <FaPhone className="inline mr-2" />
+        {isEditing ? (
+          <input
+            type="text"
+            value={editData.contactNumber || ""}
+            onChange={(e) => handleInputChange("contactNumber", e.target.value)}
+            className="border rounded px-2 py-1 ml-2 w-full mt-1"
+          />
+        ) : (
+          property.contactNumber
+        )}
+      </p>
+    </>
+  )}
+</InfoCard>
 
           <InfoCard title="Registration Details" isEditing={isEditing}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -640,6 +650,19 @@ const PropertyDetails = () => {
         {/* Map */}
         <div className="my-8 text-start">
           <InfoCard title="Google Map" isEditing={isEditing}>
+                 <p>
+                <strong>Nearby:</strong>{" "}
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.nearByLandmark || ""}
+                    onChange={(e) => handleInputChange("nearByLandmark", e.target.value)}
+                    className="border rounded px-2 py-1 ml-2 w-full mt-1"
+                  />
+                ) : (
+                  property.nearByLandmark || "N/A"
+                )}
+              </p>
             {isEditing ? (
               <input
                 type="url"
