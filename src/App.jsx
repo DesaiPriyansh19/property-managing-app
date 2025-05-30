@@ -1,4 +1,5 @@
 "use client";
+import PageWrapper from "./components/PageWrapper"; // ⬅️ Import PageWrapper
 
 // App.jsx
 import {
@@ -177,7 +178,7 @@ const AppWrapper = () => {
             path="/home"
             element={
               <ProtectedRoute>
-                <Home />
+               <PageWrapper> <Home /></PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -185,7 +186,7 @@ const AppWrapper = () => {
             path="/property/:id"
             element={
               <ProtectedRoute>
-                <PropertyDetails />
+                <PageWrapper>  <PropertyDetails /> </PageWrapper> 
               </ProtectedRoute>
             }
           />
@@ -193,7 +194,7 @@ const AppWrapper = () => {
             path="/add-property"
             element={
               <ProtectedRoute>
-                <AddProperty />
+                <PageWrapper>  <AddProperty /> </PageWrapper> 
               </ProtectedRoute>
             }
           />
@@ -201,7 +202,7 @@ const AppWrapper = () => {
             path="/brokers"
             element={
               <ProtectedRoute>
-                <BrokerManagement />
+                 <PageWrapper> <BrokerManagement /> </PageWrapper> 
               </ProtectedRoute>
             }
           />
@@ -209,7 +210,7 @@ const AppWrapper = () => {
             path="/buyers"
             element={
               <ProtectedRoute>
-                <BuyerManagement />
+                 <PageWrapper> <BuyerManagement /> </PageWrapper> 
               </ProtectedRoute>
             }
           />
@@ -217,7 +218,7 @@ const AppWrapper = () => {
             path="/mywallet"
             element={
               <ProtectedRoute>
-                <MyWallet />
+                <PageWrapper>  <MyWallet /> </PageWrapper> 
               </ProtectedRoute>
             }
           />
@@ -225,7 +226,7 @@ const AppWrapper = () => {
             path="/allmaps"
             element={
               <ProtectedRoute>
-                <AllMaps />
+                 <PageWrapper> <AllMaps /> </PageWrapper> 
               </ProtectedRoute>
             }
           />
@@ -233,7 +234,7 @@ const AppWrapper = () => {
             path="/allproperties/:slug"
             element={
               <ProtectedRoute>
-                <PropertyPage />
+                <PageWrapper>  <PropertyPage /> </PageWrapper> 
               </ProtectedRoute>
             }
           />
@@ -241,7 +242,7 @@ const AppWrapper = () => {
             path="/change-password"
             element={
               <ProtectedRoute>
-                <ChangePassword />
+                 <PageWrapper> <ChangePassword /> </PageWrapper> 
               </ProtectedRoute>
             }
           />

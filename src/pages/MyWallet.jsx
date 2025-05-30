@@ -1,4 +1,5 @@
 "use client";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { useState } from "react";
 import NotesApp from "../components/NotesApp";
@@ -96,7 +97,20 @@ const MyWallet = () => {
         </button>
       </div>
 
-      <div className="p-4">{renderComponent()}</div>
+     <div className="p-4 min-h-[300px]">
+  <AnimatePresence mode="wait">
+    <motion.div
+      key={activeTab}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+    >
+      {renderComponent()}
+    </motion.div>
+  </AnimatePresence>
+</div>
+
     </div>
   );
 };
