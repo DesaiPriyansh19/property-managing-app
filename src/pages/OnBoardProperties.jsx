@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaMapMarkerAlt,
   FaFilePdf,
@@ -14,61 +14,61 @@ import {
   FaSave,
   FaTimes,
   FaToggleOn,
-} from "react-icons/fa"
-import { FiSearch, FiCheck, FiAlertCircle, FiX } from "react-icons/fi"
-import PropertyAPI from "../services/PropertyApi"
-import MapsAPI from "../services/MapsApi"
+} from "react-icons/fa";
+import { FiSearch, FiCheck, FiAlertCircle, FiX } from "react-icons/fi";
+import PropertyAPI from "../services/PropertyApi";
+import MapsAPI from "../services/MapsApi";
 
 const OnBoardProperties = () => {
-  const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState("properties")
-  const [properties, setProperties] = useState([])
-  const [maps, setMaps] = useState([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-  const [previewImage, setPreviewImage] = useState(null)
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("properties");
+  const [properties, setProperties] = useState([]);
+  const [maps, setMaps] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
 
   // Maps editing states
-  const [editingMapId, setEditingMapId] = useState(null)
-  const [editingMapData, setEditingMapData] = useState({})
-  const [savingMap, setSavingMap] = useState(false)
+  const [editingMapId, setEditingMapId] = useState(null);
+  const [editingMapData, setEditingMapData] = useState({});
+  const [savingMap, setSavingMap] = useState(false);
 
   // Pagination states
   const [propertiesPagination, setPropertiesPagination] = useState({
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
-  })
+  });
   const [mapsPagination, setMapsPagination] = useState({
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
-  })
+  });
 
   useEffect(() => {
     if (activeTab === "properties") {
-      fetchProperties()
+      fetchProperties();
     } else {
-      fetchMaps()
+      fetchMaps();
     }
-  }, [activeTab, searchQuery])
+  }, [activeTab, searchQuery]);
 
   // Clear messages after 5 seconds
   useEffect(() => {
     if (error || success) {
       const timer = setTimeout(() => {
-        setError("")
-        setSuccess("")
-      }, 5000)
-      return () => clearTimeout(timer)
+        setError("");
+        setSuccess("");
+      }, 5000);
+      return () => clearTimeout(timer);
     }
-  }, [error, success])
+  }, [error, success]);
 
   const fetchProperties = async (page = 1) => {
-    setLoading(true)
-    setError("")
+    setLoading(true);
+    setError("");
 
     try {
       const params = {
@@ -76,22 +76,24 @@ const OnBoardProperties = () => {
         limit: 12,
         onBoard: true, // Only fetch onBoard properties
         ...(searchQuery && { search: searchQuery }),
-      }
+      };
 
-      const response = await PropertyAPI.getAllProperties(params)
-      setProperties(response.data || [])
-      setPropertiesPagination(response.pagination || { currentPage: 1, totalPages: 1, totalItems: 0 })
+      const response = await PropertyAPI.getAllProperties(params);
+      setProperties(response.data || []);
+      setPropertiesPagination(
+        response.pagination || { currentPage: 1, totalPages: 1, totalItems: 0 }
+      );
     } catch (err) {
-      setError(err.message)
-      console.error("Error fetching properties:", err)
+      setError(err.message);
+      console.error("Error fetching properties:", err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchMaps = async (page = 1) => {
-    setLoading(true)
-    setError("")
+    setLoading(true);
+    setError("");
 
     try {
       const params = {
@@ -99,68 +101,72 @@ const OnBoardProperties = () => {
         limit: 12,
         onBoard: true, // Only fetch onBoard maps
         ...(searchQuery && { search: searchQuery }),
-      }
+      };
 
-      const response = await MapsAPI.getAllMaps(params)
-      setMaps(response.data || [])
-      setMapsPagination(response.pagination || { currentPage: 1, totalPages: 1, totalItems: 0 })
+      const response = await MapsAPI.getAllMaps(params);
+      setMaps(response.data || []);
+      setMapsPagination(
+        response.pagination || { currentPage: 1, totalPages: 1, totalItems: 0 }
+      );
     } catch (err) {
-      setError(err.message)
-      console.error("Error fetching maps:", err)
+      setError(err.message);
+      console.error("Error fetching maps:", err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handlePropertyClick = (propertyId) => {
-    navigate(`/property/${propertyId}`)
-  }
+    navigate(`/property/${propertyId}`);
+  };
 
   const handleEditMap = (map) => {
-    setEditingMapId(map._id)
+    setEditingMapId(map._id);
     setEditingMapData({
       area: map.area || "",
       notes: map.notes || "",
-    })
-  }
+    });
+  };
 
   const handleCancelEdit = () => {
-    setEditingMapId(null)
-    setEditingMapData({})
-  }
+    setEditingMapId(null);
+    setEditingMapData({});
+  };
 
   const handleSaveMap = async () => {
     try {
-      setSavingMap(true)
-      setError("")
+      setSavingMap(true);
+      setError("");
 
-      await MapsAPI.updateMaps(editingMapId, editingMapData)
+      await MapsAPI.updateMaps(editingMapId, editingMapData);
 
       // Update local state
       setMaps((prev) =>
         prev.map((map) =>
-          map._id === editingMapId ? { ...map, area: editingMapData.area, notes: editingMapData.notes } : map,
-        ),
-      )
+          map._id === editingMapId
+            ? { ...map, area: editingMapData.area, notes: editingMapData.notes }
+            : map
+        )
+      );
 
-      setSuccess("Map updated successfully!")
-      setEditingMapId(null)
-      setEditingMapData({})
+      setSuccess("Map updated successfully!");
+      setEditingMapId(null);
+      setEditingMapData({});
     } catch (err) {
-      setError(err.message)
-      console.error("Error updating map:", err)
+      setError(err.message);
+      console.error("Error updating map:", err);
     } finally {
-      setSavingMap(false)
+      setSavingMap(false);
     }
-  }
+  };
 
   const handlePageChange = (newPage, type) => {
     if (type === "properties") {
-      fetchProperties(newPage)
+      fetchProperties(newPage);
     } else {
-      fetchMaps(newPage)
+      fetchMaps(newPage);
     }
-  }
+  };
 
   const renderPropertyCard = (property) => (
     <motion.div
@@ -175,7 +181,9 @@ const OnBoardProperties = () => {
         {/* Header with OnBoard Badge */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-800 mb-1">{property.personWhoShared}</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-1">
+              {property.personWhoShared}
+            </h3>
             <p className="text-gray-600 text-sm">{property.fileType}</p>
           </div>
           <div className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
@@ -191,8 +199,9 @@ const OnBoardProperties = () => {
             <span className="text-sm font-medium text-gray-700">Location</span>
           </div>
           <p className="text-gray-600 text-sm">
-            {[property.village, property.taluko, property.district].filter(Boolean).join(", ") ||
-              "Location not specified"}
+            {[property.village, property.taluko, property.district]
+              .filter(Boolean)
+              .join(", ") || "Location not specified"}
           </p>
         </div>
 
@@ -222,7 +231,9 @@ const OnBoardProperties = () => {
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-3">
               <FaImages className="text-gray-600" size={16} />
-              <span className="text-sm font-medium text-gray-700">Images ({property.images.length})</span>
+              <span className="text-sm font-medium text-gray-700">
+                Images ({property.images.length})
+              </span>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {property.images.slice(0, 3).map((img, imgIndex) => (
@@ -231,8 +242,8 @@ const OnBoardProperties = () => {
                   whileHover={{ scale: 1.05 }}
                   className="relative group"
                   onClick={(e) => {
-                    e.stopPropagation()
-                    setPreviewImage(img.url)
+                    e.stopPropagation();
+                    setPreviewImage(img.url);
                   }}
                 >
                   <img
@@ -259,7 +270,9 @@ const OnBoardProperties = () => {
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-3">
               <FaFilePdf className="text-red-500" size={16} />
-              <span className="text-sm font-medium text-gray-700">Documents ({property.pdfs.length})</span>
+              <span className="text-sm font-medium text-gray-700">
+                Documents ({property.pdfs.length})
+              </span>
             </div>
           </div>
         )}
@@ -276,7 +289,7 @@ const OnBoardProperties = () => {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderMapCard = (map) => (
     <motion.div
@@ -294,23 +307,39 @@ const OnBoardProperties = () => {
               <input
                 type="text"
                 value={editingMapData.area}
-                onChange={(e) => setEditingMapData((prev) => ({ ...prev, area: e.target.value }))}
+                onChange={(e) =>
+                  setEditingMapData((prev) => ({
+                    ...prev,
+                    area: e.target.value,
+                  }))
+                }
                 className="text-xl font-bold text-gray-800 mb-1 w-full border border-gray-300 rounded px-2 py-1"
                 placeholder="Area name"
               />
             ) : (
-              <h3 className="text-xl font-bold text-gray-800 mb-1">Area: {map.area}</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-1">
+                Area: {map.area}
+              </h3>
             )}
             {editingMapId === map._id ? (
               <textarea
                 value={editingMapData.notes}
-                onChange={(e) => setEditingMapData((prev) => ({ ...prev, notes: e.target.value }))}
+                onChange={(e) =>
+                  setEditingMapData((prev) => ({
+                    ...prev,
+                    notes: e.target.value,
+                  }))
+                }
                 className="text-gray-600 text-sm w-full border border-gray-300 rounded px-2 py-1 resize-none"
                 rows={2}
                 placeholder="Notes"
               />
             ) : (
-              map.notes && <p className="text-gray-600 text-sm line-clamp-2">-- {map.notes}</p>
+              map.notes && (
+                <p className="text-gray-600 text-sm line-clamp-2">
+                  -- {map.notes}
+                </p>
+              )
             )}
           </div>
           <div className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium ml-4">
@@ -324,7 +353,9 @@ const OnBoardProperties = () => {
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-3">
               <FaImages className="text-gray-600" size={16} />
-              <span className="text-sm font-medium text-gray-700">Images ({map.images.length})</span>
+              <span className="text-sm font-medium text-gray-700">
+                Images ({map.images.length})
+              </span>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {map.images.slice(0, 3).map((img, imgIndex) => (
@@ -334,7 +365,11 @@ const OnBoardProperties = () => {
                   className="relative group cursor-pointer"
                   onClick={() => setPreviewImage(img.url)}
                 >
-                  <img src={img.url || "/placeholder.svg"} className="w-full h-16 object-cover rounded-lg" alt="Map" />
+                  <img
+                    src={img.url || "/placeholder.svg"}
+                    className="w-full h-16 object-cover rounded-lg"
+                    alt="Map"
+                  />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
                     <FaEye className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
@@ -354,7 +389,9 @@ const OnBoardProperties = () => {
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-3">
               <FaFilePdf className="text-red-500" size={16} />
-              <span className="text-sm font-medium text-gray-700">PDFs ({map.pdfs.length})</span>
+              <span className="text-sm font-medium text-gray-700">
+                PDFs ({map.pdfs.length})
+              </span>
             </div>
             <div className="space-y-2">
               {map.pdfs.slice(0, 2).map((pdf, pdfIndex) => (
@@ -366,12 +403,18 @@ const OnBoardProperties = () => {
                   whileHover={{ scale: 1.02 }}
                   className="block bg-gray-100 border border-gray-300 rounded-lg p-3 hover:bg-gray-200 transition-colors"
                 >
-                  <div className="text-xs text-gray-600 truncate">{pdf.originalName || pdf.name}</div>
-                  <div className="text-xs text-gray-600 font-medium mt-1">View PDF</div>
+                  <div className="text-xs text-gray-600 truncate">
+                    {pdf.originalName || pdf.name}
+                  </div>
+                  <div className="text-xs text-gray-600 font-medium mt-1">
+                    View PDF
+                  </div>
                 </motion.a>
               ))}
               {map.pdfs.length > 2 && (
-                <div className="text-xs text-gray-500 text-center py-2">+{map.pdfs.length - 2} more PDFs</div>
+                <div className="text-xs text-gray-500 text-center py-2">
+                  +{map.pdfs.length - 2} more PDFs
+                </div>
               )}
             </div>
           </div>
@@ -388,7 +431,11 @@ const OnBoardProperties = () => {
                 disabled={savingMap}
                 className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                {savingMap ? <FaSpinner className="animate-spin" size={14} /> : <FaSave size={14} />}
+                {savingMap ? (
+                  <FaSpinner className="animate-spin" size={14} />
+                ) : (
+                  <FaSave size={14} />
+                )}
                 {savingMap ? "Saving..." : "Save"}
               </motion.button>
               <motion.button
@@ -415,10 +462,10 @@ const OnBoardProperties = () => {
         </div>
       </div>
     </motion.div>
-  )
+  );
 
   const renderPagination = (pagination, type) => {
-    if (pagination.totalPages <= 1) return null
+    if (pagination.totalPages <= 1) return null;
 
     return (
       <motion.div
@@ -437,24 +484,27 @@ const OnBoardProperties = () => {
         </motion.button>
 
         <div className="flex items-center gap-2">
-          {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
-            const page = i + 1
-            return (
-              <motion.button
-                key={page}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => handlePageChange(page, type)}
-                className={`w-10 h-10 rounded-lg font-medium transition-all ${
-                  page === pagination.currentPage
-                    ? "bg-gray-700 text-white shadow-lg"
-                    : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-300"
-                }`}
-              >
-                {page}
-              </motion.button>
-            )
-          })}
+          {Array.from(
+            { length: Math.min(5, pagination.totalPages) },
+            (_, i) => {
+              const page = i + 1;
+              return (
+                <motion.button
+                  key={page}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => handlePageChange(page, type)}
+                  className={`w-10 h-10 rounded-lg font-medium transition-all ${
+                    page === pagination.currentPage
+                      ? "bg-gray-700 text-white shadow-lg"
+                      : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-300"
+                  }`}
+                >
+                  {page}
+                </motion.button>
+              );
+            }
+          )}
         </div>
 
         <motion.button
@@ -467,8 +517,8 @@ const OnBoardProperties = () => {
           Next
         </motion.button>
       </motion.div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gray-100 font-sans text-gray-900 p-8">
@@ -485,9 +535,17 @@ const OnBoardProperties = () => {
 
       <div className="relative z-10">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-700 mb-4">OnBoard Properties & Maps</h1>
-          <p className="text-gray-600 text-lg">Manage your onboarded properties and maps</p>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
+        >
+          <h1 className="text-4xl font-bold text-gray-700 mb-4">
+            OnBoard Properties & Maps
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Manage your onboarded properties and maps
+          </p>
         </motion.div>
 
         {/* Notifications */}
@@ -518,12 +576,18 @@ const OnBoardProperties = () => {
         </AnimatePresence>
 
         {/* Tabs */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-center mb-8"
+        >
           <div className="bg-white rounded-2xl p-2 shadow-lg border border-gray-300">
             <button
               onClick={() => setActiveTab("properties")}
               className={`px-8 py-3 rounded-xl font-medium transition-all duration-200 ${
-                activeTab === "properties" ? "bg-gray-700 text-white shadow-md" : "text-gray-600 hover:bg-gray-100"
+                activeTab === "properties"
+                  ? "bg-gray-700 text-white shadow-md"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               Properties
@@ -531,7 +595,9 @@ const OnBoardProperties = () => {
             <button
               onClick={() => setActiveTab("maps")}
               className={`px-8 py-3 rounded-xl font-medium transition-all duration-200 ${
-                activeTab === "maps" ? "bg-gray-700 text-white shadow-md" : "text-gray-600 hover:bg-gray-100"
+                activeTab === "maps"
+                  ? "bg-gray-700 text-white shadow-md"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               Maps
@@ -540,9 +606,16 @@ const OnBoardProperties = () => {
         </motion.div>
 
         {/* Search */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8 flex justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8 flex justify-center"
+        >
           <div className="relative max-w-md w-full">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
+            <FiSearch
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              size={20}
+            />
             <input
               type="text"
               placeholder={`Search ${activeTab}...`}
@@ -565,7 +638,11 @@ const OnBoardProperties = () => {
             >
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                transition={{
+                  duration: 2,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                }}
                 className="w-12 h-12 border-4 border-gray-300 border-t-gray-600 rounded-full mb-4"
               />
               <p className="text-gray-600 text-lg">Loading {activeTab}...</p>
@@ -587,9 +664,13 @@ const OnBoardProperties = () => {
                       className="text-center py-16"
                     >
                       <div className="text-8xl mb-6">🏠</div>
-                      <h3 className="text-2xl font-semibold text-gray-700 mb-4">No onboard properties found</h3>
+                      <h3 className="text-2xl font-semibold text-gray-700 mb-4">
+                        No onboard properties found
+                      </h3>
                       <p className="text-gray-500 text-lg">
-                        {searchQuery ? "Try adjusting your search criteria" : "No properties are currently onboard"}
+                        {searchQuery
+                          ? "Try adjusting your search criteria"
+                          : "No properties are currently onboard"}
                       </p>
                     </motion.div>
                   ) : (
@@ -610,9 +691,13 @@ const OnBoardProperties = () => {
                       className="text-center py-16"
                     >
                       <div className="text-8xl mb-6">🗺️</div>
-                      <h3 className="text-2xl font-semibold text-gray-700 mb-4">No onboard maps found</h3>
+                      <h3 className="text-2xl font-semibold text-gray-700 mb-4">
+                        No onboard maps found
+                      </h3>
                       <p className="text-gray-500 text-lg">
-                        {searchQuery ? "Try adjusting your search criteria" : "No maps are currently onboard"}
+                        {searchQuery
+                          ? "Try adjusting your search criteria"
+                          : "No maps are currently onboard"}
                       </p>
                     </motion.div>
                   ) : (
@@ -662,7 +747,8 @@ const OnBoardProperties = () => {
         </AnimatePresence>
 
         {/* Results Info */}
-        {((activeTab === "properties" && properties.length > 0) || (activeTab === "maps" && maps.length > 0)) && (
+        {((activeTab === "properties" && properties.length > 0) ||
+          (activeTab === "maps" && maps.length > 0)) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -671,21 +757,27 @@ const OnBoardProperties = () => {
             {activeTab === "properties" ? (
               <>
                 Showing {(propertiesPagination.currentPage - 1) * 12 + 1} to{" "}
-                {Math.min(propertiesPagination.currentPage * 12, propertiesPagination.totalItems)} of{" "}
-                {propertiesPagination.totalItems} onboard properties
+                {Math.min(
+                  propertiesPagination.currentPage * 12,
+                  propertiesPagination.totalItems
+                )}{" "}
+                of {propertiesPagination.totalItems} onboard properties
               </>
             ) : (
               <>
                 Showing {(mapsPagination.currentPage - 1) * 12 + 1} to{" "}
-                {Math.min(mapsPagination.currentPage * 12, mapsPagination.totalItems)} of {mapsPagination.totalItems}{" "}
-                onboard maps
+                {Math.min(
+                  mapsPagination.currentPage * 12,
+                  mapsPagination.totalItems
+                )}{" "}
+                of {mapsPagination.totalItems} onboard maps
               </>
             )}
           </motion.div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OnBoardProperties
+export default OnBoardProperties;

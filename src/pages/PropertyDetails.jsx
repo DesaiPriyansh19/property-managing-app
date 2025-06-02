@@ -18,6 +18,8 @@ import {
   FaSpinner,
   FaToggleOn,
   FaToggleOff,
+  FaChevronUp,
+  FaChevronDown,
 } from "react-icons/fa";
 import PropertyAPI from "../services/PropertyApi";
 
@@ -37,11 +39,13 @@ const PropertyDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [property, setProperty] = useState(null);
+
   const [currentImgIdx, setCurrentImgIdx] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
+  const [showDetails, setShowDetails] = useState({});
   const [saving, setSaving] = useState(false);
   const [newImages, setNewImages] = useState([]);
   const [newPdfs, setNewPdfs] = useState([]);
@@ -333,7 +337,7 @@ const PropertyDetails = () => {
                 onClick={handleOnBoardToggle}
                 disabled={togglingOnBoard}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  property.onBoard
+                  property.onBoard === true
                     ? "bg-green-100 text-green-800 hover:bg-green-200"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 } disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -348,7 +352,7 @@ const PropertyDetails = () => {
                 <span className="font-semibold">
                   {togglingOnBoard
                     ? "Updating..."
-                    : property.onBoard
+                    : property.onBoard === true
                     ? "On Board"
                     : "Not On Board"}
                 </span>
