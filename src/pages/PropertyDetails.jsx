@@ -317,6 +317,7 @@ const PropertyDetails = () => {
     <div className="bg-gray-100 min-h-screen py-12 px-4">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl p-8">
         {/* Header with OnBoard Toggle and Action Buttons */}
+        {/* Header with OnBoard Toggle and Action Buttons */}
         <div className="flex justify-between items-start mb-8">
           <div className="flex-1">
             <h1 className="text-4xl font-extrabold text-gray-700 border-b border-gray-300 pb-4">

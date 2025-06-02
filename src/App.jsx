@@ -208,6 +208,15 @@ const AppWrapper = () => {
               </ProtectedRoute>
             }
           />
+
+            <Route
+            path="/onboard-properties"
+            element={
+              <ProtectedRoute>
+                <OnBoardProperties />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/brokers"
             element={
