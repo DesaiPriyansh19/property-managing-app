@@ -35,6 +35,7 @@ import companyLogo from "../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a945
 import "./App.css";
 import MyWallet from "./pages/MyWallet.jsx";
 import PropertyPage from "./components/AllProperties.jsx";
+import OnBoardProperties from "./pages/OnBoardProperties.jsx";
 
 // Custom wrapper to access location outside Routes
 const AppWrapper = () => {
@@ -195,6 +196,15 @@ const AppWrapper = () => {
             element={
               <ProtectedRoute>
                 <PageWrapper>  <AddProperty /> </PageWrapper> 
+              </ProtectedRoute>
+            }
+          />
+
+            <Route
+            path="/onboard-properties"
+            element={
+              <ProtectedRoute>
+                <OnBoardProperties />
               </ProtectedRoute>
             }
           />

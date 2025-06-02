@@ -62,7 +62,9 @@ class BrokerAPI {
       const response = await api.get(`/brokers/${id}`);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Failed to fetch Broker");
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch Broker"
+      );
     }
   }
 

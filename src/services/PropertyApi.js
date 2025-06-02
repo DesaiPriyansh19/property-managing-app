@@ -176,6 +176,20 @@ class PropertyAPI {
     }
   }
 
+  // Toggle onBoard status
+  static async toggleOnBoard(id, onBoardStatus) {
+    try {
+      const response = await api.patch(`/properties/${id}/onboard`, {
+        onBoard: onBoardStatus,
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Failed to toggle onBoard status"
+      );
+    }
+  }
+
   // Delete property
   static async deleteProperty(id) {
     try {
@@ -202,13 +216,15 @@ class PropertyAPI {
       throw new Error(error.response?.data?.message || "Failed to delete file");
     }
   }
-    // Get upload status for a property
+  // Get upload status for a property
   static async getUploadStatus(id) {
     try {
-      const response = await api.get(`/properties/${id}/upload-status`)
-      return response.data
+      const response = await api.get(`/properties/${id}/upload-status`);
+      return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Failed to fetch upload status")
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch upload status"
+      );
     }
   }
 }
