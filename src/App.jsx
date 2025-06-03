@@ -1,7 +1,5 @@
 "use client";
-import PageWrapper from "./components/PageWrapper"; // ⬅️ Import PageWrapper
-
-// App.jsx
+import PageWrapper from "./components/PageWrapper";
 import {
   BrowserRouter,
   Routes,
@@ -9,7 +7,8 @@ import {
   useLocation,
   Link,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import PropertyDetails from "./pages/PropertyDetails";
@@ -30,156 +29,263 @@ import {
   FaLock,
   FaSignOutAlt,
   FaWhatsapp,
+  FaTrash,
+  FaTimes,
 } from "react-icons/fa";
 import companyLogo from "../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
 import "./App.css";
 import MyWallet from "./pages/MyWallet.jsx";
 import PropertyPage from "./components/AllProperties.jsx";
 import OnBoardProperties from "./pages/OnBoardProperties.jsx";
+import RecycleBin from "./pages/RecycleBin.jsx";
 
 // Custom wrapper to access location outside Routes
 const AppWrapper = () => {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const isLoginPage = location.pathname === "/";
+  const sidebarRef = useRef(null);
+  const [activeRoute, setActiveRoute] = useState("");
+
+  // Set active route based on current location
+  useEffect(() => {
+    setActiveRoute(location.pathname);
+  }, [location]);
+
+  // Handle click outside to close sidebar
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        isSidebarOpen
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSidebarOpen]);
+
+  // Sidebar animation variants
+  const sidebarVariants = {
+    open: {
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
+    closed: {
+      x: "-100%",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      },
+    },
+  };
+
+  // Menu item animation variants
+  const menuItemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.5,
+      },
+    }),
+  };
+
+  const menuItems = [
+    { path: "/home", name: "Home", icon: <FaHome className="text-lg" /> },
+    {
+      path: "/add-property",
+      name: "Add Property",
+      icon: <FaPlusSquare className="text-lg" />,
+    },
+    {
+      path: "/recycle-bin",
+      name: "RecycleBin",
+      icon: <FaTrash className="text-lg" />,
+    },
+    {
+      path: "/onboard-properties",
+      name: "On Board Properties",
+      icon: <FaBuilding className="text-lg" />,
+    },
+    {
+      path: "/mywallet",
+      name: "My Wallet",
+      icon: <FaWallet className="text-lg" />,
+    },
+    {
+      path: "/change-password",
+      name: "Change Password",
+      icon: <FaLock className="text-lg" />,
+    },
+    {
+      path: "https://web.whatsapp.com/",
+      name: "WhatsApp",
+      icon: <FaWhatsapp className="text-lg" />,
+      external: true,
+    },
+    {
+      path: "/logout",
+      name: "Logout",
+      icon: <FaSignOutAlt className="text-lg" />,
+      className: "text-red-500 hover:text-red-400",
+    },
+  ];
 
   return (
     <>
       {/* Sidebar (hidden on /login) */}
       {!isLoginPage && (
         <>
-          <div
-            className={`fixed top-0 left-0 min-h-screen w-64  bg-gray-700 shadow-xl transform ${
-              isSidebarOpen ? "translate-x-0" : "-translate-x-full "
-            } transition-transform duration-300 ease-in-out z-40`}
+          <AnimatePresence>
+            {isSidebarOpen && (
+              <motion.div
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsSidebarOpen(false)}
+              />
+            )}
+          </AnimatePresence>
+
+          <motion.div
+            ref={sidebarRef}
+            className="fixed top-0 left-0 min-h-screen w-72 bg-gradient-to-b from-gray-800 to-gray-900 shadow-2xl z-40 overflow-hidden"
+            variants={sidebarVariants}
+            initial="closed"
+            animate={isSidebarOpen ? "open" : "closed"}
           >
-            <div className="p-6">
-              <div className="flex justify-start items-end gap-3 mt-10 mb-5">
-                <div
-                  className="rounded-2xl shadow-lg border-2 border-gray-200"
-                  onClick={() => setIsSidebarOpen(false)}
-                >
-                  <img
-                    src={companyLogo || "/placeholder.svg"}
-                    alt="Company Logo"
-                    className="w-20 h-20 sm:w-16 sm:h-16 rounded-xl object-cover shadow-md"
-                  />
+            <div className="p-6 h-full flex flex-col">
+              <div className="flex justify-between items-center mb-8">
+                <div className="flex items-end gap-3">
+                  <div className="rounded-2xl shadow-lg border-2 border-gray-700 overflow-hidden">
+                    <img
+                      src={companyLogo || "/placeholder.svg"}
+                      alt="Company Logo"
+                      className="w-16 h-16 object-cover"
+                    />
+                  </div>
+                  <h2 className="text-2xl text-white font-bold">Menu</h2>
                 </div>
-                <h2 className="text-xl xl:text-2xl text-white font-bold mb-4">
-                  Menu
-                </h2>
+                <button
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-700 transition-colors"
+                >
+                  <FaTimes />
+                </button>
               </div>
-              <ul className="space-y-4 text-start text-white">
-                <li
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="hover:pl-2 hover:scale-105 hover:text-gray-300 transition-all"
-                >
-                  <Link
-                    to="/home"
-                    className="flex items-center gap-3 font-semibold"
-                  >
-                    <FaHome /> Home
-                  </Link>
-                </li>
-                <li
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="hover:pl-2 hover:scale-105 hover:text-gray-300 transition-all"
-                >
-                  <Link
-                    to="/add-property"
-                    className="flex items-center gap-3 font-semibold"
-                  >
-                    <FaPlusSquare /> Add Property
-                  </Link>
-                </li>
-                <li
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="hover:pl-2 hover:scale-105 hover:text-gray-300 transition-all"
-                >
-                  <Link
-                    to="/onboard-properties"
-                    className="flex items-center gap-3 font-semibold"
-                  >
-                    <FaBuilding /> On Board Properties
-                  </Link>
-                </li>
-                <li
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="hover:pl-2 hover:scale-105 hover:text-gray-300 transition-all"
-                >
-                  <Link
-                    to="/mywallet"
-                    className="flex items-center gap-3 font-semibold"
-                  >
-                    <FaWallet /> My Wallet
-                  </Link>
-                </li>
-                <li
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="hover:pl-2 hover:scale-105 hover:text-gray-300 transition-all"
-                >
-                  <Link
-                    to="/change-password"
-                    className="flex items-center gap-3 font-semibold"
-                  >
-                    <FaLock /> Change Password
-                  </Link>
-                </li>
-                <li className="text-white">
-                  <a
-                    href="https://web.whatsapp.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 font-semibold"
-                  >
-                    <FaWhatsapp /> WhatsApp
-                  </a>
-                </li>
 
-                <li
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="hover:pl-2 hover:scale-105 text-red-500 hover:text-red-400 transition-all"
-                >
-                  <Link
-                    to="/logout"
-                    className="flex items-center gap-3 font-semibold"
-                  >
-                    <FaSignOutAlt /> Logout
-                  </Link>
-                </li>
-              </ul>
+              <div className="overflow-y-auto flex-grow">
+                <ul className="space-y-2 text-start">
+                  {menuItems.map((item, index) => (
+                    <motion.li
+                      key={item.name}
+                      custom={index}
+                      variants={menuItemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      className={`rounded-lg overflow-hidden ${
+                        isSidebarOpen ? "" : "opacity-0"
+                      }`}
+                    >
+                      {item.external ? (
+                        <a
+                          href={item.path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-3 font-medium py-3 px-4 rounded-lg ${
+                            item.className || "text-gray-200 hover:text-white"
+                          } hover:bg-gray-700/50 transition-all duration-200`}
+                        >
+                          {item.icon}
+                          <span>{item.name}</span>
+                        </a>
+                      ) : (
+                        <Link
+                          to={item.path}
+                          onClick={() => setIsSidebarOpen(false)}
+                          className={`flex items-center gap-3 font-medium py-3 px-4 rounded-lg ${
+                            activeRoute === item.path
+                              ? "bg-gray-700/70 text-white font-semibold"
+                              : item.className ||
+                                "text-gray-200 hover:text-white"
+                          } hover:bg-gray-700/50 transition-all duration-200`}
+                        >
+                          {item.icon}
+                          <span>{item.name}</span>
+                          {activeRoute === item.path && (
+                            <motion.div
+                              className="ml-auto w-1.5 h-5 bg-blue-500 rounded-full"
+                              layoutId="activeIndicator"
+                            />
+                          )}
+                        </Link>
+                      )}
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mt-auto pt-4 text-center text-gray-400 text-xs">
+                <p>© 2025 Property Management</p>
+              </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Mobile Overlay */}
-          {isSidebarOpen && (
-            <div
-              className="fixed inset-0 bg-black opacity-30 z-30 xl:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-          )}
-
-          {/* Toggle Button - Hide if sidebar open */}
-          <button
+          {/* Toggle Button */}
+          <motion.button
             onClick={() => setIsSidebarOpen(true)}
-            className={`absolute top-1 left-1 z-50 text-gray-800  text-3xl   p-2 rounded-md ${
-              isSidebarOpen || isLoginPage ? "hidden" : "block"
-            }`}
+            className={`fixed top-4 left-6 z-20 text-gray-800 hover:text-gray-700 text-xl  ${
+              isSidebarOpen || isLoginPage ? "hidden" : "flex"
+            } items-center justify-center`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
           >
-            ☰
-          </button>
+            <svg
+              className="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </motion.button>
         </>
       )}
 
       {/* Main Page Content */}
-      <div className={`${!isLoginPage ? "" : ""}`}>
+      <div>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route
             path="/home"
             element={
               <ProtectedRoute>
-               <PageWrapper> <Home /></PageWrapper>
+                <PageWrapper>
+                  <Home />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -187,7 +293,9 @@ const AppWrapper = () => {
             path="/property/:id"
             element={
               <ProtectedRoute>
-                <PageWrapper>  <PropertyDetails /> </PageWrapper> 
+                <PageWrapper>
+                  <PropertyDetails />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -195,25 +303,29 @@ const AppWrapper = () => {
             path="/add-property"
             element={
               <ProtectedRoute>
-                <PageWrapper>  <AddProperty /> </PageWrapper> 
+                <PageWrapper>
+                  <AddProperty />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
-
-            <Route
+          <Route
             path="/onboard-properties"
             element={
               <ProtectedRoute>
-                <OnBoardProperties />
+                <PageWrapper>
+                  <OnBoardProperties />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
-
-            <Route
-            path="/onboard-properties"
+          <Route
+            path="/recycle-bin"
             element={
               <ProtectedRoute>
-                <OnBoardProperties />
+                <PageWrapper>
+                  <RecycleBin />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -221,7 +333,9 @@ const AppWrapper = () => {
             path="/brokers"
             element={
               <ProtectedRoute>
-                 <PageWrapper> <BrokerManagement /> </PageWrapper> 
+                <PageWrapper>
+                  <BrokerManagement />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -229,7 +343,9 @@ const AppWrapper = () => {
             path="/buyers"
             element={
               <ProtectedRoute>
-                 <PageWrapper> <BuyerManagement /> </PageWrapper> 
+                <PageWrapper>
+                  <BuyerManagement />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -237,7 +353,9 @@ const AppWrapper = () => {
             path="/mywallet"
             element={
               <ProtectedRoute>
-                <PageWrapper>  <MyWallet /> </PageWrapper> 
+                <PageWrapper>
+                  <MyWallet />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -245,7 +363,9 @@ const AppWrapper = () => {
             path="/allmaps"
             element={
               <ProtectedRoute>
-                 <PageWrapper> <AllMaps /> </PageWrapper> 
+                <PageWrapper>
+                  <AllMaps />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -253,7 +373,9 @@ const AppWrapper = () => {
             path="/allproperties/:slug"
             element={
               <ProtectedRoute>
-                <PageWrapper>  <PropertyPage /> </PageWrapper> 
+                <PageWrapper>
+                  <PropertyPage />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />
@@ -261,7 +383,9 @@ const AppWrapper = () => {
             path="/change-password"
             element={
               <ProtectedRoute>
-                 <PageWrapper> <ChangePassword /> </PageWrapper> 
+                <PageWrapper>
+                  <ChangePassword />
+                </PageWrapper>
               </ProtectedRoute>
             }
           />

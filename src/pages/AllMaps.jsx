@@ -43,6 +43,7 @@ const AllMaps = () => {
   const [deletingFiles, setDeletingFiles] = useState(new Set());
   const [previewImage, setPreviewImage] = useState(null);
   const [togglingItems, setTogglingItems] = useState(new Set());
+  const [movingToRecycleBin, setMovingToRecycleBin] = useState(new Set());
 
   // Load maps on component mount
   useEffect(() => {
@@ -125,6 +126,7 @@ const AllMaps = () => {
       const params = {
         page,
         limit: 9,
+        recycleBin: "false", // Only fetch active maps (not in recycle bin)
         ...(searchQuery && { search: searchQuery }),
         ...(bypassCache && { bypassCache: "true" }),
       };
@@ -343,24 +345,37 @@ const AllMaps = () => {
     setShowForm(true);
   };
 
+  // MODIFIED: Move to recycle bin instead of permanent deletion
   const handleDelete = async (index) => {
     if (
       window.confirm(
-        "Are you sure you want to delete this map? This action cannot be undone."
+        "Are you sure you want to move this map to the recycle bin?"
       )
     ) {
       try {
         const item = uploadedData[index];
-        await MapsAPI.deleteMaps(item._id);
 
-        // FIXED: Remove from local state immediately
+        // Add to moving state
+        setMovingToRecycleBin((prev) => new Set([...prev, item._id]));
+
+        // Move to recycle bin instead of permanent deletion
+        await MapsAPI.moveToRecycleBin(item._id, true);
+
+        // Remove from local state immediately
         setUploadedData((prev) => prev.filter((_, i) => i !== index));
 
-        setSuccess("Maps deleted successfully!");
+        setSuccess("Map moved to recycle bin successfully!");
         await fetchMaps(pagination.currentPage, true); // Bypass cache
       } catch (err) {
         setError(err.message);
-        console.error("Error deleting maps:", err);
+        console.error("Error moving map to recycle bin:", err);
+      } finally {
+        // Remove from moving state
+        setMovingToRecycleBin((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(uploadedData[index]?._id);
+          return newSet;
+        });
       }
     }
   };
@@ -1094,10 +1109,17 @@ const AllMaps = () => {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => handleDelete(index)}
-                          className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                          disabled={movingToRecycleBin.has(data._id)}
+                          className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                         >
-                          <FaTrash size={14} />
-                          Delete
+                          {movingToRecycleBin.has(data._id) ? (
+                            <FaSpinner className="animate-spin" size={14} />
+                          ) : (
+                            <FaTrash size={14} />
+                          )}
+                          {movingToRecycleBin.has(data._id)
+                            ? "Moving..."
+                            : "Delete"}
                         </motion.button>
                       </div>
                     </div>

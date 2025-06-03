@@ -1,17 +1,18 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import companyLogo from "../../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg"
-import { FaUserTie, FaHandshake } from "react-icons/fa" // Import icons
-import { FaWallet } from "react-icons/fa"
-import PropertyAPI from "../services/PropertyApi"
-import MapsAPI from "../services/MapsApi"
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import companyLogo from "../../public/WhatsApp Image 2025-05-01 at 16.53.33_ce5a9459.jpg";
+import { FaUserTie, FaHandshake } from "react-icons/fa"; // Import icons
+import { FaWallet } from "react-icons/fa";
+import PropertyAPI from "../services/PropertyApi";
+import MapsAPI from "../services/MapsApi";
+import RecycleBin from "./RecycleBin";
 
 const Home = () => {
-  const [showLogo, setShowLogo] = useState(false)
-  const [startFadeOut, setStartFadeOut] = useState(false)
-  const [showDetails, setShowDetails] = useState(false)
+  const [showLogo, setShowLogo] = useState(false);
+  const [startFadeOut, setStartFadeOut] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [counts, setCounts] = useState({
     "Title Clear Lands": 0,
     "Dispute Lands": 0,
@@ -20,143 +21,150 @@ const Home = () => {
     Others: 0,
     "All Properties": 0,
     "All Maps": 0, // Separate count for maps
-  })
-  const [properties, setProperties] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [propertiesLoading, setPropertiesLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [searchResults, setSearchResults] = useState([])
-  const [isSearching, setIsSearching] = useState(false)
-  const navigate = useNavigate()
+  });
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [propertiesLoading, setPropertiesLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const hasSeenLogo = localStorage.getItem("hasSeenLogo")
+    const hasSeenLogo = localStorage.getItem("hasSeenLogo");
     if (!hasSeenLogo) {
-      setShowLogo(true)
-      localStorage.setItem("hasSeenLogo", "true")
+      setShowLogo(true);
+      localStorage.setItem("hasSeenLogo", "true");
 
-      const timer1 = setTimeout(() => setStartFadeOut(true), 2000)
-      const timer2 = setTimeout(() => setShowLogo(false), 2800)
+      const timer1 = setTimeout(() => setStartFadeOut(true), 2000);
+      const timer2 = setTimeout(() => setShowLogo(false), 2800);
 
       return () => {
-        clearTimeout(timer1)
-        clearTimeout(timer2)
-      }
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
     }
-  }, [])
+  }, []);
 
   // Handle search functionality
   const handleSearch = async (query) => {
     try {
-      setIsSearching(true)
+      setIsSearching(true);
       const response = await PropertyAPI.getAllProperties({
         search: query,
         limit: 10, // Limit search results
-      })
-      setSearchResults(response.data || [])
+      });
+      setSearchResults(response.data || []);
     } catch (error) {
-      console.error("Error searching properties:", error)
-      setSearchResults([])
+      console.error("Error searching properties:", error);
+      setSearchResults([]);
     } finally {
-      setIsSearching(false)
+      setIsSearching(false);
     }
-  }
+  };
 
   // Handle search submission
   const handleSearchSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchTerm.trim()) {
       // Navigate to search results page or show results
-      navigate(`/allproperties?search=${encodeURIComponent(searchTerm.trim())}`)
+      navigate(
+        `/allproperties?search=${encodeURIComponent(searchTerm.trim())}`
+      );
     }
-  }
+  };
 
   // Fetch property counts and maps count from API
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
 
         // Fetch property counts
         const propertyResponse = await PropertyAPI.getAllProperties({
           limit: 1,
-        }) // Just need counts, not all data
+          recycleBin: false,
+        }); // Just need counts, not all data
 
         // Fetch maps count
-        const mapsResponse = await MapsAPI.getAllMaps({ limit: 1 })
+        const mapsResponse = await MapsAPI.getAllMaps({
+          limit: 1,
+          recycleBin: false,
+        });
 
         if (propertyResponse.counts) {
           const updatedCounts = {
             ...propertyResponse.counts,
             "All Maps": mapsResponse.counts || 0, // Add maps count
-          }
-          setCounts(updatedCounts)
+          };
+          setCounts(updatedCounts);
         }
       } catch (error) {
-        console.error("Error fetching counts:", error)
+        console.error("Error fetching counts:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchCounts()
-  }, [])
+    fetchCounts();
+  }, []);
 
   // Fetch recent properties for display
   useEffect(() => {
     const fetchRecentProperties = async () => {
       try {
-        setPropertiesLoading(true)
+        setPropertiesLoading(true);
         const response = await PropertyAPI.getAllProperties({
-          limit: 4, // Get only 4 recent properties for display
+          limit: 3, // Get only 4 recent properties for display
           page: 1,
-        })
+          recycleBin: false,
+        });
         if (response.data) {
-          setProperties(response.data)
+          setProperties(response.data);
         }
       } catch (error) {
-        console.error("Error fetching recent properties:", error)
+        console.error("Error fetching recent properties:", error);
       } finally {
-        setPropertiesLoading(false)
+        setPropertiesLoading(false);
       }
-    }
+    };
 
-    fetchRecentProperties()
-  }, [])
+    fetchRecentProperties();
+  }, []);
 
   // Handle search with debouncing
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (searchTerm.trim()) {
-        handleSearch(searchTerm.trim())
+        handleSearch(searchTerm.trim());
       } else {
-        setSearchResults([])
-        setIsSearching(false)
+        setSearchResults([]);
+        setIsSearching(false);
       }
-    }, 500)
+    }, 500);
 
-    return () => clearTimeout(timeoutId)
-  }, [searchTerm])
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
 
-  const handleToggle = () => setShowDetails((prev) => !prev)
+  const handleToggle = () => setShowDetails((prev) => !prev);
 
   // Calculate progress width based on total properties
   const getProgressWidth = (count) => {
-    const total = counts["All Properties"]
-    if (total === 0) return "w-0"
-    const percentage = Math.round((count / total) * 100)
-    if (percentage === 0) return "w-0"
-    if (percentage <= 10) return "w-[10%]"
-    if (percentage <= 20) return "w-[20%]"
-    if (percentage <= 30) return "w-[30%]"
-    if (percentage <= 40) return "w-[40%]"
-    if (percentage <= 50) return "w-[50%]"
-    if (percentage <= 60) return "w-[60%]"
-    if (percentage <= 70) return "w-[70%]"
-    if (percentage <= 80) return "w-[80%]"
-    if (percentage <= 90) return "w-[90%]"
-    return "w-full"
-  }
+    const total = counts["All Properties"];
+    if (total === 0) return "w-0";
+    const percentage = Math.round((count / total) * 100);
+    if (percentage === 0) return "w-0";
+    if (percentage <= 10) return "w-[10%]";
+    if (percentage <= 20) return "w-[20%]";
+    if (percentage <= 30) return "w-[30%]";
+    if (percentage <= 40) return "w-[40%]";
+    if (percentage <= 50) return "w-[50%]";
+    if (percentage <= 60) return "w-[60%]";
+    if (percentage <= 70) return "w-[70%]";
+    if (percentage <= 80) return "w-[80%]";
+    if (percentage <= 90) return "w-[90%]";
+    return "w-full";
+  };
 
   const spotlightCards = [
     {
@@ -194,38 +202,41 @@ const Home = () => {
       slug: "all-maps",
       value: loading ? "..." : counts["All Maps"].toString(),
     },
-  ]
+  ];
 
   // Format property data for display
   const formatPropertyForDisplay = (property) => {
     const getDisplayPrice = () => {
       if (property.srRate && property.fpRate) {
-        return `SR: ₹${property.srRate} | FP: ₹${property.fpRate}`
+        return `SR: ₹${property.srRate} | FP: ₹${property.fpRate}`;
       } else if (property.srRate) {
-        return `₹${property.srRate}`
+        return `₹${property.srRate}`;
       } else if (property.fpRate) {
-        return `₹${property.fpRate}`
+        return `₹${property.fpRate}`;
       }
-      return "Price on request"
-    }
+      return "Price on request";
+    };
 
     const getDisplayLocation = () => {
-      const locationParts = []
-      if (property.village) locationParts.push(property.village)
-      if (property.district) locationParts.push(property.district)
-      return locationParts.join(", ") || "Location not specified"
-    }
+      const locationParts = [];
+      if (property.village) locationParts.push(property.village);
+      if (property.district) locationParts.push(property.district);
+      return locationParts.join(", ") || "Location not specified";
+    };
 
     return {
       id: property._id,
       title: property.personWhoShared || "Property Owner",
       location: getDisplayLocation(),
       price: getDisplayPrice(),
-      image: property.images && property.images.length > 0 ? property.images[0].url : null,
+      image:
+        property.images && property.images.length > 0
+          ? property.images[0].url
+          : null,
       fileType: property.fileType,
       landType: property.landType,
-    }
-  }
+    };
+  };
 
   if (showLogo) {
     return (
@@ -234,10 +245,16 @@ const Home = () => {
           startFadeOut ? "opacity-0" : "opacity-100"
         }`}
       >
-        <img src={companyLogo || "/placeholder.svg"} alt="Company Logo" className="w-40 h-40" />
-        <h1 className="text-3xl font-bold mt-6 text-[#7B3F00]">Welcome to RD Revenue Legal Consulting </h1>
+        <img
+          src={companyLogo || "/placeholder.svg"}
+          alt="Company Logo"
+          className="w-40 h-40"
+        />
+        <h1 className="text-3xl font-bold mt-6 text-[#7B3F00]">
+          Welcome to RD Revenue Legal Consulting{" "}
+        </h1>
       </div>
-    )
+    );
   }
 
   return (
@@ -332,9 +349,9 @@ const Home = () => {
               My State point
             </button>
           </a>
-              <a href="https://tpvd.openprp.in/pro/main/modules/role_public/map/index.php">
+          <a href="https://tpvd.openprp.in/pro/main/modules/role_public/map/index.php">
             <button className="border border-gray-500 bg-gray-700 text-white hover:scale-90 rounded-lg px-4 py-2 shadow-xl">
-            Town Planning
+              Town Planning
             </button>
           </a>
         </div>
@@ -342,9 +359,15 @@ const Home = () => {
         {/* Total + Toggleable Cards */}
         <div className="w-full max-w-[1440px] mx-auto mb-16 px-4">
           <div className=" rounded-3xl shadow-md p-8 border-2 bg-gray-200 border-gray-400">
-            <h3 className="text-2xl font-bold mb-4 text-center">All Properties</h3>
+            <h3 className="text-2xl font-bold mb-4 text-center">
+              All Properties
+            </h3>
             <p className="text-5xl font-extrabold bg-gray-700 text-transparent bg-clip-text mb-6 text-center">
-              {loading ? "..." : (counts["All Properties"] + counts["All Maps"]).toString().padStart(2, "0")}
+              {loading
+                ? "..."
+                : (counts["All Properties"] + counts["All Maps"])
+                    .toString()
+                    .padStart(2, "0")}
             </p>
             <div className="flex justify-center mb-4">
               <button
@@ -358,19 +381,32 @@ const Home = () => {
             {/* Animated Slide/Fade Section */}
             <div
               className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-700 overflow-hidden ${
-                showDetails ? "max-h-[1000px] opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-4"
+                showDetails
+                  ? "max-h-[1000px] opacity-100 translate-y-0"
+                  : "max-h-0 opacity-0 -translate-y-4"
               }`}
             >
               {spotlightCards.map((item, index) => (
-                <Link key={index} to={item.title === "All Maps" ? "/allmaps" : `/allproperties/${item.slug}`}>
+                <Link
+                  key={index}
+                  to={
+                    item.title === "All Maps"
+                      ? "/allmaps"
+                      : `/allproperties/${item.slug}`
+                  }
+                >
                   <div
                     key={index}
                     className="bg-gray-100 rounded-2xl border border-gray-400 shadow p-6 transition hover:shadow-lg"
                   >
                     <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                    <p className="text-3xl font-bold bg-gray-500 text-transparent bg-clip-text mb-4">{item.value}</p>
+                    <p className="text-3xl font-bold bg-gray-500 text-transparent bg-clip-text mb-4">
+                      {item.value}
+                    </p>
                     <div className="w-full bg-gray-400 h-2 rounded-full overflow-hidden">
-                      <div className={`${item.width} h-full bg-gray-500 rounded-full transition-all duration-500`} />
+                      <div
+                        className={`${item.width} h-full bg-gray-500 rounded-full transition-all duration-500`}
+                      />
                     </div>
                   </div>
                 </Link>
@@ -389,8 +425,16 @@ const Home = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-16 pr-6 py-5 bg-white border border-gray-600 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#c69c6d] placeholder-gray-400 text-gray-800 text-lg font-medium"
             />
-            <button type="submit" className="absolute left-6 top-5 text-gray-600 hover:text-gray-800 transition-colors">
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button
+              type="submit"
+              className="absolute left-6 top-5 text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <svg
+                className="w-7 h-7"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -414,37 +458,48 @@ const Home = () => {
                       Found {searchResults.length} result(s)
                     </div>
                     {searchResults.map((property) => {
-                      const displayProperty = formatPropertyForDisplay(property)
+                      const displayProperty =
+                        formatPropertyForDisplay(property);
                       return (
                         <Link
                           key={displayProperty.id}
                           to={`/property/${displayProperty.id}`}
                           className="block p-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
                           onClick={() => {
-                            setSearchTerm("")
-                            setSearchResults([])
+                            setSearchTerm("");
+                            setSearchResults([]);
                           }}
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
                               {displayProperty.image ? (
                                 <img
-                                  src={displayProperty.image || "/placeholder.svg"}
+                                  src={
+                                    displayProperty.image || "/placeholder.svg"
+                                  }
                                   alt={displayProperty.title}
                                   className="w-full h-full object-cover"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-400">🏠</div>
+                                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                  🏠
+                                </div>
                               )}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-medium text-gray-900 truncate">{displayProperty.title}</h4>
-                              <p className="text-sm text-gray-500 truncate">{displayProperty.location}</p>
-                              <p className="text-sm text-gray-600 truncate">{displayProperty.fileType}</p>
+                              <h4 className="font-medium text-gray-900 truncate">
+                                {displayProperty.title}
+                              </h4>
+                              <p className="text-sm text-gray-500 truncate">
+                                {displayProperty.location}
+                              </p>
+                              <p className="text-sm text-gray-600 truncate">
+                                {displayProperty.fileType}
+                              </p>
                             </div>
                           </div>
                         </Link>
-                      )
+                      );
                     })}
                     <div className="p-3 border-t">
                       <button
@@ -456,9 +511,13 @@ const Home = () => {
                     </div>
                   </div>
                 ) : searchTerm.length > 2 ? (
-                  <div className="p-4 text-center text-gray-500">No properties found for "{searchTerm}"</div>
+                  <div className="p-4 text-center text-gray-500">
+                    No properties found for "{searchTerm}"
+                  </div>
                 ) : (
-                  <div className="p-4 text-center text-gray-500">Type at least 3 characters to search</div>
+                  <div className="p-4 text-center text-gray-500">
+                    Type at least 3 characters to search
+                  </div>
                 )}
               </div>
             )}
@@ -484,7 +543,7 @@ const Home = () => {
             ))
           ) : properties.length > 0 ? (
             properties.map((property) => {
-              const displayProperty = formatPropertyForDisplay(property)
+              const displayProperty = formatPropertyForDisplay(property);
               return (
                 <Link
                   key={displayProperty.id}
@@ -500,7 +559,11 @@ const Home = () => {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20">
+                        <svg
+                          className="w-16 h-16"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
                           <path
                             fillRule="evenodd"
                             d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
@@ -518,22 +581,34 @@ const Home = () => {
                     )}
                   </div>
                   <div className="p-4">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-2 truncate">{displayProperty.title}</h2>
-                    <p className="text-gray-600 mb-1 truncate">{displayProperty.location}</p>
-                    <p className="text-black font-semibold truncate">{displayProperty.price}</p>
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2 truncate">
+                      {displayProperty.title}
+                    </h2>
+                    <p className="text-gray-600 mb-1 truncate">
+                      {displayProperty.location}
+                    </p>
+                    <p className="text-black font-semibold truncate">
+                      {displayProperty.price}
+                    </p>
                     {displayProperty.landType && (
-                      <p className="text-sm text-gray-500 mt-1">{displayProperty.landType}</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {displayProperty.landType}
+                      </p>
                     )}
                   </div>
                 </Link>
-              )
+              );
             })
           ) : (
             // Empty state
             <div className="col-span-full text-center py-12">
               <div className="text-6xl mb-4">🏠</div>
-              <h3 className="text-xl font-medium text-gray-600 mb-2">No properties found</h3>
-              <p className="text-gray-500 mb-6">Start by adding your first property</p>
+              <h3 className="text-xl font-medium text-gray-600 mb-2">
+                No properties found
+              </h3>
+              <p className="text-gray-500 mb-6">
+                Start by adding your first property
+              </p>
               <Link
                 to="/add-property"
                 className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors font-medium"
@@ -545,16 +620,19 @@ const Home = () => {
         </div>
 
         {/* Show "View All Properties" link if there are more than 4 properties */}
-        {!propertiesLoading && properties.length === 4 && counts["All Properties"] + counts["All Maps"] > 4 && (
-          <div className="text-center mt-8">
-            <Link
-              to="/allproperties/all-properties"
-              className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors font-medium"
-            >
-              View All Properties ({counts["All Properties"] + counts["All Maps"]})
-            </Link>
-          </div>
-        )}
+        {!propertiesLoading &&
+          properties.length === 4 &&
+          counts["All Properties"] + counts["All Maps"] > 4 && (
+            <div className="text-center mt-8">
+              <Link
+                to="/allproperties/all-properties"
+                className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors font-medium"
+              >
+                View All Properties (
+                {counts["All Properties"] + counts["All Maps"]})
+              </Link>
+            </div>
+          )}
 
         <div className="w-full flex items-center justify-start lg:justify-center gap-6 mt-6 border-gray-400 border-t-2 pt-6 overflow-x-auto">
           <Link to={"/buyers"}>
@@ -580,7 +658,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

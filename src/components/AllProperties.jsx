@@ -105,6 +105,7 @@ export default function AllProperties() {
       const params = {
         page,
         limit: 9,
+        recycleBin: false,
         ...(currentFileType && { fileType: currentFileType }),
         ...(searchTerm && { search: searchTerm }),
       };
@@ -219,7 +220,7 @@ export default function AllProperties() {
           <Link
             to="/allproperties/all-properties"
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
-              slug==="all-properties"
+              slug === "all-properties"
                 ? "bg-gray-700 text-white"
                 : "bg-white text-gray-700 hover:bg-gray-100"
             }`}

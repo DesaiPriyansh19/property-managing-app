@@ -152,6 +152,19 @@ class MapsAPI {
     }
   }
 
+  static async moveToRecycleBin(id, recycleBinStatus) {
+    try {
+      const response = await api.patch(`/maps/${id}/recycleBin`, {
+        recycleBin: recycleBinStatus,
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.message || "Failed to toggle onBoard status"
+      );
+    }
+  }
+
   // Delete maps
   static async deleteMaps(id) {
     try {
