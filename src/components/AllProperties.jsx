@@ -119,6 +119,7 @@ export default function AllProperties() {
 
       const response = await PropertyAPI.getAllProperties(params);
       setProperties(response.data || []);
+      console.log(response)
       setPagination(
         response.pagination || {
           currentPage: 1,
